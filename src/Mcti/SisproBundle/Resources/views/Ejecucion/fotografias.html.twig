@@ -1,0 +1,62 @@
+{# ANALISIS PERMISOLOGICO #}
+{% if permiso is not defined %}
+    {% if ( is_granted('ROLE_ADMIN') or 
+           ((is_granted('ROLE_ENLACE') or
+             (app.user == data.proyecto.usuario)) and 
+             (data.proyecto.estatus.id > 1) and (data.proyecto.estatus.id <5) ) ) %}
+        {% set permiso = true %}
+    {% else %}
+        {% set permiso = false %}
+    {% endif %} 
+{% endif %}
+
+{% set filas = data.fotos|length %}         
+{% if filas != 0 %} 
+<div class="row"> 
+ <div id="myCarousel" class="span10 offset1 carousel slide" style="border: #D3D3D3 inset 2px">
+  <ol class="carousel-indicators">
+ {% set contador = 0 %}
+ {% for foto in data.fotos %}
+    <li data-target="#myCarousel" data-slide-to="{{ contador }}" 
+        class="{% if contador == 0 %}active{% endif %}"></li>    
+    {% set contador = contador +1 %}
+ {% endfor %}
+  </ol>       
+  <div class="carousel-inner">
+ {% set contador = 0 %}
+ {% for foto in data.fotos %}      
+    <div class="item {% if contador == 0 %}active{% endif %}">      
+      <img src="{{ url('home') }}../adjuntos/{{ data.proyecto.codigo }}/{{ foto.imagen }}" 
+           alt="../adjuntos/{{ data.proyecto.codigo }}/{{ foto.imagen }}">
+    <div class="carousel-control" style="top:60%; left:auto; right: 15px; cursor: pointer">
+      <img src="{{ asset('bundles/sispro/img/borrado64.png') }}" 
+           title="Eliminar fotografía"
+           onclick="javascript:eliminar('Fotografia',{{ foto.id }});">        
+    </div>
+      <div class="carousel-caption">
+        <h4>{{ foto.actividad }}</h4>
+        <p>{{ foto.comentarios }}</p>
+      </div>
+    </div>
+    {% set contador = contador +1 %}          
+ {% endfor %}
+  </div>
+  <a class="left carousel-control" href="#myCarousel" data-slide="prev">‹</a>
+  <a class="right carousel-control" href="#myCarousel" data-slide="next">›</a>
+</div>
+</div>
+{% else %}
+<center><h3>Proyecto sin Registro Fotográfico</h3> </center>
+{% endif %}
+    
+{% if permiso == true %}
+<center>  
+ {% if (data.fotos|length) < (data.actividades|length * 3) %}   
+  <a href="{{ path('registrarFotografia', {'id': data.proyecto.id }) }}">  
+  <span 
+        class="btn btn-danger" 
+        title="Subir Fotografías">
+      <i class="icon-camera icon-white"></i> Agregar</span></a>
+ {% endif %}    
+</center> 
+{% endif %}    

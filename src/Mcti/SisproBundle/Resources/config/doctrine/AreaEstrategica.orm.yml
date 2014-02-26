@@ -1,0 +1,25 @@
+Mcti\SisproBundle\Entity\AreaEstrategica:
+    type: entity
+    table: area_estrategica
+    fields:
+        id:
+            id: true
+            type: smallint
+            nullable: false
+            generator:
+                strategy: SEQUENCE
+        area:
+            type: text
+            nullable: false
+        definicion:
+            type: text
+            nullable: false
+    manyToMany:
+        proyecto:
+            targetEntity: Proyecto
+            cascade: {  }
+            mappedBy: areaEstrategica
+            inversedBy: null
+            joinTable: null
+            orderBy: null
+    lifecycleCallbacks: {  }

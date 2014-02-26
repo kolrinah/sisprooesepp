@@ -1,0 +1,70 @@
+many-To-Many
+
+User:
+  type: entity
+  manyToMany:
+    groups:
+      targetEntity: Group
+      inversedBy: users
+      joinTable:
+        name: users_groups
+        joinColumns:
+          user_id:
+            referencedColumnName: id
+        inverseJoinColumns:
+          group_id:
+            referencedColumnName: id
+
+Group:
+  type: entity
+  manyToMany:
+    users:
+      targetEntity: User
+      mappedBy: groups
+
+
+Many-to-One Unidireccional
+
+User:
+  type: entity
+  manyToOne:
+    address:
+      targetEntity: Address
+      joinColumn:
+        name: address_id
+        referencedColumnName: id
+
+
+One-to-many self-referencing
+
+Category:
+  type: entity
+  oneToMany:
+    children:
+      targetEntity: Category
+      mappedBy: parent
+  manyToOne:
+    parent:
+      targetEntity: Category
+      inversedBy: children
+
+
+
+One-To-Many, Bidirectional
+
+Estructura:
+  type: entity
+  oneToMany:
+    usuarios:
+      targetEntity: Usuario
+      mappedBy: estructura
+
+Usuario:
+  type: entity
+  manyToOne:
+    estructura:
+      targetEntity: Estructura
+      inversedBy: usuarios
+      joinColumn:
+        name: estructura_id:
+        referencedColumnName: id

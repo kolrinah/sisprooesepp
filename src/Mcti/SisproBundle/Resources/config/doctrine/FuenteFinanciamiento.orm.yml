@@ -1,0 +1,20 @@
+Mcti\SisproBundle\Entity\FuenteFinanciamiento:
+    type: entity
+    table: fuente_financiamiento
+    fields:
+        id:
+            id: true
+            type: smallint
+            nullable: false
+            generator:
+                strategy: SEQUENCE
+        fuente:
+            type: string
+            length: 50
+            fixed: false
+            nullable: false
+    oneToMany:        
+        proyectos:
+            targetEntity: ProyectoFuenteFinanciamiento
+            mappedBy: fuenteFinanciamiento
+    lifecycleCallbacks: {  }

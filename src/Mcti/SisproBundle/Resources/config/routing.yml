@@ -1,0 +1,213 @@
+home:
+   pattern: /
+   defaults: {_controller: SisproBundle:Acceso:login }
+
+login:
+   pattern: /login
+   defaults: { _controller: SisproBundle:Acceso:login }
+   
+chequeo:
+   pattern: /login/chequeo
+   defaults: { _controller: SisproBundle:Acceso:login }
+   
+check_path:
+   pattern: /autenticar
+   
+logout:
+    pattern: /logout 
+
+salida:
+   pattern: /login/salida
+   defaults: { _controller: SisproBundle:Acceso:salida }
+
+frase:
+   pattern: /login/frase/
+   defaults: { _controller: SisproBundle:FrasesChavez:frase }
+   
+activarCuenta:
+   pattern: /login/activar
+   defaults: { _controller: SisproBundle:Acceso:activarCuenta }
+   
+principal:
+   pattern: /principal
+   defaults: { _controller: SisproBundle:Acceso:principal }   
+   
+usuarios:
+   pattern: admin/usuarios
+   defaults: { _controller: SisproBundle:Usuarios:listarUsuarios }
+   
+nuevoUsuario:
+   pattern: admin/usuarios/nuevo
+   defaults: { _controller: SisproBundle:Usuarios:nuevoUsuario }
+   
+buscarUsuario:
+   pattern: admin/usuarios/buscar
+   defaults: { _controller: SisproBundle:Usuarios:buscarUsuario } 
+   
+editarUsuario:
+   pattern: admin/usuarios/editar
+   defaults: { _controller: SisproBundle:Usuarios:editarUsuario } 
+
+reiniciarClave:
+   pattern: admin/usuarios/reiniciar
+   defaults: { _controller: SisproBundle:Usuarios:reiniciarClave }
+
+bitacora:
+   pattern: admin/bitacora
+   defaults: { _controller: SisproBundle:Bitacora:listar }   
+   
+perfilUsuario:
+   pattern: perfil/
+   defaults: { _controller: SisproBundle:Usuarios:perfilUsuario }
+   
+cambiarClave:
+   pattern: perfil/cambiarclave
+   defaults: { _controller: SisproBundle:Usuarios:cambiarClave }
+   
+proyectos:
+   pattern: proyectos/
+   defaults: { _controller: SisproBundle:Proyectos:listarProyectos }
+   
+nuevoProyecto:
+   pattern: proyectos/nuevo
+   defaults: { _controller: SisproBundle:Proyectos:nuevoProyecto }   
+
+eliminarProyecto:
+   pattern: proyectos/eliminarProyecto
+   defaults: { _controller: SisproBundle:Proyectos:eliminarProyecto }   
+
+getMunicipios:
+   pattern: proyectos/getMunicipios
+   defaults: { _controller: SisproBundle:Proyectos:getMunicipios }
+   
+getParroquias:
+   pattern: proyectos/getParroquias
+   defaults: { _controller: SisproBundle:Proyectos:getParroquias }
+
+getPoblados:
+   pattern: proyectos/getPoblados
+   defaults: { _controller: SisproBundle:Proyectos:getPoblados }
+   
+getUsuarios:
+   pattern: proyectos/getUsuarios
+   defaults: { _controller: SisproBundle:Proyectos:getUsuarios }
+   
+getUsuario:
+   pattern: proyectos/getUsuario
+   defaults: { _controller: SisproBundle:Proyectos:getUsuario }
+
+editarProyectoForm01:
+   pattern: proyectos/editarForm01
+   defaults: { _controller: SisproBundle:Proyectos:editarProyectoForm01 }  
+
+editarProyecto:
+   pattern: proyectos/editar
+   defaults: { _controller: SisproBundle:Proyectos:editarProyecto }  
+
+cargarMapeo:
+   pattern: proyectos/mapaVenezuela/cargarMapeo
+   defaults: { _controller: SisproBundle:MapaVenezuela:cargarMapeo }  
+
+cargarMunicipio:
+   pattern: proyectos/cargarMunicipio
+   defaults: { _controller: SisproBundle:Proyectos:cargarMunicipio }
+   
+editarObjetivoEspecifico:
+   pattern: proyectos/objetivoEspecifico/editar
+   defaults: { _controller: SisproBundle:Proyectos:editarObjetivoEspecifico }
+   
+eliminarObjetivoEspecifico:
+   pattern: proyectos/objetivoEspecifico/eliminar
+   defaults: { _controller: SisproBundle:Proyectos:eliminarObjetivoEspecifico }  
+   
+agregarObjetivoEspecifico:
+   pattern: proyectos/objetivoEspecifico/agregar
+   defaults: { _controller: SisproBundle:Proyectos:agregarObjetivoEspecifico }
+   
+editarActividad:
+   pattern: proyectos/actividad/editar
+   defaults: { _controller: SisproBundle:Proyectos:editarActividad }
+   
+eliminarActividad:
+   pattern: proyectos/actividad/eliminar
+   defaults: { _controller: SisproBundle:Proyectos:eliminarActividad }  
+   
+agregarActividad:
+   pattern: proyectos/actividad/agregar
+   defaults: { _controller: SisproBundle:Proyectos:agregarActividad }
+   
+ejecucion:
+   pattern: ejecucion/
+   defaults: { _controller: SisproBundle:Ejecucion:listarProyectos }   
+   
+revisarProyecto:
+   pattern: ejecucion/revisarProyecto
+   defaults: { _controller: SisproBundle:Ejecucion:revisarProyecto }  
+   
+registrarRecursoRecibido:
+   pattern: ejecucion/revisarProyecto/registrarRecursoRecibido
+   defaults: { _controller: SisproBundle:RecursoRecibido:registrarRecursoRecibido }  
+   
+editarRecursoRecibido:
+   pattern: ejecucion/revisarProyecto/editarRecursoRecibido
+   defaults: { _controller: SisproBundle:RecursoRecibido:editarRecursoRecibido }
+
+eliminarRecursoRecibido:
+   pattern: ejecucion/revisarProyecto/eliminarRecursoRecibido
+   defaults: { _controller: SisproBundle:RecursoRecibido:eliminarRecursoRecibido } 
+   
+registrarRecursoEjecutado:
+   pattern: ejecucion/revisarProyecto/registrarRecursoEjecutado
+   defaults: { _controller: SisproBundle:RecursoEjecutado:registrarRecursoEjecutado }  
+   
+editarRecursoEjecutado:
+   pattern: ejecucion/revisarProyecto/editarRecursoEjecutado
+   defaults: { _controller: SisproBundle:RecursoEjecutado:editarRecursoEjecutado }
+
+eliminarRecursoEjecutado:
+   pattern: ejecucion/revisarProyecto/eliminarRecursoEjecutado
+   defaults: { _controller: SisproBundle:RecursoEjecutado:eliminarRecursoEjecutado }
+   
+registrarRegistroProblema:
+   pattern: ejecucion/revisarProyecto/registrarRegistroProblema
+   defaults: { _controller: SisproBundle:RegistroProblema:registrarRegistroProblema }  
+   
+editarRegistroProblema:
+   pattern: ejecucion/revisarProyecto/editarRegistroProblema
+   defaults: { _controller: SisproBundle:RegistroProblema:editarRegistroProblema }
+
+eliminarRegistroProblema:
+   pattern: ejecucion/revisarProyecto/eliminarRegistroProblema
+   defaults: { _controller: SisproBundle:RegistroProblema:eliminarRegistroProblema }   
+   
+registrarMetaAlcanzada:
+   pattern: ejecucion/revisarProyecto/registrarMetaAlcanzada
+   defaults: { _controller: SisproBundle:MetaAlcanzada:registrarMetaAlcanzada }  
+   
+editarMetaAlcanzada:
+   pattern: ejecucion/revisarProyecto/editarMetaAlcanzada
+   defaults: { _controller: SisproBundle:MetaAlcanzada:editarMetaAlcanzada }
+
+eliminarMetaAlcanzada:
+   pattern: ejecucion/revisarProyecto/eliminarMetaAlcanzada
+   defaults: { _controller: SisproBundle:MetaAlcanzada:eliminarMetaAlcanzada } 
+   
+culminarProyecto:
+   pattern: ejecucion/revisarProyecto/culminar
+   defaults: { _controller: SisproBundle:MetaAlcanzada:culminarProyecto }   
+   
+registrarFotografia:
+   pattern: ejecucion/revisarProyecto/registrarFotografia
+   defaults: { _controller: SisproBundle:Fotografia:registrarFotografia }  
+   
+eliminarFotografia:
+   pattern: ejecucion/revisarProyecto/eliminarFotografia
+   defaults: { _controller: SisproBundle:Fotografia:eliminarFotografia }   
+   
+analizarProyectos:
+   pattern: principal/analizar
+   defaults: { _controller: SisproBundle:AnalisisProyectos:analizarProyectos }
+   
+fichaProyecto:
+   pattern: proyectos/fichaProyecto
+   defaults: { _controller: SisproBundle:FichaProyecto:cargarFicha } 

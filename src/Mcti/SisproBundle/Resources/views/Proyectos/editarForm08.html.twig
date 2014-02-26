@@ -1,0 +1,127 @@
+{# REGLAS PARA PODER EDITAR EL PROYECTO:
+     [  ( Usuario Responsable == Usuario OR Usuario.Rol == Enlace ) 
+          AND ( Estatus de Proyecto == 1)  ]  #}
+{% if ( (data.proyecto.usuario == app.user or is_granted('ROLE_ENLACE'))
+        and (data.proyecto.estatus.id == 1) ) %}
+   {% set permiso = true %}
+   {% set read = '' %}
+{% else %}
+   {% set permiso = false %} 
+   {% set read = 'disabled="disabled"' %}
+{% endif %}
+
+{% include 'SisproBundle:Proyectos:selector.html.twig' %}
+
+<div id="formulario">
+<div class="row">
+<div class="formulario span12">    
+ <form action="{{ path('editarProyecto') }}" method="post"  >
+ {# Campo oculto con el ID del proyecto #}
+ <input type="hidden" name="data[idProyecto]" value="{{ data.proyecto.id }}" />
+ <input type="hidden" name="data[form]" value="{{ data.form }}" />
+ 
+   <table>
+    <thead>
+     <tr>
+      <th width="50%">Ubicación Territorial / Municipios Beneficiados</th>
+      <th style="text-align:right">
+          <a href="{{ path('proyectos') }}">
+          <span class="btn btn-danger"  title="Clic para Cerrar">
+            <i class="icon-off icon-white"></i>
+          </span> </a>
+      </th>          
+     </tr>           
+    </thead>            
+    <tbody>
+     <tr>
+      <td colspan="2">  
+       <div class="container-fluid">
+        <div class="row-fluid">
+         <div class="span7" style="height: 364px;">
+{# MAPA DE VENEZUELA #} 
+          <div style="position: relative; {# width:482px; height: 364px;3 #}">
+           <div class="marcoMapa"></div>
+           <img id="entidad" src="{{ asset('bundles/sispro/img/mapas/blank.png') }}" {#width="482" height="364" #}usemap="#mapa"
+               style="position: absolute; top:0px; left:0; z-index:4;"/>
+           <map name="{% if permiso %}mapa{% endif %}" id="mapa"></map>  
+           <img id="entidadClic" src="{{ asset('bundles/sispro/img/mapas/blank.png') }}"{# width="482" height="364"#}
+                style="position: absolute; top:0px; left:0;z-index:3;"/>  
+           <div style="position: absolute; width:482px; height: 364px;">
+            <img id="entidadFondo" src="{{ asset('bundles/sispro/img/mapas/E00.png') }}"{# width="482" height="364" #} alt="Mapa de Venezuela" 
+                style="position: absolute; top:0px; left:0px; z-index:2;"/>
+            <img id="venBoton" src="{{ asset('bundles/sispro/img/venezuela_gris.png') }}" title="Volver al Mapa"
+                style="position: absolute; bottom:3px; left:3px; z-index:6; cursor: pointer;" />
+           </div>      
+          </div>
+{# FIN DEL MAPA #}                 
+         </div>
+{% set opaco='opaco' %}                 
+         <div class="span5">
+          <div class="row-fluid" >
+           <div class="span1" style="text-align: right;">             
+            <input type="checkbox" id="nacional" {% if data.proyecto.nacional %} 
+                                                    checked="checked" 
+                                                   {% set opaco='' %} 
+                                                 {% endif %}   
+                   onchange="hideMunicipios();" {{ read }}
+                   name="data[nacional]" value="1" />           
+            <label for="nacional" title="clic para cambiar"></label>            
+           </div>     
+           <div class="span10 {{ opaco }}" id="tag" 
+                 style="margin-left: 1px; padding-left: 0px; font-size:1.3em; 
+                        vertical-align: bottom; text-align:left;" >           
+               ¿Proyecto a Nivel Nacional?
+           </div>               
+          </div>
+      <div id="municipios">       
+{% include 'SisproBundle:Proyectos:botonMunicipio.html.twig' %}
+      </div>         
+         </div>
+        </div>
+       </div>          
+      </td>
+     </tr>
+   </tbody>
+   <tfoot>
+    <tr>
+     <td colspan="2">
+      <div class="row-fluid">
+        <div class="span4" style="text-align: left">
+           <span onclick="editarProyecto({{ data.proyecto.id }}, '07');" 
+                 class="btn btn-danger" 
+                 title="Anterior">
+            <i class="icon-arrow-left icon-white"></i> Anterior</span>
+        </div>  
+        <div class="span4">
+        {% if permiso %}   
+         <div class="span6">
+           <span onclick="eliminarProyecto({{ data.proyecto.id }});" 
+                 class="btn btn-danger" 
+                 title="Eliminar Proyecto">
+            <i class="icon-trash icon-white"></i> Eliminar</span>
+         </div>
+         <div class="span6">
+           <span onclick="actualizarProyecto('08');" 
+                 class="btn btn-danger" 
+                 title="Guardar Cambios">
+            <i class="icon-hdd icon-white"></i> Guardar</span>            
+         </div>
+        {% endif %}   
+        </div>  
+        <div class="span4">  
+           <span onclick="editarProyecto({{ data.proyecto.id }}, '09');" 
+                 class="btn btn-danger" 
+                 title="Siguiente"> Siguiente <i class="icon-arrow-right icon-white"></i>
+           </span>     
+        </div>
+      </div>
+     </td>  
+    </tr>
+   </tfoot>
+  </table> 
+</form>
+</div> 
+</div>
+</div>
+
+<script type="text/javascript" src="{{ asset('bundles/sispro/js/mapaVenezuela.js') }}"></script>

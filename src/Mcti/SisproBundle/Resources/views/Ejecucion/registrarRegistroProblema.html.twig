@@ -1,0 +1,68 @@
+<div class="row">
+<div class="formulario span12">    
+ <form action="{{ path('registrarRegistroProblema') }}" method="post"  >
+ {# Campo oculto con el ID del proyecto #}
+   <input type="hidden" id="idProyecto" 
+          name="data[idProyecto]" value="{{ data.idProyecto }}" />
+   
+   <table id="formRegistroProblema" style="width:600px; height:400px;">
+    <thead>
+     <tr>
+      <th width="50%">Registro de Eventos Adversos</th>
+      <th style="text-align:right">         
+          <span class="btn btn-danger"  title="Clic para Cerrar"
+                onclick="cancelarModal();">
+            <i class="icon-off icon-white"></i>
+          </span> 
+      </th>          
+     </tr>           
+    </thead>            
+    <tbody>
+     <tr>
+      <td colspan="2">
+        <div class="row-fluid">          
+          <div class="span12" style="margin-left:0px">
+            <label>Tipo de Problema</label> 
+            <p>            
+             <select id="problema" name="data[problema]" class="span11 campo" 
+                     title="Tipo de Problema" >
+               <option value="0" >[ Seleccione ]</option>
+            {% for p in data.problemas %}               
+               <option value="{{ p.id }}" >{{ p.problema }}</option>
+            {% endfor %}
+             </select>   
+            </p>        
+          </div>                 
+        </div>                       
+        <div class="row-fluid">      
+          <div class="span12">
+            <label>Observaciones</label> 
+            <p>            
+             <textarea id="observaciones" rows="2" class="span11 campo" 
+                       maxlength="150"
+                       title="Indique más detalles acerca de la novedad reportada."
+                       name="data[observaciones]" ></textarea>   
+            </p>        
+          </div> 
+        </div>        
+     </td>
+    </tr>
+   </tbody> 
+   <tfoot>
+    <tr>
+     <td colspan="2">
+      <div class="row-fluid">   
+         <div class="span12">
+           <span id="boton" onclick="guardar('RegistroProblema')" 
+                 class="btn btn-danger" 
+                 title="Guardar Registro">
+            <i class="icon-hdd icon-white"></i> Guardar</span>            
+         </div>     
+      </div>
+     </td>  
+    </tr>
+   </tfoot>
+  </table> 
+</form>
+</div> 
+</div>

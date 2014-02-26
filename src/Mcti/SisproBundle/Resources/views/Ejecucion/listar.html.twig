@@ -1,0 +1,97 @@
+{% extends 'SisproBundle:Plantillas:base.html.twig' %}
+{% block title %} 
+{{ parent() }}
+| Ejecución
+{% endblock %}
+{% block body %}
+{% set filas = proyectos|length %}
+{% if filas == 0 %}
+ <div class="row">
+   <div class="span12">
+     <center><h3>No Posee Proyectos Registrados</h3></center>
+   </div>
+ </div>
+{% else %}   
+<div class="row oculto">   
+  <div class="span12">        
+    <center><h3>Registro de Ejecución de Proyectos</h3></center>
+    <table width="100%" class="tablaListas" {% if filas > 10 %} id="proyectos" {% endif %}>
+        <thead>
+           <tr>                
+             <th width="100px"> Código </th>  
+             <th width="420px"> Nombre del Proyecto </th>                           
+             <th style="width:100px; text-align: right"> Planificado(Bs) </th>
+             <th style="width:70px; text-align: right"> Recibido(%) </th>
+             <th style="width:70px; text-align: right"> Ejecutado(%) </th>
+             <th style="width:70px; text-align: right"> Metas(%) </th>
+             <th width="70px"> Estatus </th>  
+           </tr>
+         </thead>
+         <tfoot>
+           <tr>             
+             <td>Código</td>  
+             <td>Nombre del Proyecto</td>             
+             <td style="text-align: right">Planificado(Bs)</td> 
+             <td style="text-align: right">Recibido(%)</td>
+             <td style="text-align: right"> Ejecutado(%) </td>
+             <td style="text-align: right"> Metas(%) </td>
+             <td>Estatus</td>
+           </tr>
+         </tfoot>
+         <tbody>          
+    {% for proyecto in proyectos %} 
+       {% if proyecto.montoPlanificado > 0  %}
+          {% set recibidox100 = (proyecto.montoRecibido/proyecto.montoPlanificado * 100) %} 
+          {% set ejecutadox100 = (proyecto.montoEjecutado/proyecto.montoPlanificado * 100) %}
+       {% else %}
+          {% set recibidox100 = 0 %} 
+          {% set ejecutadox100 = 0 %}
+       {% endif %}
+           
+       {% if proyecto.metasPlanificadas > 0  %}    
+          {% set metasx100 = (proyecto.metasAlcanzadas/proyecto.metasPlanificadas * 100) %} 
+       {% else %}    
+          {% set metasx100 = 0 %} 
+       {% endif %}                 
+          <tr class="resaltado" onclick="$('#proyecto{{ proyecto.id }}').submit()">            
+            <td >{{ proyecto.codigo }}</td> 
+            <td >{{ proyecto.nombre }}</td>            
+            <td style="text-align:right">
+                {{ proyecto.montoPlanificado| number_format(2,',','.') }} </td>
+            <td style="text-align:right">
+                {{ recibidox100| number_format(2,',','.') }} </td>
+            <td style="text-align:right">
+                {{ ejecutadox100| number_format(2,',','.') }} </td>
+            <td style="text-align:right">                
+                {{ metasx100| number_format(2,',','.') }} </td>
+            <td>
+                <div class="oculto">
+                   {{ proyecto.estatus.id }} {{ proyecto.estatus.estatus }}
+                </div>                
+                <img src="{{ asset('bundles/sispro/img/estatus'~proyecto.estatus.id~'.png') }}" 
+                     title="{{ proyecto.estatus.estatus }}"  />               
+                
+                <form class="oculto" action="{{ path('revisarProyecto') }}" method="post"
+                      name="proyecto{{ proyecto.id }}" id="proyecto{{ proyecto.id }}">
+                    <input type="hidden" name="id" 
+                           value="{{ proyecto.id }}" />
+                </form>
+            </td>
+          </tr> 
+    {% endfor %}
+         </tbody>
+       </table>
+  </div>
+</div>
+{% endif %} 
+
+{% endblock %}
+
+{% block javascripts %}   
+    <script type="text/javascript" src="{{ asset('bundles/sispro/js/ejecucion.js') }}"></script> 
+{% endblock %}   
+{#
+    {{ app.user.correo }}
+    {{ app.user.apellido }}
+    {{ app.session.name }}      
+    {{ app.session.get('selector') }} #}

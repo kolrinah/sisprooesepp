@@ -1,0 +1,23 @@
+Mcti\SisproBundle\Entity\FrasesChavez:
+    type: entity
+    table: frases_chavez
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: SEQUENCE
+        frase:
+            type: text
+            nullable: false
+        cita:
+            type: text
+            nullable: true
+        ruta:
+            type: string
+            length: 50
+            fixed: false
+            nullable: true
+    lifecycleCallbacks: {  }

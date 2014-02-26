@@ -1,0 +1,86 @@
+{# REGLAS PARA PODER EDITAR EL PROYECTO:
+     [  ( Usuario Responsable == Usuario OR Usuario.Rol == Enlace ) 
+          AND ( Estatus de Proyecto == 1)  ]  #}
+{% if ( (data.proyecto.usuario == app.user or is_granted('ROLE_ENLACE'))
+        and (data.proyecto.estatus.id == 1) ) %}
+   {% set permiso = true %}
+   {% set read = '' %}
+{% else %}
+   {% set permiso = false %} 
+   {% set read = 'disabled="disabled"' %}
+{% endif %}
+<div class="row">
+<div class="formulario span12">    
+ <form action="{{ path('editarObjetivoEspecifico') }}" method="post"  >
+ {# Campo oculto con el ID del proyecto #}
+   <input type="hidden" id="idObjetivoEspecifico" 
+          name="data[idObjetivoEspecifico]" value="{{ data.id }}" />
+   <table id="formObjetivoEspecifico" style="width:600px; height:250px;">
+    <thead>
+     <tr>
+      <th width="50%">Editar Objetivo Específico</th>
+      <th style="text-align:right">         
+          <span class="btn btn-danger"  title="Clic para Cerrar"
+                onclick="cancelarModal(); editarProyecto({{ data.proyecto.id }}, '10')">
+            <i class="icon-off icon-white"></i>
+          </span> 
+      </th>          
+     </tr>           
+    </thead>            
+    <tbody>
+     <tr>
+      <td colspan="2">
+        <div class="row-fluid">
+          <div class="span12">
+            <label>Nro.</label> 
+            <p>            
+             <input type="text" id="codigo" class="span2" maxlength="4"
+                    style="text-align: center" {{ read }}
+                    title="Número de Objetivo Específico"
+{# onlyDigits(e, value, allowDecimal, allowNegative, allowThousand, decSep, thousandSep, decLength) #}
+                    onblur="this.value=formatNumber(this.value,0);"
+                    onkeyup="formatNumber(this.value,0);" 
+                    onkeypress="return onlyDigits(event, this.value,true,false,false,',','.',0);"                    
+                    name="data[codigo]" value="{{ data.codigo }}"/>
+            </p>        
+          </div>            
+        </div>           
+        <div class="row-fluid">
+          <div class="span12">
+            <label>Objetivo Específico</label> 
+            <p>            
+             <textarea id="objetivoEspecifico" rows="2" class="span11 campo" {{ read }}
+                       title="Se refiere a las especificaciones, pasos o acciones intermedias que se requieren realizar para alcanzar o consolidar el objetivos general."
+                       name="data[objetivoEspecifico]" >{{ data.objetivoEspecifico }}</textarea>   
+            </p>        
+          </div>            
+        </div> 
+     </td>
+    </tr>
+   </tbody>
+   <tfoot>
+    <tr>
+     <td colspan="2">
+{% if permiso %}         
+      <div class="row-fluid">   
+         <div class="span4 offset4">
+           <span id="boton" onclick="eliminarObjetivoEspecifico({{ data.id }})" 
+                 class="btn btn-danger" 
+                 title="Eliminar Objetivo Específico">
+            <i class="icon-trash icon-white"></i> Eliminar</span>
+         </div>
+         <div class="span4">
+           <span id="boton" onclick="actualizarObjetivoEspecifico()" 
+                 class="btn btn-danger" 
+                 title="Guardar Cambios">
+            <i class="icon-hdd icon-white"></i> Guardar</span>            
+         </div>     
+      </div>
+{% endif %}
+     </td>  
+    </tr>
+   </tfoot>
+  </table> 
+</form>
+</div> 
+</div>

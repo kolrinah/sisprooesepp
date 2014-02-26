@@ -1,0 +1,58 @@
+Mcti\SisproBundle\Entity\ActividadOrg:
+    type: entity
+    table: actividad_org
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: SEQUENCE
+        actividad:
+            type: text
+            nullable: false
+        monto:
+            type: decimal
+            nullable: false
+        metaFisica:
+            type: decimal
+            nullable: false
+            column: meta_fisica
+        unidadMedida:
+            type: string
+            length: 50
+            fixed: false
+            nullable: false
+            column: unidad_medida
+        fechaIni:
+            type: date
+            nullable: false
+            column: fecha_ini
+        fechaFin:
+            type: date
+            nullable: false
+            column: fecha_fin
+        codigo:
+            type: smallint
+            nullable: false
+    manyToOne:
+        moneda:
+            targetEntity: Moneda
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                moneda_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        objetivoEspecificoOrg:
+            targetEntity: ObjetivoEspecificoOrg
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                objetivo_especifico_org_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

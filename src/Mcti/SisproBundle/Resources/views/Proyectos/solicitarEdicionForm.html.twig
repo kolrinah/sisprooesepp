@@ -1,0 +1,59 @@
+{# Campo oculto con el Formulario #} 
+<input type="hidden" name="data[form]" value="11s" />
+
+<table>
+    <thead>
+     <tr>
+      <th width="50%">Solicitud de Permiso de Edición de Proyecto</th>
+      <th style="text-align:right">
+          <a href="{{ path('proyectos') }}">
+          <span class="btn btn-danger"  title="Clic para Cerrar">
+            <i class="icon-off icon-white"></i>
+          </span> </a>
+      </th>          
+     </tr>           
+    </thead>            
+    <tbody>
+     <tr>
+      <td colspan="2" style="padding:20px"> 
+       <div class="row-fluid" >
+         <div class="span10 offset1" style="font-size:1.2em">
+           <p >
+             Exponga brevemente, las razones por las cuales, requiere que le sean otorgados 
+             permisos de edición sobre este proyecto:
+           </p>
+         </div>     
+       </div>
+       <div class="row-fluid" >
+         <div class="span10 offset1" style="font-size:1.2em">
+           <p >    
+           <textarea id="observaciones" name="data[observaciones]" rows="6" class="span11"
+                     style="resize: vertical;"></textarea></p>
+         </div>     
+       </div>              
+      </td>
+     </tr>
+    </tbody>
+    <tfoot>
+     <tr>
+      <td colspan="2">
+       <div class="row-fluid">
+        <div class="span2" style="text-align: left">
+           <span onclick="editarProyecto({{ data.proyecto.id }}, '10');" 
+                 class="btn btn-danger" 
+                 title="Anterior">
+            <i class="icon-arrow-left icon-white"></i> Anterior</span>
+        </div>   
+        <div class="span2 offset3">  
+        {% if data.proyecto.usuario == app.user or is_granted('ROLE_ENLACE') %}            
+            <span onclick="solicitarPermisoEdicionProyecto();" 
+                 class="btn btn-success" 
+                 title="Solicitar Permiso de Edición a la OESEPP">
+              <i class="icon-envelope icon-white"></i> Enviar</span>         
+        {% endif %}      
+        </div>
+      </div>
+     </td>  
+    </tr>
+   </tfoot>
+  </table> 

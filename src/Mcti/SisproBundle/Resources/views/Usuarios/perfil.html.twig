@@ -1,0 +1,92 @@
+{% extends 'SisproBundle:Plantillas:base.html.twig' %}
+{% block title %} 
+{{ parent() }}
+| Perfil de Usuario
+{%endblock%}
+{% block body %}
+{% set mcti=app.user.isMcti %}
+<div class="row formulario">
+<div class="span6 offset3">  
+ <form action="{{ path('perfilUsuario') }}" method="post" {{ form_enctype(formulario) }} >
+   <table>
+    <thead>
+     <tr>
+      <th width="50%">Editar Usuario</th>
+      <th style="text-align:right">
+          <a href="{{ path('principal') }}">
+          <span class="btn btn-danger" title="Clic para Cerrar">
+            <i class="icon-off icon-white"></i>
+          </span></a></th>
+     </tr>           
+    </thead>            
+    <tbody>
+     <tr>
+      <td>
+        {{ form_row(formulario.correo) }}
+      </td>
+      <td style="padding-top: 25px">
+       {% if not mcti %}
+          <a href="{{ path('cambiarClave') }}"> 
+          <button type="button" class="btn" title="Cambiar Contraseña">          
+            <i class="icon-lock"></i> Cambiar Contraseña</button></a>
+       {% endif %}
+      </td>
+     </tr>
+     <tr>
+      <td>
+        {{ form_label(formulario.nombre) }}
+        <p {% if form_errors(formulario.nombre) %}
+            class="campoInvalido" title="{{ form_errors(formulario.nombre)|striptags }}"
+            {% endif %}>            
+            {% if mcti %}
+                {{ form_widget(formulario.nombre, { 'attr': {'readonly': 'readonly'} }) }} 
+            {% else %}
+                {{ form_widget(formulario.nombre) }}
+            {% endif %}
+        </p>
+      </td>
+      <td>
+        {{ form_label(formulario.apellido) }}
+        <p {% if form_errors(formulario.apellido) %}
+            class="campoInvalido" title="{{ form_errors(formulario.apellido)|striptags }}"
+            {% endif %}>         
+            {% if mcti %}
+                {{ form_widget(formulario.apellido, { 'attr': {'readonly': 'readonly'} }) }} 
+            {% else %}
+                {{ form_widget(formulario.apellido) }}
+            {% endif %}
+        </p>
+      </td>
+    </tr>        
+    <tr>
+     <td>
+        {{ form_label(formulario.cargo) }}
+        <p {% if form_errors(formulario.cargo) %}
+            class="campoInvalido" title="{{ form_errors(formulario.cargo)|striptags }} "
+            {% endif %}>{{ form_widget(formulario.cargo) }}</p>
+     </td>     
+     <td>
+        {{ form_label(formulario.telefono) }}
+        <p {% if form_errors(formulario.telefono) %}
+            class="campoInvalido" title="{{ form_errors(formulario.telefono)|striptags }} "
+            {% endif %}>{{ form_widget(formulario.telefono) }}</p>             
+     </td>     
+    </tr> 
+   </tbody>
+   <tfoot>
+    <tr>
+     <td colspan="2">      
+       <button class="btn btn-danger" 
+             title="Guardar Usuario">
+          <i class="icon-hdd icon-white"></i> Guardar</button>  
+     </td>  
+    </tr>
+   </tfoot>
+  </table>         
+         <div class="oculto">
+           {{ form_rest(formulario) }}
+         </div>          
+</form>
+</div>
+</div> 
+{%endblock %}

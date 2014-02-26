@@ -1,0 +1,79 @@
+{# ANALISIS PERMISOLOGICO #}
+{% if permiso is not defined %}
+    {% if ( is_granted('ROLE_ADMIN') or 
+           ((is_granted('ROLE_ENLACE') or
+             (app.user == data.proyecto.usuario)) and 
+             (data.proyecto.estatus.id > 1) and (data.proyecto.estatus.id <5) ) ) %}
+        {% set permiso = true %}
+    {% else %}
+        {% set permiso = false %}
+    {% endif %} 
+{% endif %}
+
+{% set filas = data.recursoRecibido|length %}         
+{% if filas != 0 %} 
+<table class="tablaListas" title="Registro de Recursos Recibidos">
+ <thead>
+  <tr>
+   <th style="width:100px;text-align:center">Fecha </th>   
+   <th style="width:150px; text-align:left">Fuente</th>   
+   <th style="width:120px; text-align:right">Monto (Bs.)</th>
+   <th style="width:120px; text-align:right">Otras Divisas</th>
+   <th style="text-align:left; padding-left: 50px">Observaciones</th>   
+  </tr>   
+ </thead>
+ <tbody>
+  {% set totalBs = 0 %}
+  {% set totalDiv = 0 %}
+  {% set isoDiv = '' %}       
+  {% for reg in data.recursoRecibido %}
+  <tr class="resaltado" {% if permiso == true %}
+                          onclick="editar('RecursoRecibido', {{ reg.id }})"
+                        {% endif %}>
+    <td  style="text-align:center"> {{ reg.fecha |date('d/m/Y') }} </td>  
+    <td style="text-align:left"> {{ reg.fuenteFinanciamiento.fuente }} </td>  
+    <td style="text-align:right">
+         {% if reg.moneda.id == 1 %}
+            {% set totalBs = totalBs + reg.monto %}
+            {{ reg.monto|number_format(2,',','.') }} {% endif %}</td>  
+    <td style="text-align:right">
+         {% if reg.moneda.id != 1 %}
+            {% if ((isoDiv == reg.moneda.iso) or (isoDiv == '')) %}
+                {% set isoDiv = reg.moneda.iso %}
+                {% set totalDiv = totalDiv + reg.monto %}
+            {% else %}
+                {% set isoDiv = '+ DIFERENTES DIVISAS ' %}
+                {% set totalDiv = 0 %}
+            {% endif %}            
+            {{ reg.moneda.simbolo }}
+            {{ reg.monto|number_format(2,',','.') }} 
+         {% endif %}</td>   
+    <td style="text-align:left; padding-left: 50px"> {{ reg.observaciones }} </td>
+  </tr>  
+  {% endfor %} 
+ </tbody>
+ <tfoot style="text-align:center">
+  <tr>
+   <td colspan="2" style="text-align:right" >Total de Recursos Recibidos:</td>
+   <td style="text-align:right"> Bs. {{ totalBs|number_format(2,',','.') }}</td>
+   <td style="text-align:right"> 
+       {% if totalDiv > 0 %}
+       +  {{ totalDiv|number_format(2,',','.') }}
+       {% endif %}</td>
+   <td style="text-align:left"> {{ isoDiv }}</td>   
+  </tr>   
+ </tfoot>
+</table>
+{% else %}
+<center><h3>Proyecto sin Recursos Recibidos Registrados</h3> </center>
+{% endif %}
+<br/>
+
+{% if permiso == true %}
+<center>
+  <span onclick="registrar('RecursoRecibido',{{ data.proyecto.id }});" 
+        class="btn btn-danger" 
+        title="Registrar Recurso Recibido">
+     <i class="icon-edit icon-white"></i> Registrar</span>        
+</center> 
+{% endif %}    

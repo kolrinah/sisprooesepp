@@ -1,0 +1,118 @@
+imports:
+    - { resource: parameters.yml }
+    - { resource: security.yml }
+
+framework:
+    #esi:             ~
+    translator:      { fallback: %locale% }
+    secret:          %secret%
+    router:
+        resource: "%kernel.root_dir%/config/routing.yml"
+        strict_requirements: %kernel.debug%
+    form:            ~
+    csrf_protection: 
+        enabled: true
+        field_name: _token
+    #validation:      { enable_annotations: true }
+    templating:
+        engines: ['twig']
+        #assets_version: SomeVersionScheme
+    default_locale:  "%locale%"
+    trusted_proxies: ~
+    fragments:       ~
+    session:
+        handler_id:     session.handler.pdo
+parameters:
+    pdo.db_options:
+        db_table:    session
+        db_id_col:   session_id
+        db_data_col: session_value
+        db_time_col: session_time
+
+services:
+    utilidades:
+        class: Mcti\SisproBundle\Librerias\Util
+        
+    imageLib:
+        class: Mcti\SisproBundle\Librerias\ImageLib
+        
+    pdo:
+        class: PDO
+        arguments:
+            - "pgsql:host=%database_host%;port=%database_port%;dbname=%database_name%"
+            - "%database_user%"
+            - "%database_password%"
+        calls:
+            - [setAttribute, [3, 2]] # \PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION            
+            
+    session.handler.pdo:
+        class:     Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
+        arguments: ["@pdo", "%pdo.db_options%"]
+
+    twig.extension.utilidades:
+        class: Mcti\SisproBundle\Twig\Extension\UtilidadesExtension
+        tags:
+            - { name: twig.extension }
+
+# Twig Configuration
+twig:
+    debug:            %kernel.debug%
+    strict_variables: %kernel.debug%
+
+# Assetic Configuration
+assetic:
+    debug:          %kernel.debug%
+    use_controller: false
+    bundles:        [SisproBundle]
+    #java: /usr/bin/java
+    filters:
+        #cssrewrite: 
+            #apply_to: \.css$
+        yui_css:
+            jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.2.jar"
+            apply_to: \.css$
+        yui_js:
+           jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.2.jar" 
+           apply_to: \.js$
+
+# Doctrine Configuration
+doctrine:
+    dbal:
+        driver:   %database_driver%
+        host:     %database_host%
+        port:     %database_port%
+        dbname:   %database_name%
+        user:     %database_user%
+        password: %database_password%
+        charset:  UTF8
+        # if using pdo_sqlite as your database driver, add the path in parameters.yml
+        # e.g. database_path: %kernel.root_dir%/data/data.db3
+        # path:     %database_path%
+
+    orm:
+        auto_generate_proxy_classes: %kernel.debug%
+        auto_mapping: true
+
+# Swiftmailer Configuration
+swiftmailer:
+    transport: %mailer_transport%
+    encryption: ssl
+    auth_mode:  login
+    host:      %mailer_host%
+    username:  %mailer_user%
+    password:  %mailer_password%
+#    spool:     { type: memory }
+
+# Captcha
+gregwar_captcha: ~
+# Monolog
+#monolog:
+#    handlers:
+#        main:
+#            type: stream
+#            path: /log/symfony.log
+#            channels: !doctrine
+#        doctrine:
+#            type: stream
+#            path: /log/doctrine.log
+#            channels: doctrine

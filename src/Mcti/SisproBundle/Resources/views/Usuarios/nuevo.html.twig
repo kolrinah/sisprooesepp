@@ -1,0 +1,101 @@
+<div class="formulario">     
+ <form action="{{ path('nuevoUsuario') }}" method="post" {{ form_enctype(formulario) }} >
+   <table id="formNuevo" style="width:600px; height:450px;" >
+    <thead>
+     <tr>
+      <th width="50%">Nuevo Usuario</th>
+      <th style="text-align:right">
+          <span class="btn btn-danger" onclick="cancelarModal();" title="Clic para Cerrar">
+            <i class="icon-off icon-white"></i>
+          </span></th>
+     </tr>           
+    </thead>            
+    <tbody>
+     <tr>
+      <td>       
+        {{ form_label(formulario.correo) }}       
+            <p {% if form_errors(formulario.correo) %}
+                    class="campoInvalido" title="{{ form_errors(formulario.correo) }}"
+               {% endif %}> {{ form_widget(formulario.correo) }} </p>
+      </td>
+      <td>  
+        <div id="buscar" >
+           <span class="btn" 
+                 onclick="buscarUsuario();"
+                 title="Buscar Usuario">
+            <i class="icon-search"></i> Buscar</span>
+        </div>
+      </td>
+     </tr>
+     <tr>
+      <td>
+        {{ form_label(formulario.nombre) }}
+        <p {% if form_errors(formulario.nombre) %}
+            class="campoInvalido" title="{{ form_errors(formulario.nombre)|striptags }}"
+            {% endif %}> {{ form_widget(formulario.nombre) }} </p>
+      </td>
+      <td>
+        {{ form_label(formulario.apellido) }}
+        <p {% if form_errors(formulario.apellido) %}
+            class="campoInvalido" title="{{ form_errors(formulario.apellido)|striptags }}"
+            {% endif %}> {{ form_widget(formulario.apellido) }} </p>
+      </td>
+    </tr>    
+    <tr>
+     <td colspan="2">
+        {{ form_label(formulario.estructura,'Unidad o Ente') }}
+        <p {% if form_errors(formulario.estructura) %}
+            class="campoInvalido" title="{{ form_errors(formulario.estructura) }} "
+           {% endif %}>
+         <select id="estructura" style="width:90%">
+            <option value></option>
+           {% for estructura in estructuras %}
+            <option value="{{ estructura.id }}">{{ estructura.siglas }} - {{ estructura.estructura }}</option>    
+           {% endfor %}                
+         </select>
+           {{ form_widget(formulario.estructura) }}</p>
+     </td>
+    </tr>
+    <tr>
+     <td>
+        {{ form_label(formulario.cargo) }}
+        <p {% if form_errors(formulario.cargo) %}
+            class="campoInvalido" title="{{ form_errors(formulario.cargo) }} "
+            {% endif %}>{{ form_widget(formulario.cargo) }}</p>
+     </td>
+     <td rowspan="2">
+       {% if is_granted('ROLE_ADMIN') %}
+        {{ form_label(formulario.role) }}
+        {{ form_widget(formulario.role) }}       
+       {% endif %}  
+     </td>
+    </tr>
+    <tr>    
+     <td>
+        {{ form_label(formulario.telefono) }}
+        <p {% if form_errors(formulario.telefono) %}
+            class="campoInvalido" title="{{ form_errors(formulario.telefono) }} "
+            {% endif %}>{{ form_widget(formulario.telefono) }}</p>                 
+         
+         <div class="oculto">
+           {{ form_rest(formulario) }}
+         </div>             
+     </td>     
+    </tr> 
+   </tbody>
+   <tfoot>
+    <tr>
+     <td colspan="2">
+      <div id="guardar" class="oculto">
+       <span 
+             class="btn btn-danger" 
+             onclick="guardarUsuario();"
+             title="Guardar Usuario">
+          <i class="icon-hdd icon-white"></i> Guardar</span>
+      </div>
+     </td>  
+    </tr>
+   </tfoot>
+  </table>         
+</form>
+</div> 

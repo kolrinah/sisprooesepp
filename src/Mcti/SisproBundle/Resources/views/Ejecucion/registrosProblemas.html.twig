@@ -1,0 +1,57 @@
+{# ANALISIS PERMISOLOGICO #}
+{% if permiso is not defined %}
+    {% if ( is_granted('ROLE_ADMIN') or 
+           ((is_granted('ROLE_ENLACE') or
+             (app.user == data.proyecto.usuario)) and 
+             (data.proyecto.estatus.id > 1) and (data.proyecto.estatus.id <5) ) ) %}
+        {% set permiso = true %}
+    {% else %}
+        {% set permiso = false %}
+    {% endif %} 
+{% endif %}
+
+{% set filas = data.registroProblema|length %}         
+{% if filas != 0 %} 
+<table class="tablaListas" title="Registro de Novedades">
+ <thead>
+  <tr>
+   <th style="width:20px;text-align:right">Nº</th>      
+   <th style="width:100px;text-align:center">Fecha </th>   
+   <th style="width:250px; text-align:left">Tipo de Problema</th>     
+   <th style="text-align:left; padding-left: 50px">Observaciones</th>   
+  </tr>   
+ </thead>
+ <tbody>
+  {% set contador = 0 %}      
+  {% for reg in data.registroProblema %}
+     {% set contador = contador + 1 %}               
+  <tr class="resaltado" {% if permiso == true %} 
+                           onclick="editar('RegistroProblema', {{ reg.id }})"
+                        {% endif %}>
+    <td style="text-align:right">{{ contador }}</td>  
+    <td style="text-align:center"> {{ reg.fecha |date('d/m/Y') }} </td>  
+    <td style="text-align:left"> {{ reg.tipoProblema.problema }} </td>      
+    <td style="text-align:left; padding-left: 50px"> {{ reg.observaciones }} </td>
+  </tr>  
+  {% endfor %} 
+ </tbody>
+ <tfoot>
+  <tr>
+   <td style="text-align:right">{{ contador }}</td>
+   <td colspan="3" style="text-align:left" >Problema Reportado</td>   
+  </tr>   
+ </tfoot>
+</table>
+{% else %}
+<center><h3>Proyecto sin Registro de Novedad</h3> </center>
+{% endif %}
+<br/>
+
+{% if permiso == true %}
+<center>
+  <span onclick="registrar('RegistroProblema',{{ data.proyecto.id }});" 
+        class="btn btn-danger" 
+        title="Registrar Novedad">
+     <i class="icon-edit icon-white"></i> Registrar</span>        
+</center> 
+{% endif %}    

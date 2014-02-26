@@ -1,0 +1,11 @@
+/nbproject/
+/vendor/
+/app/cache/
+/app/logs/
+/cfg/
+/web/adjuntos/
+/web/bundles/sispro/img/mapas/PSD/
+/app/config/parameters.yml
+/app/config/parametersMCTI.yml
+/web/bundles/
+/src/Mcti/SisproBundle/Resources/public/img/mapas/PSD/

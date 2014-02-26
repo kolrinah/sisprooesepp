@@ -1,0 +1,49 @@
+Mcti\SisproBundle\Entity\Estructura:
+    type: entity
+    repositoryClass: Mcti\SisproBundle\Entity\EstructuraRepository
+    table: estructura
+    fields:
+        id:
+            id: true
+            type: smallint
+            nullable: false
+            generator:
+                strategy: SEQUENCE
+        estructura:
+            type: text
+            nullable: false
+        activo:
+            type: boolean
+            nullable: false
+        siglas:
+            type: string
+            length: 20
+            fixed: false
+            nullable: false
+        siglas2:
+            type: string
+            length: 5
+            fixed: false
+            nullable: true
+    oneToMany:
+       inferior:
+            targetEntity: Estructura            
+            mappedBy: superior 
+       usuarios:
+            targetEntity: Usuario
+            mappedBy: estructura            
+    manyToOne:
+        nivel:
+            targetEntity: Nivel
+            joinColumns:
+                nivel_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        superior:
+            targetEntity: Estructura
+            inversedBy: inferior
+            joinColumns:
+                superior_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

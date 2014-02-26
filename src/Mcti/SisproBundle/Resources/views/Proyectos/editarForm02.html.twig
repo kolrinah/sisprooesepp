@@ -1,0 +1,182 @@
+{# REGLAS PARA PODER EDITAR EL PROYECTO:
+    [ ( Usuario Responsable == Usuario OR Usuario.Rol == Enlace ) 
+          AND ( Estatus de Proyecto == 1)  ]  #}
+{% if ( (data.proyecto.usuario == app.user or is_granted('ROLE_ENLACE'))
+        and (data.proyecto.estatus.id == 1) ) %}
+   {% set permiso = true %}
+   {% set read = '' %}
+{% else %}
+   {% set permiso = false %} 
+   {% set read = 'disabled="disabled"' %}
+{% endif %}
+
+{% include 'SisproBundle:Proyectos:selector.html.twig' %}
+
+<div id="formulario">
+<div class="row">
+<div class="formulario span12">    
+ <form action="{{ path('editarProyecto') }}" method="post"  >
+ {# Campo oculto con el ID del proyecto #}
+ <input type="hidden" name="data[idProyecto]" value="{{ data.proyecto.id }}" />
+ <input type="hidden" name="data[form]" value="{{ data.form }}" />
+ 
+   <table>
+    <thead>
+     <tr>
+      <th width="50%">Dependencia del Proyecto</th>
+      <th style="text-align:right">
+          <a href="{{ path('proyectos') }}">
+          <span class="btn btn-danger"  title="Clic para Cerrar">
+            <i class="icon-off icon-white"></i>
+          </span> </a>
+      </th>          
+     </tr>           
+    </thead>            
+    <tbody>
+     <tr>
+      <td colspan="2">
+        <div class="row-fluid">
+          <div class="span10">            
+           <label>Unidad Ejecutora del Proyecto</label>
+           <p>
+            <select id="idEstructura" name="data[idEstructura]"
+                    onchange="estructuraCambia()"
+                    class="span10" {{ read }} >
+                {{ data.estructuras|raw }}
+            </select>
+           </p>
+          </div>                 
+       </div>
+       <div class="row-fluid">
+          <div class="span4">
+           <label>Responsable del Proyecto</label>
+           <p>
+            <select id="idUsuario" name="data[idUsuario]"
+                    onchange="usuarioCambia()"
+                    class="span10" {{ read }} >
+                {{ data.usuarios|raw }}
+            </select>
+           </p>
+          </div>   
+          <div class="span3">
+           <label>Cargo</label>           
+           <div id="cargo"> {{ data.cargo }}</div>
+          </div>               
+          <div class="span3">
+           <label>Telefono</label>           
+           <div id="telefono">{{ data.telefono }}</div>
+          </div>
+       </div>       
+      </td>
+     </tr>
+     <tr>
+      <td colspan="2">
+       <div class="row-fluid">
+         <div class="span4">
+           <h4>Proyecto Enmarcado En:</h4>
+         </div>            
+         <div class="span8">
+            {% set filas = data.marcos|length %} 
+            {% set codigo = '' %}
+            {% set year = '' %}
+            {% set clase = ' opaco ' %}
+            {% set disabled = ' disabled="disabled" ' %}
+            {% set checked = '' %}
+            {% if filas != 0 %}                   
+               {% for m in data.marcos %}
+                  {% if m.proyectos is empty %}
+                     {% set codigo = '' %}
+                     {% set year = '' %}
+                     {% set checked = '' %}
+                     {% set clase = ' opaco ' %}
+                     {% set disabled = ' disabled="disabled" ' %}
+                  {% else %}
+                     {% for r in m.proyectos %}
+                       {% set codigo = r.codigo %}
+                       {% set year = r.year %}                     
+                     {% endfor %}
+                       {% set checked = ' checked="checked" ' %}
+                       {% set clase = '' %}
+                       {% set disabled = '' %}
+                  {% endif %}                     
+           <div class="row-fluid">    
+                <div class="span4" style="text-align:left;">  
+                 <input type="checkbox" id="marco{{ m.id }}" {{ checked|raw }}
+                        onchange="cambiaMarco($(this).val());" {{ read }}
+                        name="data[marco][]" value="{{ m.id }}" />
+                 <label for="marco{{ m.id }}" ></label>   
+                 <span class="{{ clase }}" id="tag{{ m.id }}"
+                       style="font-size:1.3em; display: inline-block">
+                    {{ m.marco }}
+                 </span>
+                </div>   
+                <div class="span3">  
+                 <label>Codigo:</label>
+                 <p>
+                    <input type="text" id="codigo{{ m.id }}"
+                           maxlength="20"
+                           name="data[codigo][]" {{ disabled|raw }}
+                           style="text-align:center; width:70%" value="{{ codigo }}" />
+                 </p>
+                </div>  
+                <div class="span3"> 
+                 <label>Año:</label>
+                 <p>
+                    <input type="text" id="year{{ m.id }}" 
+                           maxlength="4"
+                           name="data[year][]" {{ disabled|raw }}
+                           style="text-align:center; width: 70%" value="{{ year }}" 
+                           onblur="this.value=formatNumber(this.value,0,'','');"
+                           onkeyup="formatNumber(this.value,0,'','');"
+                     onkeypress="return onlyDigits(event, this.value,false,false,false,',','.',0);"/>
+                 </p>
+                </div>
+           </div>           
+               {% endfor %}                   
+             {% endif %}         
+         </div>
+       </div> 
+      </td>
+     </tr>
+   </tbody>
+   <tfoot>
+    <tr>
+     <td colspan="2">
+      <div class="row-fluid">
+        <div class="span4" style="text-align: left">
+           <span onclick="editarProyecto({{ data.proyecto.id }}, '01');" 
+                 class="btn btn-danger" 
+                 title="Anterior">
+            <i class="icon-arrow-left icon-white"></i> Anterior</span>
+        </div>  
+        <div class="span4">
+        {% if permiso %}   
+         <div class="span6">
+           <span onclick="eliminarProyecto({{ data.proyecto.id }});" 
+                 class="btn btn-danger" 
+                 title="Eliminar Proyecto">
+            <i class="icon-trash icon-white"></i> Eliminar</span>
+         </div>
+         <div class="span6">
+           <span onclick="actualizarProyecto('02');" 
+                 class="btn btn-danger" 
+                 title="Guardar Cambios">
+            <i class="icon-hdd icon-white"></i> Guardar</span>            
+         </div>
+        {% endif %}   
+        </div>  
+        <div class="span4">  
+           <span onclick="editarProyecto({{ data.proyecto.id }}, '03');" 
+                 class="btn btn-danger" 
+                 title="Siguiente"> Siguiente <i class="icon-arrow-right icon-white"></i>
+           </span>     
+        </div>
+      </div>
+     </td>  
+    </tr>
+   </tfoot>
+  </table> 
+</form>
+</div> 
+</div>
+</div>

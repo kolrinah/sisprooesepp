@@ -1,0 +1,31 @@
+Mcti\SisproBundle\Entity\ObjetivoEspecificoOrg:
+    type: entity
+    table: objetivo_especifico_org
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: SEQUENCE
+        objetivoEspecifico:
+            type: text
+            nullable: false
+            column: objetivo_especifico
+        codigo:
+            type: smallint
+            nullable: false
+    manyToOne:
+        proyecto:
+            targetEntity: Proyecto
+            inversedBy: objetivosOrg
+            joinColumns:
+                proyecto_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    oneToMany:
+       actividades:
+            targetEntity: ActividadOrg           
+            mappedBy: objetivoEspecificoOrg           
+    lifecycleCallbacks: {  }

@@ -1,0 +1,78 @@
+<div class="row">
+<div class="formulario span12">    
+ <form action="{{ path('editarRegistroProblema') }}" method="post"  >
+ {# Campo oculto con el ID del proyecto #}
+   <input type="hidden" id="idProyecto" 
+          name="data[idProyecto]" value="{{ data.idProyecto }}" />
+ {# Campo oculto con el ID del Registro de Problema  #}
+   <input type="hidden" id="idRegistro" 
+          name="data[idRegistro]" value="{{ data.registro.id }}" />    
+   
+   <table id="formRegistroProblema" style="width:600px; height:400px;">
+    <thead>
+     <tr>
+      <th width="50%">Editar Registro de Problema</th>
+      <th style="text-align:right">         
+          <span class="btn btn-danger"  title="Clic para Cerrar"
+                onclick="cancelarModal();">
+            <i class="icon-off icon-white"></i>
+          </span> 
+      </th>          
+     </tr>           
+    </thead>            
+    <tbody>
+     <tr>
+      <td colspan="2">
+        <div class="row-fluid">
+          <div class="span12" style="margin-left:0px">
+            <label>Tipo de Problema</label> 
+            <p>            
+             <select id="problema" name="data[problema]" class="span11 campo" 
+                     title="Tipo de Problema" >               
+            {% for p in data.problemas %}               
+               <option value="{{ p.id }}" {% if p.id == data.registro.tipoProblema.id %}
+                       selected="selected" {% endif %} > {{ p.problema }}
+              </option>
+            {% endfor %}
+             </select>   
+            </p>        
+          </div>                 
+        </div>          
+        <div class="row-fluid">      
+          <div class="span12">
+            <label>Observaciones</label> 
+            <p>            
+             <textarea id="observaciones" rows="2" class="span11 campo" 
+                       maxlength="150"
+                       title="Indique más detalles acerca de la novedad reportada."
+                       name="data[observaciones]" >{{ data.registro.observaciones }}</textarea>   
+            </p>        
+          </div> 
+        </div>        
+     </td>
+    </tr>
+   </tbody> 
+   <tfoot>
+    <tr>
+     <td colspan="2">
+      <div class="row-fluid">   
+         <div class="span4 offset4">
+           <span id="boton" onclick="eliminar('RegistroProblema', {{ data.registro.id }})" 
+                 class="btn btn-danger" 
+                 title="Eliminar Registro">
+            <i class="icon-trash icon-white"></i> Eliminar</span>
+         </div>
+         <div class="span4">
+           <span id="boton" onclick="actualizar('RegistroProblema')" 
+                 class="btn btn-danger" 
+                 title="Guardar Cambios">
+            <i class="icon-hdd icon-white"></i> Guardar</span>            
+         </div>     
+      </div>
+     </td>  
+    </tr>
+   </tfoot>
+  </table> 
+</form>
+</div> 
+</div>

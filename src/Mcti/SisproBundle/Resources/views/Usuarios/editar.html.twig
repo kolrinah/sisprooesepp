@@ -1,0 +1,110 @@
+<div class="formulario">     
+ <form action="{{ path('editarUsuario') }}" method="post" {{ form_enctype(formulario) }} >
+   <table id="formNuevo" style="width:600px; height:450px;" >
+    <thead>
+     <tr>
+      <th width="50%">Editar Usuario</th>
+      <th style="text-align:right">
+          <span class="btn btn-danger" onclick="cancelarModal();" title="Clic para Cerrar">
+            <i class="icon-off icon-white"></i>
+          </span></th>
+     </tr>           
+    </thead>            
+    <tbody>
+     <tr>
+      <td>          
+        {{ form_row(formulario.correo, { 'attr': {'readonly': 'readonly'} }) }}                  
+      </td>
+      <td>       
+        {{ form_widget(formulario.activo) }}
+        {{ form_label(formulario.activo) }}
+      </td>
+     </tr>
+     <tr>
+      <td>
+        {{ form_label(formulario.nombre) }}
+        <p {% if form_errors(formulario.nombre) %}
+            class="campoInvalido" title="{{ form_errors(formulario.nombre)|striptags }}"
+            {% endif %}> 
+            {% if data.mcti %}
+                {{ form_widget(formulario.nombre, { 'attr': {'readonly': 'readonly'} }) }} 
+            {% else %}
+                {{ form_widget(formulario.nombre) }}
+            {% endif %}
+        </p>
+      </td>
+      <td>
+        {{ form_label(formulario.apellido) }}
+        <p {% if form_errors(formulario.apellido) %}
+            class="campoInvalido" title="{{ form_errors(formulario.apellido)|striptags }}"
+            {% endif %}> 
+            {% if data.mcti %}
+                {{ form_widget(formulario.apellido, { 'attr': {'readonly': 'readonly'} }) }} 
+            {% else %}
+                {{ form_widget(formulario.apellido) }}
+            {% endif %}
+        </p>
+      </td>
+    </tr>    
+    <tr>
+     <td colspan="2">
+        {{ form_label(formulario.estructura,'Unidad o Ente') }}
+        <p {% if form_errors(formulario.estructura) %}
+            class="campoInvalido" title="{{ form_errors(formulario.estructura) }} "
+           {% endif %}>
+         <select id="estructura" style="width:90%">
+            <option value></option>
+           {% for estructura in estructuras %}
+            <option value="{{ estructura.id }}">{{ estructura.siglas }} - {{ estructura.estructura }}</option>    
+           {% endfor %}                
+         </select>
+           {{ form_widget(formulario.estructura) }}</p>
+     </td>
+    </tr>
+    <tr>
+     <td>
+        {{ form_label(formulario.cargo) }}
+        <p {% if form_errors(formulario.cargo) %}
+            class="campoInvalido" title="{{ form_errors(formulario.cargo)|striptags }} "
+            {% endif %}>{{ form_widget(formulario.cargo) }}</p>
+     </td>
+     <td rowspan="2">
+       {% if is_granted('ROLE_ADMIN') %}  
+        {{ form_label(formulario.role) }}
+        {{ form_widget(formulario.role) }} 
+       {% endif %}      
+     </td>
+    </tr>
+    <tr>    
+     <td>
+        {{ form_label(formulario.telefono) }}
+        <p {% if form_errors(formulario.telefono) %}
+            class="campoInvalido" title="{{ form_errors(formulario.telefono)|striptags }} "
+            {% endif %}>{{ form_widget(formulario.telefono) }}</p>                 
+         
+         <div class="oculto">
+           {{ form_rest(formulario) }}
+         </div>             
+     </td>     
+    </tr> 
+   </tbody>
+   <tfoot>
+    <tr>
+     <td style="text-align: left; padding-left: 20px">             
+         <button type="button" class="btn" title="Reiniciar Contraseña / Enviar Correo"
+                 onclick="reiniciarClave('{{ formulario.vars.value.correo }}');">
+           <i class="icon-wrench"></i> Reiniciar</button>         
+     </td>   
+     <td>
+      <div id="guardar">
+       <span class="btn btn-danger" 
+             onclick="actualizarUsuario();"
+             title="Guardar Usuario">
+          <i class="icon-hdd icon-white"></i> Guardar</span>
+      </div>      
+     </td>  
+    </tr>
+   </tfoot>
+  </table>         
+</form>
+</div> 

@@ -1,0 +1,68 @@
+Mcti\SisproBundle\Entity\Actividad:
+    type: entity
+    table: actividad
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: SEQUENCE
+        actividad:
+            type: text
+            nullable: false
+        monto:
+            type: decimal
+            nullable: false
+        metaFisica:
+            type: decimal
+            nullable: false
+            column: meta_fisica
+        unidadMedida:
+            type: string
+            length: 50
+            fixed: false
+            nullable: false
+            column: unidad_medida
+        fechaIni:
+            type: date
+            nullable: false
+            column: fecha_ini
+        fechaFin:
+            type: date
+            nullable: false
+            column: fecha_fin
+        codigo:
+            type: smallint
+            nullable: false
+    manyToOne:
+        objetivoEspecifico:
+            targetEntity: ObjetivoEspecifico
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                objetivo_especifico_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        moneda:
+            targetEntity: Moneda
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                moneda_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    oneToMany:
+        recursoEjecutado:
+            targetEntity: RecursoEjecutado
+            mappedBy: actividad
+        metaAlcanzada:
+            targetEntity: MetaAlcanzada
+            mappedBy: actividad
+        fotografia:
+            targetEntity: Fotografia
+            mappedBy: actividad    
+    lifecycleCallbacks: {  }

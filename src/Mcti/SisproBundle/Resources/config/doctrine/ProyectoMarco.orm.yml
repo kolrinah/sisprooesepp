@@ -1,0 +1,37 @@
+Mcti\SisproBundle\Entity\ProyectoMarco:
+    type: entity
+    table: proyecto_marco
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: SEQUENCE
+        codigo:
+            type: string
+            length: 20
+            fixed: false
+            nullable: true
+        year:
+            type: smallint
+            nullable: true
+    manyToOne:
+        proyecto:
+            targetEntity: Proyecto
+            cascade: {  }
+            inversedBy: marcos
+            joinColumns:
+                proyecto_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        marco:
+            targetEntity: Marco
+            cascade: {  }
+            inversedBy: proyectos
+            joinColumns:
+                marco_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

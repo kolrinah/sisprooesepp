@@ -1,0 +1,22 @@
+{% if read is not defined %}
+    {% set read = '' %}
+{% endif %}
+{% set filas = data.municipios|length %}         
+{% if filas != 0 %}            
+   {% for m in data.municipios %}         
+      <div id="divMunicipio{{ m.id }}" class="row-fluid" style="margin: 10px 0px;">
+       <div class="span1 offset1" style="text-align: right">             
+        <input type="checkbox" id="municipio{{ m.id }}" checked="checked"                                                 
+               onchange="$('#divMunicipio'+{{ m.id }}).remove();" {{ read }}
+               name="data[municipios][]" value="{{ m.id }}" />           
+        <label for="municipio{{ m.id }}" title="clic para remover el municipio"></label>            
+       </div>     
+       <div class="span10" id="tag" 
+            style="margin-left: 1px; padding-left: 0px; font-size:1.3em; 
+                   vertical-align: bottom; text-align:left;" >           
+            Municipio {{ m.municipio }} / Estado: {{ m.estado.estado|capitalize }} / 
+               {% for r in  m.estado.redi %} Redi: {{ r.redi }} {% endfor %}
+       </div>
+      </div>                         
+   {% endfor %}                                     
+{% endif %}

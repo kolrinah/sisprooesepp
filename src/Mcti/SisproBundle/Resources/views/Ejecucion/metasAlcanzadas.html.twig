@@ -1,0 +1,70 @@
+{# ANALISIS PERMISOLOGICO #}
+{% if permiso is not defined %}
+    {% if ( is_granted('ROLE_ADMIN') or 
+           ((is_granted('ROLE_ENLACE') or
+             (app.user == data.proyecto.usuario)) and 
+             (data.proyecto.estatus.id > 1) and (data.proyecto.estatus.id <5) ) ) %}
+        {% set permiso = true %}
+    {% else %}
+        {% set permiso = false %}
+    {% endif %} 
+{% endif %}
+
+{% set filas = data.metaAlcanzada|length %}         
+{% if filas != 0 %} 
+<table class="tablaListas" title="Registro de Metas Alcanzadas">
+ <thead>
+  <tr>
+   <th style="width:100px;text-align:center">Fecha </th>
+   <th style="width:250px; text-align:left">Actividad Asociada</th>
+   <th style="width:120px; text-align:right">Meta</th>
+   <th style="width:150px; text-align:left">Unidad de Medida</th>   
+   <th style="text-align:left; padding-left: 50px">Observaciones</th>   
+  </tr>   
+ </thead>
+ <tbody>  
+  {% set metasAlcanzadas = 0 %}       
+  {% for reg in data.metaAlcanzada %}
+  <tr class="resaltado" {% if permiso == true %}
+                          onclick="editar('MetaAlcanzada', {{ reg.id }})"
+                        {% endif %}  >
+    <td style="text-align:center"> {{ reg.fecha |date('d/m/Y') }} </td>
+    <td style="text-align:left">{{ reg.actividad.objetivoEspecifico.codigo }}.{{ reg.actividad.codigo }} 
+                                {{ reg.actividad.actividad }}</td>
+    <td style="text-align:right">
+        {% set metasAlcanzadas = metasAlcanzadas + reg.meta %}
+           {{ reg.meta|number_format(2,',','.') }} </td>  
+    <td style="text-align:left"> {{ reg.actividad.unidadMedida }} </td>   
+    <td style="text-align:left; padding-left: 50px"> {{ reg.observaciones }} </td>
+  </tr>  
+  {% endfor %} 
+ </tbody>
+ <tfoot style="text-align:center">
+  <tr>
+   <td colspan="2" style="text-align:right" >Total de Metas Alcanzadas:</td>
+   <td style="text-align:right"> {{ metasAlcanzadas|number_format(2,',','.') }}</td>
+   <td colspan="2" style="text-align:left">
+     de {{ data.proyecto.metasPlanificadas|number_format(2,',','.') }} Metas Planificadas</td>
+  </tr>   
+ </tfoot>
+</table>
+{% else %}
+<center><h3>Proyecto sin Registro de Metas Físicas Alcanzadas</h3> </center>
+{% endif %}
+<br/>    
+{% if permiso == true %}
+<div class="row-fluid">
+    <div class="span4 offset4" style="text-align: center">
+        <span onclick="registrar('MetaAlcanzada', {{ data.proyecto.id }});" 
+              class="btn btn-danger" title="Registrar Ejecución de Meta Física">
+            <i class="icon-edit icon-white"></i> Registrar</span>    
+    </div>
+ {% if data.proyecto.estatus.id != 6 %}    
+    <div class="span4" style="text-align: center">
+        <span onclick="culminar({{ data.proyecto.id }});" 
+              class="btn btn-success" title="Dar por culminado el Proyecto">
+           <i class="icon-off icon-white"></i> Culminar</span>         
+    </div>       
+ {% endif %}
+</div> 
+{% endif %}    

@@ -1,0 +1,64 @@
+ <div class="row">    
+  <div class="span12 menu">
+   <table style="width:100%; min-width: 725px; border:0">
+    <tr style="border-bottom: red solid 3px; background-color: #fff;">
+     <td width="40%" style="text-align:left;">
+      <img src="{{ asset('bundles/sispro/img/cintillo.png') }}"/>
+     </td>
+     <td>   
+      <div class="btn-toolbar" style="margin: 0; text-align: right"> 
+       <div class="btn-group">         
+         <a class="btn btn-danger btn-small dropdown-toggle" data-toggle="dropdown" href="#">
+           Administrar
+           <span class="caret"></span>
+         </a>
+         <ul class="dropdown-menu" style="text-align: left">
+             <li><a href="{{ path('perfilUsuario') }}">Mi Perfil</a></li>
+          {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_ENLACE') ) %}
+             <li><a href="{{ path('usuarios') }}">Usuarios</a></li>
+          {% endif %}
+          {% if (is_granted('ROLE_ADMIN')) %}
+             <li><a href="{{ path('bitacora') }}">Bitácora</a></li>
+          {% endif %}              
+         </ul>
+       </div>
+{% if (not is_granted('ROLE_AUDITOR')) %}              
+       <div class="btn-group">         
+         <a class="btn btn-danger btn-small dropdown-toggle" data-toggle="dropdown" href="#">
+           Planificación
+           <span class="caret"></span>
+         </a>
+         <ul class="dropdown-menu" style="text-align: left">
+             <li><a href="{{ path('proyectos') }}">Proyectos</a></li>        
+         </ul>
+       </div>
+       <div class="btn-group">         
+         <a class="btn btn-danger btn-small dropdown-toggle" data-toggle="dropdown" href="#">
+           Ejecución
+           <span class="caret"></span>
+         </a>
+         <ul class="dropdown-menu" style="text-align: left">
+             <li><a href="{{ path('ejecucion') }}">Registro</a></li>        
+         </ul>
+       </div>
+{% endif %}              
+       <div class="btn-group">         
+         <a class="btn btn-danger btn-small dropdown-toggle" data-toggle="dropdown" href="#">
+           Reportes
+           <span class="caret"></span>
+         </a>
+         <ul class="dropdown-menu" style="text-align: left">
+             <li><a href="">Dinámicos</a></li>        
+             <li><a href="">Gráfico</a></li>        
+         </ul>
+       </div>
+       <div class="btn btn-danger btn-small" title="Cerrar sesión">
+          <a href="{{ path('salida') }}" style="color:white!important; text-decoration: none!important" >
+           <i class="icon-off icon-white"></i> Salir</a>
+       </div>
+      </div>            
+     </td>
+    </tr> 
+   </table>
+  </div>   
+ </div>   {# CIERRE DEL CONTENEDOR #}   

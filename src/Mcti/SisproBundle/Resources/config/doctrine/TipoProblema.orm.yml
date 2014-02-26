@@ -1,0 +1,16 @@
+Mcti\SisproBundle\Entity\TipoProblema:
+    type: entity
+    table: tipo_problema
+    fields:
+        id:
+            id: true
+            type: smallint
+            nullable: false
+            generator:
+                strategy: SEQUENCE
+        problema:
+            type: string
+            length: 100
+            fixed: false
+            nullable: false
+    lifecycleCallbacks: {  }

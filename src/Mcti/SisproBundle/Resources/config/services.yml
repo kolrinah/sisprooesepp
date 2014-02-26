@@ -1,0 +1,7 @@
+parameters:
+#    sispro.example.class: Mcti\SisproBundle\Example
+     security.exception_listener.class: Mcti\SisproBundle\Security\Firewall\ExceptionListener
+services:
+#    sispro.example:
+#        class: %sispro.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

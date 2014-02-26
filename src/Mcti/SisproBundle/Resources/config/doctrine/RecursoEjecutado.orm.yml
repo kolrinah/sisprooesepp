@@ -1,0 +1,39 @@
+Mcti\SisproBundle\Entity\RecursoEjecutado:
+    type: entity
+    table: recurso_ejecutado
+    fields:
+        id:
+            id: true
+            type: bigint
+            nullable: false
+            generator:
+                strategy: SEQUENCE
+        fecha:
+            type: date
+            nullable: false
+        monto:
+            type: decimal
+            nullable: false
+        observaciones:
+            type: text
+            nullable: true
+    manyToOne:
+        actividad:
+            targetEntity: Actividad
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                actividad_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        moneda:
+            targetEntity: Moneda
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                moneda_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

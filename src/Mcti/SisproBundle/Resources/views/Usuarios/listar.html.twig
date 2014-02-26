@@ -1,0 +1,94 @@
+{% extends 'SisproBundle:Plantillas:base.html.twig' %}
+{% block title %} 
+{{ parent() }}
+| Usuarios
+{%endblock%}
+{% block body %}
+
+{% set admin=is_granted('ROLE_ADMIN')?1:0 %}
+<div class="row oculto">   
+  <div class="span12">
+  <center><h3>Listado de Usuarios en la Unidad</h3></center>      
+   <table id="usuarios" class="tablaListas">
+    <thead>       
+     <tr>
+      <th style="min-width:150px; width:150px; text-align: left;">Nombre y Apellido</th>   
+      <th style="min-width:150px; width:150px; text-align: left;">Correo Electrónico</th>
+      <th style="min-width:80px; text-align: left;">Cargo</th>
+      <th style="text-align: left;">Telefonos</th>
+      <th style="min-width:80px; width:80px; text-align: left;">Unidad / Ente</th>        
+      <th style="min-width:30px; width:30px">Rol</th>  
+      <th style="min-width:16px; width:16px" title="Estatus">E</th>
+     </tr>  
+    </thead>
+    <tbody>
+    {% for u in usuarios %}   
+     <tr class="resaltado {% if u.activo == false %} inactivo {% endif %}">
+       <td title="Clic para Editar usuario"
+           onclick="editarUsuario({{ u.id }}, {{ admin }})">{{ u.nombre }} {{ u.apellido }} </td>  
+       <td title="Clic para Editar usuario"
+           onclick="editarUsuario({{ u.id }}, {{ admin }})">{{ u.correo }}</td>
+       <td title="Clic para Editar usuario"
+           onclick="editarUsuario({{ u.id }}, {{ admin }})">{{ u.cargo }}</td>
+       <td title="Clic para Editar usuario"
+           onclick="editarUsuario({{ u.id }}, {{ admin }})">{{ u.telefono }}</td>  
+       <td title="{{ u.estructura.estructura }}" 
+           onclick="$('input[aria-controls]').val('{{ u.estructura.siglas }}').focus()
+                                             .trigger('keyup');">
+           {{ u.estructura.siglas }}
+           <span class="oculto">{{ u.estructura.estructura }}</span></td>     
+       <td style="text-align: center;">
+            {% for r in u.roles %} 
+               {% if r.role == 'ROLE_ADMIN' %}
+                <img src="{{ asset('bundles/sispro/img/admin.png') }}" title="{{ r.rol }}"
+                     onclick="$('input[aria-controls]').val('{{ r.rol }}').focus().trigger('keyup')" />
+               {% endif %}
+               {% if r.role == 'ROLE_ENLACE' %}     
+                <img src="{{ asset('bundles/sispro/img/enlace.png') }}"  title="{{ r.rol }}"
+                     onclick="$('input[aria-controls]').val('{{ r.rol }}').focus().trigger('keyup')" />
+               {% endif %}    
+               {% if r.role == 'ROLE_AUDITOR' %}     
+                <img src="{{ asset('bundles/sispro/img/auditor.png') }}" title="{{ r.rol }}"
+                     onclick="$('input[aria-controls]').val('{{ r.rol }}').focus().trigger('keyup')" />
+               {% endif %}
+                <span class="oculto">{{ r.id }}</span> 
+            {% endfor %}               
+       </td>
+       <td><span class="oculto">{{ "%02d" | format(u.estructura.id) }}</span>        
+           {% if u.activo == false %}
+            <img src="{{ asset('bundles/sispro/img/cancel16.png') }}" title="Usuario Inactivo"
+                 onclick="$('input[aria-controls]').val('inactivo').focus().trigger('keyup')"/>
+            <span class="oculto">inactivo</span> 
+           {% endif %}    
+       </td>
+     </tr>
+    {% endfor %}  
+     
+    </tbody>
+    <tfoot>
+     <tr>
+      <td style="text-align: left;">Nombre y Apellido</td>   
+      <td style="text-align: left;">Correo Electrónico</td>
+      <td style="text-align: left;">Cargo</td>
+      <td style="text-align: left;">Telefonos</td>
+      <td style="text-align: left;">Unidad / Ente</td>        
+      <td>Rol</td>  
+      <td title="Estatus">E</td>
+     </tr>      
+    </tfoot>
+   </table> 
+  </div>  
+</div>
+<div class="row">   
+  <div class="span12">
+    <center>
+   <button class="btn btn-danger" onclick="nuevoUsuario({{ admin }});" title="Agregar Nuevo Usuario">
+       <i class="icon-user icon-white"></i> Agregar</button>
+    </center>
+  </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}   
+<script type="text/javascript" src="{{ asset('bundles/sispro/js/usuarios.js') }}"></script>
+{% endblock %}   

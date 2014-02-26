@@ -1,0 +1,40 @@
+Mcti\SisproBundle\Entity\Coordenadas:
+    type: entity
+    table: coordenadas
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: SEQUENCE
+        latgra:
+            type: smallint
+            nullable: false
+        latmin:
+            type: smallint
+            nullable: false
+        latseg:
+            type: decimal
+            nullable: false
+        longra:
+            type: smallint
+            nullable: false
+        lonmin:
+            type: smallint
+            nullable: false
+        lonseg:
+            type: decimal
+            nullable: false
+    manyToOne:
+        proyecto:
+            targetEntity: Proyecto
+            cascade: {  }
+            mappedBy: null
+            inversedBy: coordenadas
+            joinColumns:
+                proyecto_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

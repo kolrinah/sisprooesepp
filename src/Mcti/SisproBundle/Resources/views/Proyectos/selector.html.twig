@@ -1,0 +1,53 @@
+<div class="row">
+<div class="span12">
+<center title="Seleccione el formulario" >
+ <input type="radio" name="selector" id="selector01" value="01" 
+        onchange="editarProyecto({{ data.proyecto.id }},$(this).val())" />
+ <label for = "selector01" title="Datos Básicos del Proyecto" ></label>
+
+ <input type="radio" name="selector" id="selector02" value="02" 
+        onchange="editarProyecto({{ data.proyecto.id }},$(this).val())" />
+ <label for = "selector02" title="Dependencia del Proyecto" ></label>
+ 
+ <input type="radio" name="selector" id="selector03" value="03" 
+        onchange="editarProyecto({{ data.proyecto.id }},$(this).val())" />
+ <label for = "selector03" title="Tipo de Proyecto" ></label>
+ 
+ <input type="radio" name="selector" id="selector05" value="05"
+        onchange="editarProyecto({{ data.proyecto.id }},$(this).val())" />
+ <label for = "selector05" title="Plan de la Patria 2013-2019" ></label>
+ 
+ <input type="radio" name="selector" id="selector06" value="06"
+        onchange="editarProyecto({{ data.proyecto.id }},$(this).val())" />
+ <label for = "selector06" title="Áreas Estratégicas de Investigación" ></label>
+
+ <input type="radio" name="selector" id="selector07" value="07"
+        onchange="editarProyecto({{ data.proyecto.id }},$(this).val())" />
+ <label for = "selector07" title="Alcance del Proyecto" ></label>
+ 
+ <input type="radio" name="selector" id="selector08" value="08"
+        onchange="editarProyecto({{ data.proyecto.id }},$(this).val())" />
+ <label for = "selector08" title="Municipios Beneficiados" ></label> 
+ 
+ <input type="radio" name="selector" id="selector09" value="09"
+        onchange="editarProyecto({{ data.proyecto.id }},$(this).val())" />
+ <label for = "selector09" title="Fuentes de Financiamiento" ></label> 
+ 
+ <input type="radio" name="selector" id="selector10" value="10"
+        onchange="editarProyecto({{ data.proyecto.id }},$(this).val())" />
+ <label for = "selector10" title="Planificación del Proyecto" ></label>
+ 
+ <input type="radio" name="selector" id="selector11" value="11"
+        onchange="editarProyecto({{ data.proyecto.id }},$(this).val())" />
+ <label for = "selector11" title="Registro del Proyecto" ></label>
+ 
+ <a href="{{ path('fichaProyecto', {'id': data.proyecto.id }) }}" target="_blank">   
+  <span class="selector">   
+    <img src="{{ asset('bundles/sispro/img/form12.png') }}" 
+         style="max-width: none;" title="Generar Ficha de Proyecto"/>      
+  </span> 
+ </a> 
+
+ </center>
+</div> 
+</div>

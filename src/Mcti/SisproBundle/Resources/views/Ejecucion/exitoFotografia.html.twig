@@ -1,0 +1,53 @@
+{% extends 'SisproBundle:Plantillas:base.html.twig' %}
+{% block title %} 
+{{ parent() }}
+| Adjuntar Foto
+{% endblock %}
+{% block body %} 
+<div class="row">
+<div class="formulario span8 offset2">   
+   <table id="formFotografia" >
+    <thead>
+     <tr>
+      <th width="70%">Imágen Adjuntada con Éxito</th>
+      <th style="text-align:right">         
+        <a href="{{ path('revisarProyecto', {'id': data.idProyecto }) }}">     
+          <span class="btn btn-danger"  title="Clic para Cerrar" >
+            <i class="icon-off icon-white"></i>
+          </span> 
+        </a>       
+      </th>          
+     </tr>           
+    </thead>            
+    <tbody>
+     <tr>
+      <td colspan="2">         
+        <div class="row-fluid">
+          <div class="span10 offset1" style="text-align: center">
+            <img src="{{ url('home') }}../adjuntos/{{ data.proyecto.codigo }}/{{ data.fotografia.imagen }}"
+                 style="border: #D3D3D3 inset 2px" />
+          </div>
+        </div>            
+     </td>
+    </tr>
+   </tbody> 
+   <tfoot>
+    <tr>
+     <td colspan="2">
+      <div class="row-fluid">   
+         <div class="span12">
+           <a href="{{ path('registrarFotografia', {'id': data.proyecto.id }) }}">  
+             <span id="boton" 
+                   class="btn btn-danger" 
+                   title="Adjuntar otra imágen">
+               <i class="icon-camera icon-white"></i> Adjuntar Otra</span>
+          </a>
+         </div>     
+      </div>
+     </td>  
+    </tr>
+   </tfoot>
+  </table>            
+</div> 
+</div>
+{% endblock %}

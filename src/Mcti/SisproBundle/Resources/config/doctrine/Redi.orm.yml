@@ -1,0 +1,33 @@
+Mcti\SisproBundle\Entity\Redi:
+    type: entity
+    table: redi
+    fields:
+        id:
+            id: true
+            type: smallint
+            nullable: false
+            generator:
+                strategy: SEQUENCE
+        redi:
+            type: string
+            length: 30
+            fixed: false
+            nullable: false
+    manyToMany:
+        estado:
+            targetEntity: Estado
+            cascade: {  }
+            mappedBy: null
+            inversedBy: redi
+            joinTable:
+                name: redi_estado
+                joinColumns:
+                    -
+                        name: redi_id
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    -
+                        name: estado_id
+                        referencedColumnName: id
+            orderBy: null
+    lifecycleCallbacks: {  }

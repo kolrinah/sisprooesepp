@@ -1,0 +1,4 @@
+sispro:
+    resource: "@SisproBundle/Resources/config/routing.yml"
+    prefix:   /
+

@@ -1,0 +1,111 @@
+{% extends 'SisproBundle:Plantillas:base.html.twig' %}
+{% block title %} 
+{{ parent() }}
+| Proyectos
+{%endblock%}
+{% block body %}
+{% set filas = proyectos|length %}
+{% if filas == 0 %}
+ <div class="row">
+   <div class="span12">
+     <center><h3>La Unidad No Posee Proyectos Registrados</h3></center>
+   </div>
+ </div>
+{% else %}   
+<div class="row oculto">   
+  <div class="span12">        
+    <center><h3>Planificación de Proyectos en la Unidad</h3></center>
+    <table width="100%" class="tablaListas" {% if filas > 10 %} id="proyectos" {% endif %}>
+        <thead>
+           <tr>
+             <th width="80px"> Unidad/Ente </th>   
+             <th width="100px"> Código </th>  
+             <th width="420px"> Nombre del Proyecto </th>              
+             <th width="60px"> Duración  </th>
+             <th width="60px"> Inicio </th>  
+             <th width="60px"> Fin </th>
+             <th style="width:100px; text-align: right"> Planificado(Bs) </th>
+             <th style="width:100px; text-align: right"> Ejecutado(Bs) </th>
+             
+             <th width="70px"> Estatus </th>  
+           </tr>
+         </thead>
+         <tfoot>
+           <tr>
+             <td>Unidad/Ente</td>  
+             <td>Código</td>  
+             <td>Nombre del Proyecto</td>
+             <td>Duración</td> 
+             <td>Inicio</td> 
+             <td>Fin</td> 
+             <td style="width:100px; text-align: right">Planificado(Bs)</td> 
+             <td style="width:100px; text-align: right">Ejecutado(Bs)</td>
+            
+             <td>Estatus</td>
+           </tr>
+         </tfoot>
+         <tbody>          
+    {% for proyecto in proyectos %} 
+          <tr class="resaltado" onclick="editarProyecto({{ proyecto.id }})">
+            <td title="{{ proyecto.estructura }}">{{ proyecto.estructura.siglas }}</td>  
+            <td >{{ proyecto.codigo }}</td> 
+            <td >{{ proyecto.nombre }}</td> 
+            <td>
+                {% if proyecto.duracion !=null %}
+                   {{ proyecto.duracion }}
+                {% endif %}
+            </td>            
+            <td>
+                {% if proyecto.fechaInicio !=null %}
+                    <div class="oculto">
+                    {{ proyecto.fechaInicio|date('Y/m/d') }}
+                    </div>
+                    {{ proyecto.fechaInicio|date('d/m/Y') }}
+                {% endif %}
+            </td>
+            <td>
+                {% if proyecto.fechaFin !=null %}
+                    <div class="oculto">
+                    {{ proyecto.fechaFin|date('Y/m/d') }}
+                    </div>
+                   {{ proyecto.fechaFin|date('d/m/Y') }}
+                {% endif %}
+            </td>
+            <td style="text-align:right">
+                {{ proyecto.montoPlanificado| number_format(2,',','.') }} </td>
+            <td style="text-align:right">
+                {{ proyecto.montoEjecutado| number_format(2,',','.') }} </td>                     
+            <td>
+                <div class="oculto">
+                   {{ proyecto.estatus.id }} {{ proyecto.estatus.estatus }}
+                </div>                
+                <img src="{{ asset('bundles/sispro/img/estatus'~proyecto.estatus.id~'.png') }}" 
+                     title="{{ proyecto.estatus.estatus }}"  />               
+                </td>
+          </tr> 
+    {% endfor %}
+         </tbody>
+       </table>
+  </div>
+</div>
+{% endif %} 
+<br/>
+<div class="row">   
+  <div class="span12">
+    <center>        
+        <span  onclick="nuevoProyecto();"
+               class="btn btn-danger"  title="Registrar Nuevo Proyecto">
+            <i class="icon-edit icon-white"></i> Registrar</span> 
+    </center>
+  </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}   
+    <script type="text/javascript" src="{{ asset('bundles/sispro/js/proyectos.js') }}"></script>
+{% endblock %}   
+{#
+    {{ app.user.correo }}
+    {{ app.user.apellido }}
+    {{ app.session.name }}      
+    {{ app.session.get('selector') }} #}

@@ -1,0 +1,238 @@
+Mcti\SisproBundle\Entity\Proyecto:
+    type: entity
+    repositoryClass: Mcti\SisproBundle\Entity\ProyectoRepository
+    table: proyecto
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: SEQUENCE
+        codigo:
+            type: string
+            length: 20
+            fixed: false
+            nullable: true
+        nombre:
+            type: text
+            nullable: false
+        descripcion:
+            type: text
+            nullable: false
+        problema:
+            type: text
+            nullable: false
+        objetivoGeneral:
+            type: text
+            nullable: true
+            column: objetivo_general
+        producto:
+            type: text
+            nullable: true
+        meta:
+            type: decimal
+            nullable: true
+        unidadMedida:
+            type: string
+            length: 50
+            fixed: false
+            nullable: true
+            column: unidad_medida
+        indicador:
+            type: string
+            length: 100
+            fixed: false
+            nullable: true
+        alcance:
+            type: text
+            nullable: true
+        puntoycirculo:
+            type: text
+            nullable: true
+        direccion:
+            type: text
+            nullable: true
+        nacional:
+            type: boolean
+            nullable: false
+        pobFemenina:
+            type: integer
+            unsigned: false
+            nullable: true
+            column: pob_femenina
+        pobMasculina:
+            type: integer
+            unsigned: false
+            nullable: true
+            column: pob_masculina
+        pobTotal:
+            type: integer
+            unsigned: false
+            nullable: true
+            column: pob_total
+        observaciones:
+            type: text
+            nullable: true
+        fechaRegistro:
+            type: date
+            nullable: false
+            column: fecha_registro
+        empleosDirectosEjecucion:
+            type: integer
+            unsigned: false
+            nullable: true
+            column: empleos_directos_ejecucion
+        empleosIndirectosEjecucion:
+            type: integer
+            unsigned: false
+            nullable: true
+            column: empleos_indirectos_ejecucion
+        empleosDirectosOperacion:
+            type: integer
+            unsigned: false
+            nullable: true
+            column: empleos_directos_operacion
+        empleosIndirectosOperacion:
+            type: integer
+            unsigned: false
+            nullable: true
+            column: empleos_indirectos_operacion
+    manyToMany:
+        tipoProyecto:
+            targetEntity: TipoProyecto
+            cascade: {  }
+            mappedBy: null
+            inversedBy: proyecto
+            joinTable:
+                name: proyecto_tipo_proyecto
+                joinColumns:
+                    -
+                        name: proyecto_id
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    -
+                        name: tipo_proyecto_id
+                        referencedColumnName: id
+            orderBy: null
+        areaEstrategica:
+            targetEntity: AreaEstrategica
+            cascade: {  }
+            mappedBy: null
+            inversedBy: proyecto
+            joinTable:
+                name: proyecto_area_estrategica
+                joinColumns:
+                    -
+                        name: proyecto_id
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    -
+                        name: area_estrategica_id
+                        referencedColumnName: id
+            orderBy: null
+        on:
+            targetEntity: PlanPatriaOn
+            cascade: {  }
+            mappedBy: null
+            inversedBy: proyecto
+            joinTable:
+                name: proyecto_plan_patria
+                joinColumns:
+                    -
+                        name: proyecto_id
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    -
+                        name: on_id
+                        referencedColumnName: id
+            orderBy: null
+        municipio:
+            targetEntity: Municipio
+            cascade: {  }
+            mappedBy: null
+            inversedBy: proyecto
+            joinTable:
+                name: proyecto_municipio
+                joinColumns:
+                    -
+                        name: proyecto_id
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    -
+                        name: municipio_id
+                        referencedColumnName: id
+            orderBy: null
+    manyToOne:
+        estatus:
+            targetEntity: Estatus
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                estatus_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        parroquia:
+            targetEntity: Parroquia
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                parroquia_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        poblado:
+            targetEntity: Poblado
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                poblado_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        estructura:
+            targetEntity: Estructura
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                estructura_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        usuario:
+            targetEntity: Usuario
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                usuario_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    oneToMany:
+        objetivos:
+            targetEntity: ObjetivoEspecifico           
+            mappedBy: proyecto
+        objetivosOrg:
+            targetEntity: ObjetivoEspecificoOrg
+            mappedBy: proyecto            
+        fuentes:
+            targetEntity: ProyectoFuenteFinanciamiento           
+            mappedBy: proyecto
+        marcos:
+            targetEntity: ProyectoMarco
+            mappedBy: proyecto
+        coordenadas:
+            targetEntity: Coordenadas
+            mappedBy: proyecto
+        recursoRecibido:
+            targetEntity: RecursoRecibido
+            mappedBy: proyecto
+        registroProblema:
+            targetEntity: RegistroProblema
+            mappedBy: proyecto 
+        registroNotificacion:
+            targetEntity: RegistroNotificacion
+            mappedBy: proyecto            
+    lifecycleCallbacks: {  }

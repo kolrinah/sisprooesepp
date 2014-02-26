@@ -1,0 +1,25 @@
+Mcti\SisproBundle\Entity\Parroquia:
+    type: entity
+    repositoryClass: Mcti\SisproBundle\Entity\ParroquiaRepository
+    table: parroquia
+    fields:
+        id:
+            id: true
+            type: smallint
+            nullable: false
+            generator:
+                strategy: SEQUENCE
+        parroquia:
+            type: text
+            nullable: false
+    manyToOne:
+        municipio:
+            targetEntity: Municipio
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                municipio_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

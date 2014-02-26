@@ -1,0 +1,36 @@
+Mcti\SisproBundle\Entity\PlanPatriaOn:
+    type: entity
+    table: plan_patria_on
+    fields:
+        id:
+            id: true
+            type: smallint
+            nullable: false
+            generator:
+                strategy: SEQUENCE
+        codigo:
+            type: string
+            length: 5
+            fixed: false
+            nullable: false
+        objetivoNacional:
+            type: text
+            nullable: false
+            column: objetivo_nacional
+    manyToMany:
+        proyecto:
+            targetEntity: Proyecto
+            cascade: {  }
+            mappedBy: objnac
+            inversedBy: null
+            joinTable: null
+            orderBy: null
+    manyToOne:
+        oe:
+            targetEntity: PlanPatriaOe
+            inversedBy: objnac
+            joinColumns:
+                oe_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

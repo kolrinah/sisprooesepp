@@ -1,0 +1,25 @@
+Mcti\SisproBundle\Entity\RegistroNotificacion:
+    type: entity
+    repositoryClass: Mcti\SisproBundle\Entity\RegistroNotificacionRepository
+    table: registro_notificacion
+    fields:
+        id:
+            id: true
+            type: bigint
+            nullable: false
+            generator:
+                strategy: SEQUENCE
+        fecha:
+            type: date
+            nullable: false
+    manyToOne:
+        proyecto:
+            targetEntity: Proyecto
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                proyecto_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

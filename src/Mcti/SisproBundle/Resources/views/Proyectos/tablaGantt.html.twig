@@ -1,0 +1,104 @@
+{% if permiso is not defined %}
+    {% set permiso = true %}
+{% endif %}
+{% set filas = data.objetivos|length %}         
+{% if filas != 0 %} 
+
+{% set anchoCronograma = 480 %}
+
+<table class="tablaListas" title="Planificación Actual">
+ <thead>
+{# LINEA 1 | [vacío] | año 1 | año n | #}   
+  <tr>
+   <th colspan="4"></th>
+{% for year in data.years %}
+   {% if loop.index <= data.cols %}
+   <th colspan="4" style="text-align: center; padding: 1px 0px;">{{ year }}</th>
+   {% endif %}
+{% endfor %}
+  </tr> 
+{# LINEA 2 | actividades | I | II | III | IV | #} 
+  <tr>
+   <th style="max-width:30px;text-align:center">Nº</th>   
+   <th colspan="2" style="text-align:left">Objetivo Específico / Actividad</th>
+   <th style="width:30px; padding: 1px 0px; text-align:center"></th>
+   
+{% for year in data.years %}   
+   {% if loop.index <= data.cols %}
+   <th style="width:{{ anchoCronograma/(data.cols*4) }}px; text-align: center; padding: 1px 0px">I</th>
+   <th style="width:{{ anchoCronograma/(data.cols*4) }}px; text-align: center; padding: 1px 0px">II</th>
+   <th style="width:{{ anchoCronograma/(data.cols*4) }}px; text-align: center; padding: 1px 0px">III</th>
+   <th style="width:{{ anchoCronograma/(data.cols*4) }}px; text-align: center; padding: 1px 0px">IV</th>
+   {% endif %}
+{% endfor %}      
+  </tr>   
+ </thead>
+  <tfoot style="text-align:center">
+  <tr>
+   <td >Nº</td>   
+   <td colspan="2" style="text-align:left">Objetivo Específico / Actividad</td>
+   <td></td>
+{% for year in data.years %}   
+   {% if loop.index <= data.cols %}
+   <td style="text-align: center; padding: 1px 0px">I</td>
+   <td style="text-align: center; padding: 1px 0px">II</td>
+   <td style="text-align: center; padding: 1px 0px">III</td>
+   <td style="text-align: center; padding: 1px 0px">IV</td>
+   {% endif %}
+{% endfor %}  
+  </tr>   
+ </tfoot>
+ <tbody>
+  {% for oe in data.objetivos %}
+  <tr class="resaltado">
+   <td style="text-align:center; font-weight: bold;"
+       onclick="editarObjetivoEspecifico({{ oe.id }})"
+       title="clic para Editar el Objetivo Específico">
+    {{ oe.codigo }}
+   </td> 
+   <td colspan="2"  style="text-align:left; font-weight: bold;" 
+       onclick="editarObjetivoEspecifico({{ oe.id }})"
+       title="clic para Editar el Objetivo Específico">
+    {{ oe.objetivoEspecifico }}
+   </td> 
+   <td>              
+ {% if permiso %}
+     <img src="{{ asset('bundles/sispro/img/actividad.png')}}" 
+          onclick="agregarActividad({{ oe.id }})" title="clic para programar actividad"/>
+ {% endif %}
+   </td>
+   <td colspan="{{ data.cols*4 }}" class="cuadricula" style="text-align: center">
+     {% if oe.actividades is empty %} * * Sin Actividades Programadas * * {% endif %}</td>   
+  </tr>
+   {% if oe.actividades is not empty %}      
+      {% for a in oe.actividades %}         
+         <tr class="resaltado" onclick="editarActividad({{ a.id }})"
+             {% if (a.fechaFin < date() and a.metaAlcanzada|length == 0 )%} 
+             style="background-color: #ffcc00; border-top: #888888 1px dashed"
+             {% endif %} >
+          <td></td>   
+          <td style="width:30px; text-align:center"
+              title="clic para Editar la Actividad">
+           {{ oe.codigo }}.{{ a.codigo }}
+          </td> 
+          <td title="clic para Editar la Actividad">
+           {{ a.actividad }}<br/>
+           Meta Física: {{ a.metaFisica|number_format(2,',','.') }} {{ a.unidadMedida }}<br/>
+           Presupuesto: Bs.{{ (a.moneda.precioBs * a.monto)|number_format(2,',','.') }}
+          </td>
+          <td></td>
+          <td colspan="{{ data.cols*4 }}" class="cuadricula" style="padding:0px!important;"
+              title="Desde: {{ a.fechaIni|date('d/m/Y') }} Hasta: {{ a.fechaFin|date('d/m/Y') }}">
+         {% if (a.fechaFin >= a.fechaIni) %} 
+            {{ miniGantt(data.years, a.fechaIni, a.fechaFin)|raw }}
+         {% endif %}
+          </td>
+         </tr>  
+      {% endfor %}
+   {% endif %}
+  {% endfor %} 
+ </tbody>
+</table>
+{% else %}
+<center><h3>El Proyecto no posee Objetivos Específicos Registrados</h3> </center>
+{% endif %}

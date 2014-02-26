@@ -1,0 +1,43 @@
+Mcti\SisproBundle\Entity\Estado:
+    type: entity
+    repositoryClass: Mcti\SisproBundle\Entity\EstadoRepository
+    table: estado
+    fields:
+        id:
+            id: true
+            type: smallint
+            nullable: false
+            generator:
+                strategy: SEQUENCE
+        estado:
+            type: text
+            nullable: false
+        codigoOnapre:
+            type: text
+            nullable: true
+            column: codigo_onapre
+        gobernacion:
+            type: text
+            nullable: true
+        capitalEstado:
+            type: text
+            nullable: true
+            column: capital_estado
+        mapArea:
+            type: text
+            nullable: true
+            column: map_area
+        sigla:
+            type: string
+            length: 2
+            fixed: true
+            nullable: false
+    manyToMany:
+        redi:
+            targetEntity: Redi
+            cascade: {  }
+            mappedBy: estado
+            inversedBy: null
+            joinTable: null
+            orderBy: null
+    lifecycleCallbacks: {  }

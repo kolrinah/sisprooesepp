@@ -1,0 +1,20 @@
+Mcti\SisproBundle\Entity\Marco:
+    type: entity
+    table: marco
+    fields:
+        id:
+            id: true
+            type: smallint
+            nullable: false
+            generator:
+                strategy: SEQUENCE
+        marco:
+            type: string
+            length: 20
+            fixed: false
+            nullable: false
+    oneToMany:        
+        proyectos:
+            targetEntity: ProyectoMarco
+            mappedBy: marco
+    lifecycleCallbacks: {  }

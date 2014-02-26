@@ -1,0 +1,105 @@
+<div class="row">
+<div class="formulario span12">    
+ <form action="{{ path('registrarMetaAlcanzada') }}" method="post"  >
+ {# Campo oculto con el ID del proyecto #}
+   <input type="hidden" id="idProyecto" 
+          name="data[idProyecto]" value="{{ data.idProyecto }}" />
+ {# Campo oculto con el ID del Registro  #}
+   <input type="hidden" id="idRegistro" 
+          name="data[idRegistro]" value="{{ data.registro.id }}" />      
+ {# CREAMOS CAMPOS OCULTOS CON LAS Actividades para tener su unidad de medida #}
+    <input type="hidden" id="uM0" value="" /> 
+{% for a in data.actividades %}    
+    <input type="hidden" id="uM{{ a.id }}" value="{{ a.unidadMedida|upper }}" />
+ {% endfor %}   
+   
+   <table id="formMetaAlcanzada" style="width:600px; height:400px;">
+    <thead>
+     <tr>
+      <th width="50%">Editar Registro de Metas Físicas</th>
+      <th style="text-align:right">         
+          <span class="btn btn-danger"  title="Clic para Cerrar"
+                onclick="cancelarModal();">
+            <i class="icon-off icon-white"></i>
+          </span> 
+      </th>          
+     </tr>           
+    </thead>            
+    <tbody>
+     <tr>
+      <td colspan="2">
+        <div class="row-fluid">
+          <div class="span12" style="margin-left:0px">
+            <label>Actividad Asociada</label> 
+            <p>            
+             <select id="actividad" name="data[actividad]" class="span11 campo" 
+                     title="Actividad Asociada" onchange="cambiaActividad($(this));">               
+            {% for a in data.actividades %}               
+               <option value="{{ a.id }}" {% if a.id == data.registro.actividad.id %}
+                       selected="selected" {% endif %} >
+                       {{ a.objetivoEspecifico.codigo }}.{{ a.codigo }}
+                              {{ a.actividad }}</option>
+            {% endfor %}
+             </select>   
+            </p>        
+          </div>                 
+        </div>           
+        <div class="row-fluid">           
+          <div class="span4" style="margin-left:0px">
+            <label>Meta Física Alcanzada</label> 
+            <p>            
+             <input type="text" id="meta" class="span11 campo" 
+                    style="text-align: right"
+                    title="Meta Física Alcanzada"
+{# onlyDigits(e, value, allowDecimal, allowNegative, allowThousand, decSep, thousandSep, decLength) #}
+                    onblur="this.value=formatNumber(this.value,2);"
+                    onkeyup="formatNumber(this.value,2);" 
+                    onkeypress="return onlyDigits(event, this.value,true,false,false,',','.',2);"                    
+                    maxlength="14"
+                    name="data[meta]" value="{{ data.registro.meta|number_format(2,',','.') }}" />   
+            </p>        
+          </div>
+          <div class="span8">
+              <label>Unidad de Medida</label> 
+              <div id="uM" style="font-size:1.3em; padding-top: 6px">
+                 {{ data.registro.actividad.unidadMedida|upper }}</div>
+          </div>      
+        </div>            
+        <div class="row-fluid">      
+          <div class="span12">
+            <label>Observaciones</label> 
+            <p>            
+             <textarea id="observaciones" rows="2" class="span11 campo" 
+                       maxlength="150"
+                       title="Indique más detalles de la ejecución de estas metas físicas."
+                       name="data[observaciones]" >{{ data.registro.observaciones }}</textarea>   
+            </p>        
+          </div> 
+        </div>        
+     </td>
+    </tr>
+   </tbody> 
+   <tfoot>
+    <tr>
+     <td colspan="2">
+      <div class="row-fluid">   
+         <div class="span4 offset4">
+           <span id="boton" onclick="eliminar('MetaAlcanzada', {{ data.registro.id }})" 
+                 class="btn btn-danger" 
+                 title="Eliminar Registro">
+            <i class="icon-trash icon-white"></i> Eliminar</span>
+         </div>
+         <div class="span4">
+           <span id="boton" onclick="actualizar('MetaAlcanzada')" 
+                 class="btn btn-danger" 
+                 title="Guardar Cambios">
+            <i class="icon-hdd icon-white"></i> Guardar</span>            
+         </div>     
+      </div>
+     </td>  
+    </tr>
+   </tfoot>
+  </table> 
+</form>
+</div> 
+</div>

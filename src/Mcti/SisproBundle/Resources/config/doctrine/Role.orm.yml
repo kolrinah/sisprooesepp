@@ -1,0 +1,25 @@
+Mcti\SisproBundle\Entity\Role:
+    type: entity
+    table: role
+    fields:
+        id:
+            id: true
+            type: smallint
+            nullable: false
+            generator:
+                strategy: SEQUENCE
+        role:
+            type: text
+            nullable: false
+        rol:
+            type: text
+            nullable: false
+    manyToMany:
+        usuario:
+            targetEntity: Usuario
+            cascade: {  }
+            mappedBy: role
+            inversedBy: null
+            joinTable: null
+            orderBy: null
+    lifecycleCallbacks: {  }

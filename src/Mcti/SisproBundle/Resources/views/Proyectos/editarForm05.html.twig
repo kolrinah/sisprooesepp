@@ -1,0 +1,151 @@
+{# REGLAS PARA PODER EDITAR EL PROYECTO:
+   [ ( Usuario Responsable == Usuario OR Usuario.Rol == Enlace ) 
+          AND ( Estatus de Proyecto == 1)  ]  #}
+{% if ( (data.proyecto.usuario == app.user or is_granted('ROLE_ENLACE'))
+        and (data.proyecto.estatus.id == 1) ) %}
+   {% set permiso = true %}
+   {% set read = '' %}
+{% else %}
+   {% set permiso = false %} 
+   {% set read = 'disabled="disabled"' %}
+{% endif %}
+
+{% include 'SisproBundle:Proyectos:selector.html.twig' %}
+
+<div id="formulario">
+<div class="row">
+<div class="formulario span12">    
+ <form action="{{ path('editarProyecto') }}" method="post"  >
+ {# Campo oculto con el ID del proyecto #}
+ <input type="hidden" name="data[idProyecto]" value="{{ data.proyecto.id }}" />
+ <input type="hidden" name="data[form]" value="{{ data.form }}" />
+ 
+   <table>
+    <thead>
+     <tr>
+      <th width="50%">Objetivos del Plan de la Patria 2013-2019</th>
+      <th style="text-align:right">
+          <a href="{{ path('proyectos') }}">
+          <span class="btn btn-danger"  title="Clic para Cerrar">
+            <i class="icon-off icon-white"></i>
+          </span> </a>
+      </th>          
+     </tr>           
+    </thead>            
+    <tbody>
+     <tr>
+      <td colspan="2">          
+      {% set filas = data.planPatria|length %}             
+      {% set opaco = ' opaco ' %}
+      {% set oculto = ' oculto ' %}
+      {% set checked = '' %}           
+{% if filas != 0 %}            
+{% for t in data.planPatria %}
+    {% set chk = false %}              
+    {% for ona in t.objnac %}
+       {% if ona.proyecto is empty %}   
+          {% set chk = (chk or false) %}          
+       {% else %} 
+          {% set chk = true %}            
+       {% endif %}        
+    {% endfor %} 
+    {% if chk == true %}
+        {% set oculto = '' %}
+    {% else %}
+        {% set oculto = ' oculto ' %}     
+    {% endif %}          
+       <div id="objE{{ t.id }}" class="row-fluid" 
+            style="margin: 20px 0 10px 0px; cursor: pointer"
+            onmouseover="$(this).css('color', 'red')"
+            onmouseout="$(this).css('color', 'black')"
+            title="Clic para expandir los Objetivos Nacionales"
+            onclick=" showOna({{ t.id }})">
+         <div class="span1" style="margin: 0px; padding: 0px; 
+                                    font-size:1.2em; text-align:right;">
+            <div id="chequeo{{ t.id }}" class="{{ oculto }}"
+                 style="width: 25px; display: inline-block">        
+            <img src="{{ asset('bundles/sispro/img/activo16.png') }}" />        
+            </div>       
+            <div style="width: 25px; display: inline-block">
+             {{ t.codigo }}
+            </div>               
+         </div>
+         <div class="span10" style="margin-left: 0px; padding-left: 5px; 
+                                    font-size:1.2em; text-align:justify;">
+            {{ t.objetivoEstrategico }}
+         </div> 
+       </div>                  
+    <div id="ona{{ t.id }}" class="{{ oculto }}">
+    {% for ona in t.objnac %}
+       {% if ona.proyecto is empty %}   
+          {% set checked = '' %}
+          {% set opaco = ' opaco ' %}
+       {% else %} 
+          {% set checked = ' checked="checked" ' %}  
+          {% set opaco = '' %}
+       {% endif %}           
+       <div class="row-fluid" style="margin: 10px 0px;">
+         <div class="span1 offset1" style="text-align: right">
+           <input type="checkbox" id="tipo{{ ona.id }}" {{ checked|raw }}
+                  onchange="cambiaOna($(this).val());" {{ read }}
+                  name="data[tipo][]" value="{{ ona.id }}" />           
+           <label for="tipo{{ ona.id }}" style="text-align: right; text-indent: 30px; 
+                  font-size: 1.1em; font-style: normal;">
+                 {{ ona.codigo }} </label>           
+         <input type="hidden" id="objesp{{ ona.id }}" value="chequeo{{ t.id }}" />
+         </div>     
+         <div class="span9 {{ opaco }}" id="tag{{ ona.id }}" 
+              style="margin-left: 0px; padding-left: 0px; font-size:1.3em; 
+                     vertical-align: bottom; text-align:justify;" >           
+            {{ ona.objetivoNacional }}        
+         </div>               
+       </div>     
+    {% endfor %}  
+    </div>                      
+{% endfor %}              
+                                     
+{% endif %}            
+      </td>
+     </tr>
+   </tbody>
+   <tfoot>
+    <tr>
+     <td colspan="2">
+      <div class="row-fluid">
+        <div class="span4" style="text-align: left">
+           <span onclick="editarProyecto({{ data.proyecto.id }}, '03');" 
+                 class="btn btn-danger" 
+                 title="Anterior">
+            <i class="icon-arrow-left icon-white"></i> Anterior</span>
+        </div>  
+        <div class="span4">
+        {% if permiso %}   
+         <div class="span6">
+           <span onclick="eliminarProyecto({{ data.proyecto.id }});" 
+                 class="btn btn-danger" 
+                 title="Eliminar Proyecto">
+            <i class="icon-trash icon-white"></i> Eliminar</span>
+         </div>
+         <div class="span6">
+           <span onclick="actualizarProyecto('05');" 
+                 class="btn btn-danger" 
+                 title="Guardar Cambios">
+            <i class="icon-hdd icon-white"></i> Guardar</span>            
+         </div>
+        {% endif %}   
+        </div>  
+        <div class="span4">  
+           <span onclick="editarProyecto({{ data.proyecto.id }}, '06');" 
+                 class="btn btn-danger" 
+                 title="Siguiente"> Siguiente <i class="icon-arrow-right icon-white"></i>
+           </span>     
+        </div>
+      </div>
+     </td>  
+    </tr>
+   </tfoot>
+  </table> 
+</form>
+</div> 
+</div>
+</div>

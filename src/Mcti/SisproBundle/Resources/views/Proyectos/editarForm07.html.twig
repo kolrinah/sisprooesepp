@@ -1,0 +1,259 @@
+{# REGLAS PARA PODER EDITAR EL PROYECTO:
+     [  ( Usuario Responsable == Usuario OR Usuario.Rol == Enlace ) 
+          AND ( Estatus de Proyecto == 1)  ]  #}
+{% if ( (data.proyecto.usuario == app.user or is_granted('ROLE_ENLACE'))
+        and (data.proyecto.estatus.id == 1) ) %}
+   {% set permiso = true %}
+   {% set read = '' %}
+{% else %}
+   {% set permiso = false %} 
+   {% set read = 'disabled="disabled"' %}
+{% endif %}
+
+{% include 'SisproBundle:Proyectos:selector.html.twig' %}
+
+<div id="formulario">
+<div class="row">
+<div class="formulario span12">    
+ <form action="{{ path('editarProyecto') }}" method="post"  >
+ {# Campo oculto con el ID del proyecto #}
+ <input type="hidden" name="data[idProyecto]" value="{{ data.proyecto.id }}" />     
+ <input type="hidden" name="data[form]" value="{{ data.form }}" />
+   <table>
+    <thead>
+     <tr>
+      <th width="50%">Alcance / Impacto del Proyecto</th>
+      <th style="text-align:right">
+          <a href="{{ path('proyectos') }}">
+          <span class="btn btn-danger"  title="Clic para Cerrar">
+            <i class="icon-off icon-white"></i>
+          </span> </a>
+      </th>          
+     </tr>           
+    </thead>            
+    <tbody>
+     <tr>
+      <td colspan="2">
+        <div class="row-fluid">
+          <div class="span12">
+            <label>Objetivo General del Proyecto</label> 
+            <p>            
+             <textarea id="objetivoGeneral" rows="1" class="span11" {{ read }}
+                       title="Propósito central del proyecto. Expresa qué se quiere hacer o se espera  alcanzar con el proyecto (logros definidos que se busca alcanzar)"
+                       name="data[objetivoGeneral]" >{% if data.proyecto.objetivoGeneral !='00' %}{{ data.proyecto.objetivoGeneral|trim }}{% endif %} </textarea>   
+            </p>        
+          </div>             
+        </div>
+        <div class="row-fluid">
+          <div class="span4">
+             <label>Producto del Proyecto</label>  
+             <p>
+             <textarea id="producto" rows="1" maxlength="150" class="span11" {{ read }}
+                    title="Bien o servicio que surge como resultado cualitativo y cuantitativo de la ejecución del proyecto"                    
+                    name="data[producto]" >{% if data.proyecto.producto !='00' %}{{ data.proyecto.producto|trim }}{% endif %}</textarea> 
+             </p>        
+          </div>
+          <div class="span2" style="margin-left: 0px">
+             <label>Meta Física</label>  
+             <p>
+             <input type="text" id="meta" class="span10 campoNro" {{ read }}
+                    title="Expresión concreta y cuantificable del bien o servicio que se espera obtener de la ejecución del proyecto, usando criterios de cantidad calidad y tiempo"
+                    {# onlyDigits(e, value, allowDecimal, allowNegative, allowThousand, decSep, thousandSep, decLength) #}
+                    onblur="this.value=formatNumber(this.value,2);"
+                    onkeyup="formatNumber(this.value,2);" 
+                    onkeypress="return onlyDigits(event, this.value,true,false,false,',','.',2);"                    
+                    value="{{ data.proyecto.meta|number_format(2,',','.') }}"
+                    maxlength="14"
+                    name="data[meta]" />
+             </p>
+          </div>  
+          <div class="span2" style="margin-left: 0px">
+             <label>Unidad de Medida</label>  
+             <p>
+             <input type="text" id="unidadMedida" class="span10" maxlength="50" {{ read }}
+                    title="Descripción cualitativa del producto o el resultado de la ejecución del proyecto"
+                    value="{% if data.proyecto.unidadMedida !='00' %}{{ data.proyecto.unidadMedida|trim }}{% endif %}"
+                    name="data[unidadMedida]" />
+             </p>
+          </div>  
+          <div class="span4" style="margin-left: 0px">
+             <label>Indicadores</label>  
+             <p>
+             <textarea id="indicador" class="span11" maxlength="100" {{ read }}
+                    rows="1"   
+                    title="Miden los cambios que se esperan lograr al final del proyecto, e incluso más allá de su finalización, y que son definidos en el Objetivo general. Debe estar en correspondencia con el impacto o alcance esperado del proyecto. Debe estar expresado de manera específica, explícita y objetivamente verificable"                    
+                    name="data[indicador]" >{% if data.proyecto.indicador !='00' %}{{ data.proyecto.indicador|trim }}{% endif %}</textarea>
+             </p>
+          </div>                 
+        </div>   
+        <div class="row-fluid">
+          <div class="span6">
+             <label>Alcance</label>  
+             <p>
+             <textarea id="alcance" rows="1" maxlength="150" class="span11" {{ read }}
+                    title="Debe quedar expresado de manera clara y precisa cómo los resultados y logros de este proyecto contribuyen con la consolidación y/o fortalecimiento de los objetivos del Plan Patria, de las áreas estratégicas de investigación y/o de los lineamientos institucionales. Vale recalcar, que no se quiere repetir los conceptos definidos, si no expresar los resultados, logros del proyecto y su impacto en la población, su aporte al fortalecimiento del poder popular, del nuevo modelo productivo y relaciones de producción, de la transformación de valores, de hacer revolución"
+                    name="data[alcance]" >{% if data.proyecto.alcance !='00' %}{{ data.proyecto.alcance|trim }}{% endif %}</textarea> 
+             </p>              
+          </div>
+          <div class="span6">
+             <label>Punto y Círculo</label> 
+             <p>
+             <textarea id="puntoycirculo" rows="1" maxlength="150" class="span11" {{ read }}
+                    title="Modelo de integración y articulación en el proceso de transición al socialismo, que plantea la gestación de unidades productivas en las comunidades a partir de las vocaciones y potencialidades productivas promoviendo y consolidando la participación protagónica del pueblo organizado, de los trabajadores y las trabajadoras en Concejos Comunales, la conformación de las  Comunas en el proceso de construcción del estado Comunal, socialista, bolivariano y chavista"
+                    name="data[puntoycirculo]" >{% if data.proyecto.puntoycirculo !='00' %}{{ data.proyecto.puntoycirculo|trim }}{% endif %}</textarea> 
+             </p>              
+          </div>                 
+        </div> 
+        <div class="row-fluid">
+          <label>Población Beneficiaria:</label> 
+          <div class="span2">
+             <label>Población Femenina:</label>  
+             <p>
+             <input type="text" id="pobFemenina" class="span10 campoNro" {{ read }}
+                    title="Cantidad Aproximada de mujeres que se benecifician del Proyecto"
+                    {# onlyDigits(e, value, allowDecimal, allowNegative, allowThousand, decSep, thousandSep, decLength) #}
+                    onblur="this.value=formatNumber(this.value,0);"
+                    onkeyup="formatNumber(this.value,0);" 
+                    onkeypress="return onlyDigits(event, this.value,true,false,false,',','.',0);"                    
+                    value="{{ data.proyecto.pobFemenina|number_format(0,',','.') }}"
+                    onchange="setPobTotal();"
+                    maxlength="14"
+                    name="data[pobFemenina]" />
+             </p>
+          </div>  
+          <div class="span2" >
+             <label>Población Masculina:</label>  
+             <p>
+             <input type="text" id="pobMasculina" class="span10 campoNro" {{ read }}
+                    title="Cantidad Aproximada de hombres que se benecifician del Proyecto"
+                    {# onlyDigits(e, value, allowDecimal, allowNegative, allowThousand, decSep, thousandSep, decLength) #}
+                    onblur="this.value=formatNumber(this.value,0);"
+                    onkeyup="formatNumber(this.value,0);" 
+                    onkeypress="return onlyDigits(event, this.value,true,false,false,',','.',0);"                    
+                    value="{{ data.proyecto.pobMasculina|number_format(0,',','.') }}"
+                    onchange="setPobTotal();"
+                    maxlength="14"
+                    name="data[pobMasculina]" />
+             </p>
+          </div> 
+          <div class="span2" >
+             <label>Población Total:</label>  
+             <p>
+             <input type="text" id="pobTotal" class="span10 campoNro" {{ read }}
+                    title="Cantidad Aproximada de personas que se benecifician del Proyecto"
+                    {# onlyDigits(e, value, allowDecimal, allowNegative, allowThousand, decSep, thousandSep, decLength) #}
+                    onblur="this.value=formatNumber(this.value,0);"
+                    onkeyup="formatNumber(this.value,0);" 
+                    onkeypress="return onlyDigits(event, this.value,true,false,false,',','.',0);"                    
+                    value="{{ data.proyecto.pobTotal|number_format(0,',','.') }}"
+                    maxlength="16"
+                    name="data[pobTotal]" />
+             </p>
+          </div>                 
+        </div>
+        <div class="row-fluid">
+          <label>Empleos Directos:</label> 
+          <div class="span2">
+             <label>En Ejecución:</label>  
+             <p>
+             <input type="text" id="empleosDirectosEjecucion" class="span10 campoNro" {{ read }}
+                    title="Empleos Directos durante el desarrollo del Proyecto"
+                    {# onlyDigits(e, value, allowDecimal, allowNegative, allowThousand, decSep, thousandSep, decLength) #}
+                    onblur="this.value=formatNumber(this.value,0);"
+                    onkeyup="formatNumber(this.value,0);" 
+                    onkeypress="return onlyDigits(event, this.value,true,false,false,',','.',0);"                    
+                    value="{{ data.proyecto.empleosDirectosEjecucion|number_format(0,',','.') }}"                    
+                    maxlength="14"
+                    name="data[empleosDirectosEjecucion]" />
+             </p>
+          </div>  
+          <div class="span2" >
+             <label>En Operación:</label>  
+             <p>
+             <input type="text" id="empleosDirectosOperacion" class="span10 campoNro" {{ read }}
+                    title="Empleos Directos en Operación"
+                    {# onlyDigits(e, value, allowDecimal, allowNegative, allowThousand, decSep, thousandSep, decLength) #}
+                    onblur="this.value=formatNumber(this.value,0);"
+                    onkeyup="formatNumber(this.value,0);" 
+                    onkeypress="return onlyDigits(event, this.value,true,false,false,',','.',0);"                    
+                    value="{{ data.proyecto.empleosDirectosOperacion|number_format(0,',','.') }}"                    
+                    maxlength="14"
+                    name="data[empleosDirectosOperacion]" />
+             </p>
+          </div> 
+        </div>  
+        <div class="row-fluid">
+          <label>Empleos Indirectos:</label> 
+          <div class="span2">
+             <label>En Ejecución:</label>  
+             <p>
+             <input type="text" id="empleosIndirectosEjecucion" class="span10 campoNro" {{ read }}
+                    title="Empleos Indirectos durante el desarrollo del Proyecto"
+                    {# onlyDigits(e, value, allowDecimal, allowNegative, allowThousand, decSep, thousandSep, decLength) #}
+                    onblur="this.value=formatNumber(this.value,0);"
+                    onkeyup="formatNumber(this.value,0);" 
+                    onkeypress="return onlyDigits(event, this.value,true,false,false,',','.',0);"                    
+                    value="{{ data.proyecto.empleosIndirectosEjecucion|number_format(0,',','.') }}"                    
+                    maxlength="14"
+                    name="data[empleosIndirectosEjecucion]" />
+             </p>
+          </div>  
+          <div class="span2" >
+             <label>En Operación:</label>  
+             <p>
+             <input type="text" id="empleosIndirectosOperacion" class="span10 campoNro" {{ read }}
+                    title="Empleos Indirectos en Operación"
+                    {# onlyDigits(e, value, allowDecimal, allowNegative, allowThousand, decSep, thousandSep, decLength) #}
+                    onblur="this.value=formatNumber(this.value,0);"
+                    onkeyup="formatNumber(this.value,0);" 
+                    onkeypress="return onlyDigits(event, this.value,true,false,false,',','.',0);"                    
+                    value="{{ data.proyecto.empleosIndirectosOperacion|number_format(0,',','.') }}"                    
+                    maxlength="14"
+                    name="data[empleosIndirectosOperacion]" />
+             </p>
+          </div> 
+        </div>                
+     </td>
+    </tr>
+   </tbody>
+   <tfoot>
+    <tr>
+     <td colspan="2">
+      <div class="row-fluid">
+        <div class="span4" style="text-align: left">
+           <span onclick="editarProyecto({{ data.proyecto.id }}, '06');" 
+                 class="btn btn-danger" 
+                 title="Anterior">
+            <i class="icon-arrow-left icon-white"></i> Anterior</span>
+        </div>  
+        <div class="span4">
+        {% if permiso %}   
+         <div class="span6">
+           <span onclick="eliminarProyecto({{ data.proyecto.id }});" 
+                 class="btn btn-danger" 
+                 title="Eliminar Proyecto">
+            <i class="icon-trash icon-white"></i> Eliminar</span>
+         </div>
+         <div class="span6">
+           <span onclick="actualizarProyecto('07');" 
+                 class="btn btn-danger" 
+                 title="Guardar Cambios">
+            <i class="icon-hdd icon-white"></i> Guardar</span>            
+         </div>
+        {% endif %}   
+        </div>  
+        <div class="span4">  
+           <span onclick="editarProyecto({{ data.proyecto.id }}, '08');" 
+                 class="btn btn-danger" 
+                 title="Siguiente"> Siguiente <i class="icon-arrow-right icon-white"></i>
+           </span>     
+        </div>
+      </div>
+     </td>  
+    </tr>
+   </tfoot>
+  </table> 
+</form>
+</div> 
+</div>
+</div>

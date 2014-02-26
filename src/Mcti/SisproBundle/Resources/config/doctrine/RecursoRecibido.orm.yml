@@ -1,0 +1,48 @@
+Mcti\SisproBundle\Entity\RecursoRecibido:
+    type: entity
+    table: recurso_recibido
+    fields:
+        id:
+            id: true
+            type: bigint
+            nullable: false
+            generator:
+                strategy: SEQUENCE
+        fecha:
+            type: date
+            nullable: false
+        monto:
+            type: decimal
+            nullable: false
+        observaciones:
+            type: text
+            nullable: true
+    manyToOne:
+        proyecto:
+            targetEntity: Proyecto
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                proyecto_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        fuenteFinanciamiento:
+            targetEntity: FuenteFinanciamiento
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                fuente_financiamiento_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        moneda:
+            targetEntity: Moneda
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                moneda_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

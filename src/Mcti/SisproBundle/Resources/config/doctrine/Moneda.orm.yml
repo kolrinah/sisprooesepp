@@ -1,0 +1,30 @@
+Mcti\SisproBundle\Entity\Moneda:
+    type: entity
+    table: moneda
+    fields:
+        id:
+            id: true
+            type: smallint
+            nullable: false
+            generator:
+                strategy: SEQUENCE
+        moneda:
+            type: string
+            length: 20
+            fixed: false
+            nullable: false
+        precioBs:
+            type: decimal
+            nullable: false
+            column: precio_bs
+        iso:
+            type: string
+            length: 10
+            fixed: false
+            nullable: false
+        simbolo:
+            type: string
+            length: 10
+            fixed: false
+            nullable: false
+    lifecycleCallbacks: {  }

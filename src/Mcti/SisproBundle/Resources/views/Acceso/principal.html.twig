@@ -1,0 +1,80 @@
+{% extends 'SisproBundle:Plantillas:base.html.twig' %}
+{% block title %} 
+{{ parent() }}
+| Principal
+{% endblock %}
+
+{% block body %}
+<input type="hidden" id="analizar" value="{{ data.analizar }}" />
+
+<div class="row-fluid formulario" style="padding-top: 50px">
+ <div class="span6 offset3">   
+{# PANTALLA DE BIENVENIDA #}     
+   <table id="bienvenida" class="oculto">
+    <thead>
+     <tr>
+      <th>Bienvenido</th>      
+     </tr>           
+    </thead>            
+    <tbody>
+     <tr>
+      <td >
+        <div class="row-fluid">
+         <div class="span12" style="font-size: 2em; line-height: 35px; text-align: center;
+                                   vertical-align: middle; padding: 20px ">
+             Sistema de Registro de Proyectos de la Oficina Estratégica de Seguimiento 
+             y Evaluación de Políticas Públicas del MPPCTI
+         </div>                                
+        </div>
+      </td>     
+     </tr> 
+    </tbody>
+    <tfoot>
+     <tr>
+      <td></td>  
+     </tr>
+    </tfoot>
+   </table>  
+         
+{# PANTALLA DE PROCESAMIENTO #}              
+   <table id="procesando" class="oculto">
+    <thead>
+     <tr>
+      <th>Advertencia</th>      
+     </tr>           
+    </thead>            
+    <tbody>
+     <tr>
+      <td>
+        <div class="row-fluid">
+         <div class="span4" style="text-align: center; vertical-align: middle">
+           <img src="{{ asset('bundles/sispro/img/cargandoRed.gif') }}"/>
+         </div>
+         <div class="span8" style="font-size: 2.1em; line-height: 30px; text-align: center;
+                                   vertical-align: middle; padding-top: 30px">
+             Analizando Proyectos<br/>Registrados en el Sistema
+         </div>                
+        </div>
+      </td>     
+     </tr> 
+    </tbody>
+    <tfoot>
+     <tr>
+      <td id="prompt" style="text-align: right; font-size: 1.3em">      
+        Esto puede demorar, por favor espere...
+      </td>  
+     </tr>
+    </tfoot>
+   </table>     
+         
+ </div>
+</div> 
+
+<div id="prueba">
+    
+</div>
+
+{% endblock %}
+{% block javascripts %}   
+    <script type="text/javascript" src="{{ asset('bundles/sispro/js/principal.js') }}"></script> 
+{% endblock %}  

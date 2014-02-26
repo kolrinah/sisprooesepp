@@ -1,0 +1,129 @@
+<!DOCTYPE HTML>
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+<!-- * SISTEMA DE SEGUIMIENTO DE PROYECTOS DEL MCTI Y ENTES ADSCRITOS              * -->
+<!-- * http://sisprooespp.mcti.gob.ve                                              * -->
+<!-- * DESARROLLADO POR: ING.REIZA GARCÍA                                          * -->
+<!-- *                   TSU.MARÍA GABRIELA MONTERO                                * -->
+<!-- *                   ING.HÉCTOR MARTÍNEZ                                       * -->
+<!-- * PARA: OFICINA ESTRATÉGICA DE SEGUIMIENTO Y EVALUACIÓN DE POLÍTICAS PÚBLICAS * -->
+<!-- *       MINISTERIO DEL PODER POPULAR PARA CIENCIA, TECNOLOGÍA E INNOVACIÓN    * -->
+<!-- * FECHA: MAYO DE 2013                                                         * -->
+<!-- * TELEFONOS DE CONTACTO PARA SOPORTE: 0416-9052533 / 0212-5153033             * -->
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+<html>
+ <head>
+  <meta charset="UTF-8">
+   <title>{% block title %}Sistema de Seguimiento de Proyectos{% endblock %}</title>      
+   <link rel="icon" type="image/x-icon" href="{{ asset('bundles/sispro/img/bandera.ico') }}">
+   <link rel="shortcut icon" type="image/x-icon" href="{{ asset('bundles/sispro/img/bandera.ico') }}">  
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{# Sección de Assetics #}
+   {% stylesheets  output='css/sispro.css' 
+                  '@SisproBundle/Resources/public/css/bootstrap.css'  
+                  '@SisproBundle/Resources/public/css/bootstrap-responsive.css'                 
+                  '@SisproBundle/Resources/public/css/jquery.dataTables.css'
+                  '@SisproBundle/Resources/public/css/jquery-ui.css'
+                  '@SisproBundle/Resources/public/css/estilos.css'
+   %}              
+   <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
+   {% endstylesheets %}
+   
+ </head>
+ <body>   
+ <div class="container cuerpoPpal"> 
+   <div class="row">
+    <header>   
+     <div class="span12" id="bannerGob">
+      <table>
+       <tr>
+        <td width="40%" style="text-align:left;">
+         <img src="{{ asset('bundles/sispro/img/cintillo.png') }}"/>
+        </td>
+        <td>                   
+        </td>
+       </tr>          
+       <tr>
+        <td style="text-align: center"> 
+           <img src="{{ asset('bundles/sispro/img/chavez/canaimita.jpg')}}"
+                style="width: 25%" />
+           <img id="foto"
+                src="{{ asset('bundles/sispro/img/chavez/canaimita150.jpg')}}" 
+                style="border: #ffffff solid 1px; width:43%" />
+           <img src="{{ asset('bundles/sispro/img/chavez/satelite.jpg')}}"
+                style="width: 25%" />
+        </td>
+        <td>
+            <blockquote id="frase" style="text-align:justify">                
+            Debemos avanzar hacia una explosión masiva del conocimiento, de tecnología,
+            de innovación, en función de las necesidades sociales y económicas del país
+            y de la soberanía nacional.
+            <cite>
+             Aló Presidente Nro. 247 Ciudad Guayana, 19 de febrero de 2006
+            </cite>
+            </blockquote>                  
+        </td>
+       </tr>
+      </table>
+     </div>
+    </header>
+   </div>
+ 
+  <nav>
+   {% if is_granted('ROLE_USER') %}  
+     {{ include('SisproBundle:Plantillas:menu.html.twig') }}    
+   {% endif %}
+  </nav>  
+<div class="ajusteTop"></div>
+<div id="body">
+ {% block body %}
+ {% endblock %}   
+</div>        
+ {# app.session.id #}
+ {# app.session.metadatabag.lastused #}   
+<div class="ajusteBottom"></div>         
+</div>
+<div class="container" >         
+<div class="row" >
+ <div class="span12" id="pie">   
+  <footer>   
+       <table width="100%">
+        <tr>
+         <td>
+          {# Establecemos las bases url para comunicarnos con javascript #}
+          <input type="hidden" id="baseImg" value="{{ asset('bundles/sispro/') }}"/>                 
+          <input type="hidden" id="baseURL" value="{{ url('home') }}"/>          
+         <center>
+            {% if is_granted('ROLE_USER') %}
+             {{ app.user.nombre }} {{ app.user.apellido }} / {{ app.user.estructura.estructura }} 
+             ({{ app.user.estructura.siglas }})
+            {% endif %}
+          </center></td>                   
+        </tr>
+        <tr>
+         <td><center>Ministerio del Poder Popular para Ciencia, Tecnología e Innovación</center></td>                   
+        </tr>
+       </table>     
+  </footer>
+ </div>
+</div>   
+</div>        
+{# Ventanas emergentes #}         
+  <div id="cargandoModal"></div>
+  <div id="ventanaModal"></div>
+  
+{# Sección Javascript #}
+   {% javascripts output='js/sispro.js'
+                  '@SisproBundle/Resources/public/js/jquery.js'
+                  '@SisproBundle/Resources/public/js/jquery-ui.js'
+                  '@SisproBundle/Resources/public/js/bootstrap.js'
+                  '@SisproBundle/Resources/public/js/jquery.dataTables.js'
+                  '@SisproBundle/Resources/public/js/comunes.js'
+                  '@SisproBundle/Resources/public/js/frasesChavez.js'
+    %}
+   <script type="text/javascript" src="{{ asset_url }}"></script>
+   {% endjavascripts %}
+
+   {% block javascripts %}   
+   {% endblock %}    
+ </body>
+</html>

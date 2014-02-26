@@ -1,0 +1,119 @@
+{# REGLAS PARA PODER EDITAR EL PROYECTO:
+     [ ( Usuario Responsable == Usuario OR Usuario.Rol == Enlace ) 
+          AND ( Estatus de Proyecto == 1)  ]  #}
+{% if ( (data.proyecto.usuario == app.user or is_granted('ROLE_ENLACE'))
+        and (data.proyecto.estatus.id == 1) ) %}
+   {% set permiso = true %}
+   {% set read = '' %}
+{% else %}
+   {% set permiso = false %} 
+   {% set read = 'disabled="disabled"' %}
+{% endif %}
+
+{% include 'SisproBundle:Proyectos:selector.html.twig' %}
+
+<div id="formulario">
+<div class="row">
+<div class="formulario span12">    
+ <form action="{{ path('editarProyecto') }}" method="post"  >
+ {# Campo oculto con el ID del proyecto #}
+ <input type="hidden" name="data[idProyecto]" value="{{ data.proyecto.id }}" />
+ <input type="hidden" name="data[form]" value="{{ data.form }}" />
+ 
+   <table>
+    <thead>
+     <tr>
+      <th width="50%">Tipo de Proyecto</th>
+      <th style="text-align:right">
+          <a href="{{ path('proyectos') }}">
+          <span class="btn btn-danger"  title="Clic para Cerrar">
+            <i class="icon-off icon-white"></i>
+          </span> </a>
+      </th>          
+     </tr>           
+    </thead>            
+    <tbody>
+     <tr>
+      <td colspan="2">          
+      {% set filas = data.tipos|length %}             
+      {% set clase = ' opaco ' %}            
+      {% set checked = '' %}
+      {% set mitad = ((data.tipos|length)/2) %}
+      {% set i = 0 %}        
+{% if filas != 0 %}
+       <div class="row-fluid">        
+        <div class="span6">           
+      {% for t in data.tipos %}
+         {% if t.proyecto is empty %}                     
+            {% set checked = '' %}
+            {% set clase = ' opaco ' %}                     
+         {% else %}
+            {% set checked = ' checked="checked" ' %}
+            {% set clase = '' %}                       
+         {% endif %}                                         
+           <div class="row-fluid" style="margin: 10px 0px;" >
+             <div class="span1" style="text-align:right">
+               <input type="checkbox" id="tipo{{ t.id }}" {{ checked|raw }}
+                      onchange="cambiaTipo($(this).val());" {{ read }}
+                      name="data[tipo][]" value="{{ t.id }}" />
+               <label for="tipo{{ t.id }}" style="display: inline-block" ></label>  
+             </div>
+             <div class="span11 {{ clase }}" id="tag{{ t.id }}" 
+                  style="font-size:1.3em; text-align:justify; padding-right: 30px">                     
+                {{ t.tipo }}               
+             </div>
+           </div>
+         {% set i = i + 1 %}
+         {% if i > mitad %}
+           {% set i = 0 %}
+            </div>
+               <div class="span6">
+         {% endif %}
+      {% endfor %}
+        </div> 
+       </div> 
+{% endif %}              
+      </td>
+     </tr>
+   </tbody>
+   <tfoot>
+    <tr>
+     <td colspan="2">
+      <div class="row-fluid">
+        <div class="span4" style="text-align: left">
+           <span onclick="editarProyecto({{ data.proyecto.id }}, '02');" 
+                 class="btn btn-danger" 
+                 title="Anterior">
+            <i class="icon-arrow-left icon-white"></i> Anterior</span>
+        </div>  
+        <div class="span4">
+        {% if permiso %}   
+         <div class="span6">
+           <span onclick="eliminarProyecto({{ data.proyecto.id }});" 
+                 class="btn btn-danger" 
+                 title="Eliminar Proyecto">
+            <i class="icon-trash icon-white"></i> Eliminar</span>
+         </div>
+         <div class="span6">
+           <span onclick="actualizarProyecto('03');" 
+                 class="btn btn-danger" 
+                 title="Guardar Cambios">
+            <i class="icon-hdd icon-white"></i> Guardar</span>            
+         </div>
+        {% endif %}   
+        </div>  
+        <div class="span4">  
+           <span onclick="editarProyecto({{ data.proyecto.id }}, '05');" 
+                 class="btn btn-danger" 
+                 title="Siguiente"> Siguiente <i class="icon-arrow-right icon-white"></i>
+           </span>     
+        </div>
+      </div>
+     </td>  
+    </tr>
+   </tfoot>
+  </table> 
+</form>
+</div> 
+</div>
+</div>

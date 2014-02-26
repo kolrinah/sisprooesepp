@@ -1,0 +1,55 @@
+Mcti\SisproBundle\Entity\Municipio:
+    type: entity
+    repositoryClass: Mcti\SisproBundle\Entity\MunicipioRepository
+    table: municipio
+    fields:
+        id:
+            id: true
+            type: smallint
+            nullable: false
+            generator:
+                strategy: SEQUENCE
+        municipio:
+            type: text
+            nullable: false
+        poblacion:
+            type: bigint
+            nullable: true
+        ica:
+            type: integer
+            unsigned: false
+            nullable: true
+        capitalMunicipio:
+            type: text
+            nullable: true
+            column: capital_municipio
+        codigoOnapre:
+            type: text
+            nullable: true
+            column: codigo_onapre
+        superficie:
+            type: decimal
+            nullable: true
+        mapArea:
+            type: text
+            nullable: true
+            column: map_area
+    manyToMany:
+        proyecto:
+            targetEntity: Proyecto
+            cascade: {  }
+            mappedBy: municipio
+            inversedBy: null
+            joinTable: null
+            orderBy: null
+    manyToOne:
+        estado:
+            targetEntity: Estado
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                estado_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

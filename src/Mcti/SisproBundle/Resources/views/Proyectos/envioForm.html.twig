@@ -1,0 +1,64 @@
+{# Campo oculto con el Formulario #} 
+<input type="hidden" name="data[form]" value="11e" />
+
+<table>
+    <thead>
+     <tr>
+      <th width="50%">Envío del Proyecto</th>
+      <th style="text-align:right">
+          <a href="{{ path('proyectos') }}">
+          <span class="btn btn-danger"  title="Clic para Cerrar">
+            <i class="icon-off icon-white"></i>
+          </span> </a>
+      </th>          
+     </tr>           
+    </thead>            
+    <tbody>
+     <tr>
+      <td colspan="2" style="padding:20px"> 
+{% set envio = true %}          
+{% for m in data.chequeo %}
+         <div class="row-fluid" >
+          <div class="span5 offset1" style="text-align: right; font-size: 1.2em">   
+              {{ m.nombre }}
+          </div>
+          <div class="span1" style="text-align: left; margin-left: 10px">   
+          {% if  m.check %}     
+              <img src="{{ asset('bundles/sispro/img/activo16.png')}}" 
+                   title="Aprobado" />
+          {% else %}
+              <img src="{{ asset('bundles/sispro/img/cancel16.png')}}"
+                   style="cursor: pointer"
+                   onclick="editarProyecto({{ data.proyecto.id }},'{{ m.form }}')"
+                   title="{{ m.msg }}" />
+              {% set envio = false %}
+          {% endif %}    
+          </div>
+         </div>               
+{% endfor %}
+      </td>
+     </tr>
+    </tbody>
+    <tfoot>
+     <tr>
+      <td colspan="2">
+       <div class="row-fluid">
+        <div class="span2" style="text-align: left">
+           <span onclick="editarProyecto({{ data.proyecto.id }}, '10');" 
+                 class="btn btn-danger" 
+                 title="Anterior">
+            <i class="icon-arrow-left icon-white"></i> Anterior</span>
+        </div>   
+        <div class="span2 offset3">  
+        {% if permiso and envio and not is_granted('ROLE_ADMIN') %}            
+            <span onclick="enviarProyecto();" 
+                 class="btn btn-success" 
+                 title="Enviar Proyecto a la OESEPP">
+              <i class="icon-envelope icon-white"></i> Enviar</span>         
+        {% endif %}      
+        </div>
+      </div>
+     </td>  
+    </tr>
+   </tfoot>
+  </table> 

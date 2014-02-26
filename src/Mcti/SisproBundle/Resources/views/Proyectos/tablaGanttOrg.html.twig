@@ -1,0 +1,87 @@
+{% set filas = data.proyecto.objetivosOrg|length %}         
+{% if filas != 0 %} 
+
+{% set anchoCronograma = 480 %}
+
+<table class="tablaAlterna" title="Planificación Original">
+ <thead>
+{# LINEA 1 | [vacío] | año 1 | año n | #}   
+  <tr>
+   <th colspan="4"></th>
+{% for year in data.yearsOrg %}
+   {% if loop.index <= data.colsOrg %}
+   <th colspan="4" style="text-align: center; padding: 1px 0px;">{{ year }}</th>
+   {% endif %}
+{% endfor %}
+  </tr> 
+{# LINEA 2 | actividades | I | II | III | IV | #} 
+  <tr>
+   <th style="max-width:30px;text-align:center">Nº</th>   
+   <th colspan="2" style="text-align:left">Objetivo Específico / Actividad</th>
+   <th style="width:30px; padding: 1px 0px; text-align:center"></th>
+   
+{% for year in data.yearsOrg %}   
+   {% if loop.index <= data.colsOrg %}
+   <th style="width:{{ anchoCronograma/(data.colsOrg*4) }}px; text-align: center; padding: 1px 0px">I</th>
+   <th style="width:{{ anchoCronograma/(data.colsOrg*4) }}px; text-align: center; padding: 1px 0px">II</th>
+   <th style="width:{{ anchoCronograma/(data.colsOrg*4) }}px; text-align: center; padding: 1px 0px">III</th>
+   <th style="width:{{ anchoCronograma/(data.colsOrg*4) }}px; text-align: center; padding: 1px 0px">IV</th>
+   {% endif %}
+{% endfor %}      
+  </tr>   
+ </thead>
+  <tfoot style="text-align:center">
+  <tr>
+   <td >Nº</td>   
+   <td colspan="2" style="text-align:left">Objetivo Específico / Actividad</td>
+   <td></td>
+{% for year in data.yearsOrg %}   
+   {% if loop.index <= data.colsOrg %}
+   <td style="text-align: center; padding: 1px 0px">I</td>
+   <td style="text-align: center; padding: 1px 0px">II</td>
+   <td style="text-align: center; padding: 1px 0px">III</td>
+   <td style="text-align: center; padding: 1px 0px">IV</td>
+   {% endif %}
+{% endfor %}  
+  </tr>   
+ </tfoot>
+ <tbody>
+  {% for oe in data.objetivosOrg %}
+  <tr class="resaltado">
+   <td style="text-align:center; font-weight: bold;" >
+    {{ oe.codigo }}
+   </td> 
+   <td colspan="2"  style="text-align:left; font-weight: bold;" >
+    {{ oe.objetivoEspecifico }}
+   </td> 
+   <td></td>
+   <td colspan="{{ data.colsOrg*4 }}" class="cuadricula" style="text-align: center">
+     {% if oe.actividades is empty %} * * Sin Actividades Programadas * * {% endif %}</td>   
+  </tr>
+   {% if oe.actividades is not empty %}      
+      {% for a in oe.actividades %}         
+         <tr class="resaltado" >
+          <td></td>   
+          <td style="width:30px; text-align:center">
+           {{ oe.codigo }}.{{ a.codigo }}
+          </td> 
+          <td>{{ a.actividad }}<br/>
+           Meta Física: {{ a.metaFisica|number_format(2,',','.') }} {{ a.unidadMedida }}<br/>
+           Presupuesto: Bs.{{ (a.moneda.precioBs * a.monto)|number_format(2,',','.') }}
+          </td>
+          <td></td>
+          <td colspan="{{ data.colsOrg*4 }}" class="cuadricula" style="padding:0px!important;"
+              title="Desde: {{ a.fechaIni|date('d/m/Y') }} Hasta: {{ a.fechaFin|date('d/m/Y') }}">
+         {% if (a.fechaFin >= a.fechaIni) %} 
+            {{ miniGantt(data.yearsOrg, a.fechaIni, a.fechaFin)|raw }}
+         {% endif %}
+          </td>
+         </tr>  
+      {% endfor %}
+   {% endif %}
+  {% endfor %} 
+ </tbody>
+</table>
+{% else %}
+<center><h3>El Proyecto no posee Objetivos Específicos Registrados</h3> </center>
+{% endif %}

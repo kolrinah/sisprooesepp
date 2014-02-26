@@ -1,0 +1,23 @@
+Mcti\SisproBundle\Entity\Session:
+    type: entity
+    table: session
+    fields:
+        sessionId:
+            id: true
+            type: string
+            length: 255
+            fixed: false
+            nullable: false
+            column: session_id
+            generator:
+                strategy: SEQUENCE
+        sessionValue:
+            type: text
+            nullable: false
+            column: session_value
+        sessionTime:
+            type: integer
+            unsigned: false
+            nullable: false
+            column: session_time
+    lifecycleCallbacks: {  }

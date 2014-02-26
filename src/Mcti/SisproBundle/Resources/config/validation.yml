@@ -1,0 +1,110 @@
+Mcti\SisproBundle\Entity\Usuario:
+  properties:
+    nombre:
+        - NotBlank: {message: ""}
+        - NotNull: {message: " Campo Requerido "}
+        - Length: 
+            min: 2
+            max: 50
+            minMessage: " El Campo debe tener al menos 2 caracteres "
+            maxMessage: " El Campo no debe exceder los 50 caracteres "
+        - Regex: 
+            pattern: /^([A-Za-zÑÁÉÍÓÚñáéíóúÜü]{1}[A-Za-zÑÁÉÍÓÚñáéíóúÜü]+[\s]*)+$/
+            message: " El nombre introducido no es válido "
+        
+    apellido:
+        - NotBlank: {message: ""}
+        - NotNull: {message: " Campo Requerido "}
+        - Length: 
+            min: 2
+            max: 50
+            minMessage: " El Campo debe tener al menos 2 caracteres "
+            maxMessage: " El Campo no debe exceder los 50 caracteres "           
+        - Regex: 
+            pattern: /^([A-Za-zÑÁÉÍÓÚñáéíóúÜü]{1}[A-Za-zÑÁÉÍÓÚñáéíóúÜü]+[\s]*)+$/
+            message: " El apellido introducido no es válido "
+
+    correo:
+        - NotBlank: {message: ""}
+        - NotNull: {message: " Campo Requerido "}      
+        - Email: 
+            message: Correo electrónico no válido
+        - Length: 
+            min: 5
+            max: 150
+            minMessage: " El Campo debe tener al menos 5 caracteres "
+            maxMessage: " El Campo no debe exceder los 150 caracteres "
+
+    clave:            
+        - Length: 
+            min: 6
+            max: 50
+            minMessage: " La Contraseña debe tener al menos 6 caracteres "
+            maxMessage: " La Contraseña no debe exceder los 50 caracteres " 
+            
+    cargo:
+        - Length: 
+            min: 2
+            max: 50
+            minMessage: " El Campo debe tener al menos 2 caracteres "
+            maxMessage: " El Campo no debe exceder los 50 caracteres "
+            
+    telefono:
+        - Length: 
+            min: 3
+            max: 50
+            minMessage: " El Campo debe tener al menos 3 dígitos "
+            maxMessage: " El Campo no debe exceder los 50 caracteres "
+
+    activo:
+        - Type:
+            type: bool
+            
+    estructura:
+        - NotBlank: {message: ""}
+        - NotNull: {message: " Campo Requerido "}
+        
+Mcti\SisproBundle\Entity\Proyecto:
+  properties: 
+    nombre:
+        - Length:
+            max: 150
+            maxMessage: " El Campo no debe exceder los 150 caracteres " 
+        - NotBlank: {message: ""}
+        - NotNull: {message: " Campo Requerido "}
+    descripcion:
+        - Length:
+            max: 400
+            maxMessage: " El Campo no debe exceder los 400 caracteres "       
+        - NotBlank: {message: ""}
+        - NotNull: {message: " Campo Requerido "}
+    problema:
+        - Length:
+            max: 200
+            maxMessage: " El Campo no debe exceder los 200 caracteres "       
+        - NotBlank: {message: ""}
+        - NotNull: {message: " Campo Requerido "}
+    direccion:
+        - Length:
+            max: 200
+            maxMessage: " El Campo no debe exceder los 200 caracteres "             
+        - NotBlank: {message: ""}
+        - NotNull: {message: " Campo Requerido "}
+        
+Mcti\SisproBundle\Entity\Fotografia:
+  properties:
+    imagen:
+        - NotNull: {message: " Debe seleccionar un archivo "}
+        - File:
+            maxSize: 2M
+            maxSizeMessage: "El tamaño del archivo no debe superar los 2MB"
+            mimeTypes: [image/png, image/jpeg, image/jpg, image/tiff, image/gif]
+            mimeTypesMessage: "Formato de archivo inválido" 
+    comentarios:
+        - NotBlank: {message: ""}
+        - NotNull: {message: " Campo requerido "}
+        - Length:
+            min: 3
+            max: 150            
+            maxMessage: " El Campo no debe exceder los 150 caracteres "
+            minMessage: " Debe superar los 3 caracteres "

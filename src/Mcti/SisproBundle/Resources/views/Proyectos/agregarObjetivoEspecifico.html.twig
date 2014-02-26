@@ -1,0 +1,67 @@
+<div class="row">
+<div class="formulario span12">    
+ <form action="{{ path('agregarObjetivoEspecifico') }}" method="post"  >
+ {# Campo oculto con el ID del proyecto #}
+   <input type="hidden" id="idProyecto" 
+          name="data[idProyecto]" value="{{ data.id }}" />
+   <table id="formObjetivoEspecifico" style="width:600px; height:250px;">
+    <thead>
+     <tr>
+      <th width="50%">Agregar Objetivo Específico</th>
+      <th style="text-align:right">         
+          <span class="btn btn-danger"  title="Clic para Cerrar"
+                onclick="cancelarModal(); editarProyecto({{ data.id }}, '10')">
+            <i class="icon-off icon-white"></i>
+          </span> 
+      </th>          
+     </tr>           
+    </thead>            
+    <tbody>
+     <tr>
+      <td colspan="2">
+        <div class="row-fluid">
+          <div class="span12">
+            <label>Nro.</label> 
+            <p>            
+             <input type="text" id="codigo" class="span2" maxlength="4"
+                    style="text-align: center"
+                    title="Número de Objetivo Específico"
+{# onlyDigits(e, value, allowDecimal, allowNegative, allowThousand, decSep, thousandSep, decLength) #}
+                    onblur="this.value=formatNumber(this.value,0);"
+                    onkeyup="formatNumber(this.value,0);" 
+                    onkeypress="return onlyDigits(event, this.value,true,false,false,',','.',0);"                    
+                    name="data[codigo]" value="{{ data.objetivos|length + 1 }}"/>
+            </p>        
+          </div>            
+        </div>           
+        <div class="row-fluid">
+          <div class="span12">
+            <label>Objetivo Específico</label> 
+            <p>            
+             <textarea id="objetivoEspecifico" rows="2" class="span11 campo" 
+                       title="Se refiere a las especificaciones, pasos o acciones intermedias que se requieren realizar para alcanzar o consolidar el objetivos general."
+                       name="data[objetivoEspecifico]" ></textarea>   
+            </p>        
+          </div>            
+        </div> 
+     </td>
+    </tr>
+   </tbody>
+   <tfoot>
+    <tr>
+     <td colspan="2">
+      <div class="row-fluid">  
+         <div class="span12">
+           <span id="boton" onclick="guardarObjetivoEspecifico()" 
+                 class="btn btn-danger" 
+                 title="Guardar Cambios">
+            <i class="icon-hdd icon-white"></i> Guardar</span>            
+         </div>     
+      </div>
+     </td>  
+    </tr>
+   </tfoot>
+  </table> 
+</form>
+</div> 
+</div>

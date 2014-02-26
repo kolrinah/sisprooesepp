@@ -1,0 +1,40 @@
+Mcti\SisproBundle\Entity\ProyectoFuenteFinanciamiento:
+    type: entity
+    table: proyecto_fuente_financiamiento
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: SEQUENCE
+        monto:
+            type: decimal
+            nullable: false
+    manyToOne:
+        proyecto:
+            targetEntity: Proyecto
+            cascade: {  }
+            inversedBy: fuentes
+            joinColumns:
+                proyecto_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        fuenteFinanciamiento:
+            targetEntity: FuenteFinanciamiento
+            cascade: {  }
+            inversedBy: proyectos
+            joinColumns:
+                fuente_financiamiento_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        moneda:
+            targetEntity: Moneda
+            cascade: {  }
+            inversedBy: 
+            joinColumns:
+                moneda_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

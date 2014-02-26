@@ -1,0 +1,128 @@
+<div class="row">
+<div class="formulario span12">    
+ <form action="{{ path('editarRecursoRecibido') }}" method="post"  >
+ {# Campo oculto con el ID del proyecto #}
+   <input type="hidden" id="idProyecto" 
+          name="data[idProyecto]" value="{{ data.idProyecto }}" />
+ {# Campo oculto con el ID del Recurso Recibido  #}
+   <input type="hidden" id="idRecurso" 
+          name="data[idRecurso]" value="{{ data.recurso.id }}" />   
+ {# CREAMOS CAMPOS OCULTOS CON LAS MONEDAS PARA AJAX #}
+ {% for m in data.monedas %}    
+    <input type="hidden" id="simbolo{{ m.id }}" value="{{ m.simbolo }}" />
+ {% endfor %}   
+   
+   <table id="formRecursoRecibido" style="width:600px; height:400px;">
+    <thead>
+     <tr>
+      <th width="50%">Editar Recurso Recibido</th>
+      <th style="text-align:right">         
+          <span class="btn btn-danger"  title="Clic para Cerrar"
+                onclick="cancelarModal();">
+            <i class="icon-off icon-white"></i>
+          </span> 
+      </th>          
+     </tr>           
+    </thead>            
+    <tbody>
+     <tr>
+      <td colspan="2">
+        <div class="row-fluid">
+          <div class="span5">
+            <label>Fecha de Recepción</label>
+            <p>
+              <input type="text" id="fecha" name="data[fecha]" class="span8"
+                     maxlength="10" value="{{ data.recurso.fecha|date('d/m/Y')}}"
+                     style="text-align: center; background-color: white; cursor: pointer" 
+                     readonly="readonly" />  
+            </p>       
+          </div>
+          <div class="span6" style="margin-left:0px">
+            <label>Fuente de Financiamiento</label> 
+            <p>            
+             <select id="fuente" name="data[fuente]" class="span11 campo" 
+                     title="Fuente de Financiamiento" >               
+            {% for f in data.fuentes %}               
+               {% if f.id == data.recurso.fuenteFinanciamiento.id %}
+                 <option value="{{ f.id }}" selected="selected" >{{ f.fuente }}</option>
+               {% else %}  
+                 <option value="{{ f.id }}" >{{ f.fuente }}</option>
+               {% endif %}
+            {% endfor %}
+             </select>   
+            </p>        
+          </div>                 
+        </div>           
+        <div class="row-fluid">
+          <div class="span4">
+            <label>Moneda</label> 
+            <p>    
+             <select id="moneda" name="data[moneda]" class="span11 campo" title="Moneda Utilizada"
+                     onchange="cambiaMoneda($(this));" >
+            {% for m in data.monedas %}
+               {% if m.id == data.recurso.moneda.id %}                 
+                 <option value="{{ m.id }}" selected="selected" >{{ m.moneda }}</option>
+               {% else %}  
+                 <option value="{{ m.id }}" >{{ m.moneda }}</option>
+               {% endif %}                                
+            {% endfor %}
+             </select>   
+            </p>        
+          </div>  
+          <div class="span1" id="simboloMoneda"
+               style="text-align:right; padding: 25px 10px 0px 0px; font-size: 1.2em"> 
+              {{ data.recurso.moneda.simbolo }}
+          </div>      
+          <div class="span5" style="margin-left:0px">
+            <label>Monto Total</label> 
+            <p>            
+             <input type="text" id="monto" class="span8 campo" 
+                    style="text-align: right"
+                    title="Monto de los Recursos Recibidos"
+{# onlyDigits(e, value, allowDecimal, allowNegative, allowThousand, decSep, thousandSep, decLength) #}
+                    onblur="this.value=formatNumber(this.value,2);"
+                    onkeyup="formatNumber(this.value,2);" 
+                    onkeypress="return onlyDigits(event, this.value,true,false,false,',','.',2);"                    
+                    maxlength="14"
+                    name="data[monto]" value="{{ data.recurso.monto|number_format(2,',','.') }}" />   
+            </p>        
+          </div>                
+        </div>            
+        <div class="row-fluid">      
+          <div class="span12">
+            <label>Observaciones</label> 
+            <p>            
+             <textarea id="observaciones" rows="2" class="span11 campo" 
+                       maxlength="150"
+                       title="Indique más detalles de la recepción de estos recursos."
+                       name="data[observaciones]" >{{ data.recurso.observaciones }}</textarea>   
+            </p>        
+          </div> 
+        </div>        
+     </td>
+    </tr>
+   </tbody> 
+   <tfoot>
+    <tr>
+     <td colspan="2">
+      <div class="row-fluid">   
+         <div class="span4 offset4">
+           <span id="boton" onclick="eliminar('RecursoRecibido', {{ data.recurso.id }})" 
+                 class="btn btn-danger" 
+                 title="Eliminar Registro">
+            <i class="icon-trash icon-white"></i> Eliminar</span>
+         </div>
+         <div class="span4">
+           <span id="boton" onclick="actualizar('RecursoRecibido')" 
+                 class="btn btn-danger" 
+                 title="Guardar Cambios">
+            <i class="icon-hdd icon-white"></i> Guardar</span>            
+         </div>     
+      </div>
+     </td>  
+    </tr>
+   </tfoot>
+  </table> 
+</form>
+</div> 
+</div>

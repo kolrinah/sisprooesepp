@@ -1,0 +1,14 @@
+Mcti\SisproBundle\Entity\Nivel:
+    type: entity
+    table: nivel
+    fields:
+        id:
+            id: true
+            type: smallint
+            nullable: false
+            generator:
+                strategy: SEQUENCE
+        nivel:
+            type: text
+            nullable: false
+    lifecycleCallbacks: {  }

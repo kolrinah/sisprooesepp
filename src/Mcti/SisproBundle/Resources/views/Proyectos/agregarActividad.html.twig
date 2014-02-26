@@ -1,0 +1,145 @@
+<div class="row">
+<div class="formulario span12">    
+ <form action="{{ path('agregarActividad') }}" method="post"  >
+ {# Campo oculto con el ID del proyecto #}
+   <input type="hidden" id="idOe" 
+          name="data[idOe]" value="{{ data.objetivo.id }}" />
+ {# CREAMOS CAMPOS OCULTOS CON LAS MONEDAS PARA AJAX #}
+ {% for m in data.monedas %}    
+    <input type="hidden" id="simbolo{{ m.id }}" value="{{ m.simbolo }}" />
+ {% endfor %}   
+   
+   <table id="formActividad" style="width:600px; height:400px;">
+    <thead>
+     <tr>
+      <th width="50%">Programar Actividad</th>
+      <th style="text-align:right">         
+          <span class="btn btn-danger"  title="Clic para Cerrar"
+                onclick="cancelarModal(); editarProyecto({{ data.objetivo.proyecto.id }}, '10')">
+            <i class="icon-off icon-white"></i>
+          </span> 
+      </th>          
+     </tr>           
+    </thead>            
+    <tbody>
+     <tr>
+      <td colspan="2">
+        <div class="row-fluid">
+          <div class="span3">
+            <label>Nro.</label> 
+            <p>            
+             <input type="text" id="codigo" class="span8" maxlength="4"
+                    style="text-align: center"
+                    title="Número de Actividad"
+{# onlyDigits(e, value, allowDecimal, allowNegative, allowThousand, decSep, thousandSep, decLength) #}
+                    onblur="this.value=formatNumber(this.value,0);"
+                    onkeyup="formatNumber(this.value,0);" 
+                    onkeypress="return onlyDigits(event, this.value,true,false,false,',','.',0);"                    
+                    name="data[codigo]" value="{{ data.objetivo.actividades|length + 1 }}"/>
+            </p>        
+          </div>            
+          <div class="span9">
+            <label>Actividad</label> 
+            <p>            
+             <textarea id="actividad" rows="1" class="span11 campo" 
+                       title="Se refiere a la operacionalización del objetivo mediante una subdivisión o desagregación de compromisos o metas en una secuencia lógica, para su orden y seguimiento, que permiten el logro del objetivo específico."
+                       name="data[actividad]" ></textarea>   
+            </p>        
+          </div>            
+        </div> 
+        <div class="row-fluid">
+          <div class="span3">
+            <label>Meta Física</label> 
+            <p>            
+             <input type="text" id="metaFisica" class="span8" maxlength="10"
+                    style="text-align: center"
+                    title="Expresión concreta y cuantificable del bien o servicio que se espera obtener de la ejecución de la actividad, usando criterios de cantidad calidad y tiempo."
+{# onlyDigits(e, value, allowDecimal, allowNegative, allowThousand, decSep, thousandSep, decLength) #}
+                    onblur="this.value=formatNumber(this.value,2);"
+                    onkeyup="formatNumber(this.value,2);"                     
+                    onkeypress="return onlyDigits(event, this.value,true,false,false,',','.',2);"
+                    name="data[metaFisica]" value=""/>
+            </p>        
+          </div>  
+          <div class="span6">
+            <label>Unidad de Medida</label> 
+            <p>            
+             <input type="text" id="unidadMedida" class="span9 campo" 
+                    maxlength="20"
+                    title="Descripción cualitativa del producto o el resultado de la ejecución de la actividad."
+                    name="data[unidadMedida]" value="" />   
+            </p>        
+          </div>                
+        </div>
+        <div class="row-fluid">
+          <div class="span4">
+            <label>Moneda</label> 
+            <p>    
+             <select id="moneda" name="data[moneda]" class="span11 campo" title="Moneda Utilizada"
+                     onchange="cambiaMoneda($(this));" >
+            {% for m in data.monedas %}
+               <option value="{{ m.id }}" >{{ m.moneda }}</option>
+            {% endfor %}
+             </select>   
+            </p>        
+          </div>  
+          <div class="span1" id="simboloMoneda"
+               style="text-align:right; padding: 25px 10px 0px 0px; font-size: 1.2em"> 
+              Bs.
+          </div>      
+          <div class="span4" style="margin-left:0px">
+            <label>Monto Total</label> 
+            <p>            
+             <input type="text" id="monto" class="span8 campo" 
+                    style="text-align: right"
+                    title="Costo estimado de la Actividad"
+{# onlyDigits(e, value, allowDecimal, allowNegative, allowThousand, decSep, thousandSep, decLength) #}
+                    onblur="this.value=formatNumber(this.value,2);"
+                    onkeyup="formatNumber(this.value,2);" 
+                    onkeypress="return onlyDigits(event, this.value,true,false,false,',','.',2);"                    
+                    maxlength="14"
+                    name="data[monto]" value="" />   
+            </p>        
+          </div>                
+        </div> 
+        <div class="row-fluid">
+          <div class="span5">
+            <label>Fecha de Inicio</label>
+            <p>
+              <input type="text" id="fechaIni" name="data[fechaIni]" class="span8"
+                     maxlength="10" value=""
+                     style="text-align: center; background-color: white; cursor: pointer" 
+                     readonly="readonly" />  
+            </p>
+          </div>  
+          <div class="span5">
+            <label>Fecha de Culminación</label>
+            <p>
+              <input type="text" id="fechaFin" name="data[fechaFin]" class="span8 "
+                     maxlength="10" value="" 
+                     style="text-align: center; background-color: white; cursor: pointer" 
+                     readonly="readonly" />  
+            </p>
+          </div>                 
+        </div>      
+     </td>
+    </tr>
+   </tbody> 
+   <tfoot>
+    <tr>
+     <td colspan="2">
+      <div class="row-fluid">   
+         <div class="span12">
+           <span id="boton" onclick="guardarActividad()" 
+                 class="btn btn-danger" 
+                 title="Guardar Cambios">
+            <i class="icon-hdd icon-white"></i> Guardar</span>            
+         </div>     
+      </div>
+     </td>  
+    </tr>
+   </tfoot>
+  </table> 
+</form>
+</div> 
+</div>

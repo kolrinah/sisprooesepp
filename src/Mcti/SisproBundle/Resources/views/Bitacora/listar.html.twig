@@ -1,0 +1,57 @@
+{% extends 'SisproBundle:Plantillas:base.html.twig' %}
+{% block title %} 
+{{ parent() }}
+| Bitácora
+{%endblock%}
+{% block body %}
+<div class="row oculto">   
+  <div class="span12">
+   <table id="bitacora" class="tablaListas">
+    <thead>       
+     <tr>
+      <th style="width:100px">Fecha y Hora</th>   
+      <th style="width:52px">Entidad</th>
+      <th style="width:47px">Acción</th>
+      <th>Registro</th>
+      <th style="width:92px">Dirección Ip</th>        
+      <th style="width:30px"></th>        
+     </tr>  
+    </thead>
+    <tbody>
+    {% for e in eventos %}   
+     <tr {% if e.accion == 'INSERT' %}
+         style="color: #0033ff"
+         {% endif %}
+         {% if e.accion == 'DELETE' %}   
+         style="color: #ff0000"            
+         {% endif %}
+         >
+       <td title="{{ e.id }}" >{{ e.fecha|date('Y/m/d H:i:s') }}</td>  
+       <td>{{ e.entidad }}</td>
+       <td>{{ e.accion }}</td>
+       <td title="{{ e.usuario.correo }}"
+           >{{ e.registro }}</td>
+       <td style="text-align:center">{{ e.ip }}</td>
+       <td><img src="{{ asset(e.browser)}}" title="{{ e.userAgent }}" /></td>
+     </tr>
+    {% endfor %}  
+     
+    </tbody>
+    <tfoot>
+     <tr>
+      <td>Fecha y Hora</td>   
+      <td>Entidad</td>
+      <td>Acción</td>
+      <td>Registro</td>
+      <td>Dirección Ip</td>              
+      <td></td>
+     </tr>      
+    </tfoot>
+   </table> 
+  </div>  
+</div>
+{% endblock %}
+
+{% block javascripts %}   
+<script type="text/javascript" src="{{ asset('bundles/sispro/js/bitacora.js') }}"></script>
+{% endblock %}   

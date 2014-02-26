@@ -1,0 +1,45 @@
+{# REGLAS PARA PODER EDITAR EL PROYECTO:
+     [ ( Usuario Responsable == Usuario OR Usuario.Rol == Enlace ) 
+          AND ( Estatus de Proyecto == 1)  ]  #}
+{% if ( (data.proyecto.usuario == app.user or is_granted('ROLE_ENLACE'))
+        and (data.proyecto.estatus.id == 1) ) %}
+   {% set permiso = true %}
+   {% set read = '' %}
+{% else %}
+   {% set permiso = false %} 
+   {% set read = 'disabled="disabled"' %}
+{% endif %}
+
+{% include 'SisproBundle:Proyectos:selector.html.twig' %}
+
+<div id="formulario">
+<div class="row">
+<div class="formulario span12">    
+<form action="{{ path('editarProyecto') }}" method="post"  >
+ {# Campo oculto con el ID del proyecto #}
+ <input type="hidden" id="idProyecto" 
+        name="data[idProyecto]" value="{{ data.proyecto.id }}" /> 
+
+{% if (data.proyecto.estatus.id == 5)  %}
+ 
+   {% include 'SisproBundle:Proyectos:aprobarRechazarForm.html.twig' %}
+
+{% elseif (data.proyecto.estatus.id == 1) or 
+        ( (data.proyecto.estatus.id != 1) and 
+          (data.proyecto.estatus.id != 5) and 
+          ( app.user != data.proyecto.usuario ) and
+            not is_granted('ROLE_ENLACE') ) %}   
+ 
+   {% include 'SisproBundle:Proyectos:envioForm.html.twig' %}
+
+{% elseif (data.proyecto.estatus.id != 1) and           
+          (data.proyecto.estatus.id != 5) and 
+          ( (app.user == data.proyecto.usuario) or is_granted('ROLE_ENLACE') ) %}   
+ 
+   {% include 'SisproBundle:Proyectos:solicitarEdicionForm.html.twig' %}   
+ 
+{% endif %}
+</form>  
+</div> 
+</div>
+</div>

@@ -1,0 +1,131 @@
+{# REGLAS PARA PODER EDITAR EL PROYECTO:
+     [ ( Usuario Responsable == Usuario OR Usuario.Rol == Enlace ) 
+          AND ( Estatus de Proyecto == 1)  ]  #}
+{% if ( (data.proyecto.usuario == app.user or is_granted('ROLE_ENLACE'))
+        and (data.proyecto.estatus.id == 1) ) %}
+   {% set permiso = true %}
+   {% set read = '' %}
+{% else %}
+   {% set permiso = false %} 
+   {% set read = 'disabled="disabled"' %}
+{% endif %}
+
+{% include 'SisproBundle:Proyectos:selector.html.twig' %}
+
+<div id="formulario">
+<div class="row">
+<div class="formulario span12">    
+ 
+ {# Campo oculto con el ID del proyecto #}
+ <input type="hidden" id="idProyecto" 
+        name="data[idProyecto]" value="{{ data.proyecto.id }}" />
+ <input type="hidden" name="data[form]" value="{{ data.form }}" />
+   <table>
+    <thead>
+     <tr>
+      <th width="50%">Planificación del Proyecto</th>
+      <th style="text-align:right">
+          <a href="{{ path('proyectos') }}">
+          <span class="btn btn-danger"  title="Clic para Cerrar">
+            <i class="icon-off icon-white"></i>
+          </span> </a>
+      </th>          
+     </tr>           
+    </thead>            
+    <tbody>
+     <tr>
+      <td colspan="2" style="padding:20px">
+{% if data.objetivosOrg is defined %}
+        <div class="row-fluid" >
+         <div class="span1" >
+            <input type="checkbox" id="nacional" onchange="hidePlanOrg();" />           
+            <label for="nacional" title="clic para alternar" style="float: right;"></label>            
+         </div>     
+         <div class="span10 opaco" id="tag" 
+                 style="margin-left: 10px; padding-left: 0px; font-size:1.3em; 
+                        vertical-align: bottom; text-align:left;" >           
+              Mostrar Planificación Original
+         </div>               
+        </div>              
+        <div class="row-fluid oculto" id="planOrg" >
+         <div class="span12">
+    {% include 'SisproBundle:Proyectos:tablaGanttOrg.html.twig' %}
+         </div>
+        </div><br/>
+{% endif %}          
+         <div class="row-fluid" >
+          <div class="span12"> 
+{% include 'SisproBundle:Proyectos:tablaGantt.html.twig' %}
+          </div>
+         </div>
+         <br/>
+         <div class="row-fluid" >
+          <div class="span7" style="text-align:right; padding-right: 30px">   
+        {% if permiso %}            
+            <span onclick="agregarObjetivoEspecifico({{ data.proyecto.id }});" 
+                 class="btn btn-danger" 
+                 title="Agregar Objetivo Específico">
+              <i class="icon-tasks icon-white"></i> Agregar</span>         
+        {% endif %}                 
+          </div>   
+          <div class="span5">   
+            <div class="row-fluid" style="font-size:1.3em; text-align: right">
+              <div class="span7" >   
+                Monto del Financiamiento:
+              </div>
+              <div class="span5">   
+                 Bs. {{ data.proyecto.montoFinanciamiento|number_format(2,',','.') }}
+              </div>                 
+            </div>  
+            <div class="row-fluid" style="font-size:1.3em; text-align: right">
+              <div class="span7">   
+                Monto Planificado:
+              </div>
+              <div class="span5">   
+                Bs. {{ data.proyecto.montoPlanificado|number_format(2,',','.') }}
+              </div>                 
+            </div>                         
+          </div>                 
+         </div>          
+      </td>
+     </tr>
+    </tbody>
+    <tfoot>
+     <tr>
+      <td colspan="2">
+       <div class="row-fluid">
+        <div class="span2" style="text-align: left">
+           <span onclick="editarProyecto({{ data.proyecto.id }}, '09');" 
+                 class="btn btn-danger" 
+                 title="Anterior">
+            <i class="icon-arrow-left icon-white"></i> Anterior</span>
+        </div>  
+        <div class="span8">
+ {% set diferencia = (data.proyecto.montoFinanciamiento - data.proyecto.montoPlanificado)|abs %}
+ {% if data.proyecto.montoPlanificado|number_format(2) > data.proyecto.montoFinanciamiento|number_format(2) %}
+          <div class="alert alert-error" style="text-align: center; margin-bottom: 0px">
+           <strong>¡Atención!</strong> El monto planificado supera en Bs. 
+            {{ diferencia|number_format(2,',','.') }} al monto del financiamiento
+          </div>
+ {% elseif data.proyecto.montoPlanificado|number_format(2) < data.proyecto.montoFinanciamiento|number_format(2) %}
+          <div class="alert" style="text-align: center; margin-bottom: 0px">
+           <strong>¡Atención!</strong> Quedan por planificar Bs. 
+            {{ diferencia|number_format(2,',','.') }} del monto de financiamiento
+          </div>          
+ {% endif %}
+        </div>  
+        <div class="span2">  
+           <span onclick="editarProyecto({{ data.proyecto.id }}, '11');" 
+                 class="btn btn-danger" 
+                 title="Siguiente"> Siguiente <i class="icon-arrow-right icon-white"></i>
+           </span>     
+        </div>
+      </div>
+     </td>  
+    </tr>
+   </tfoot>
+  </table> 
+
+</div> 
+</div>
+</div>

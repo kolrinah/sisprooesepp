@@ -1,0 +1,14 @@
+Mcti\SisproBundle\Entity\Estatus:
+    type: entity
+    table: estatus
+    fields:
+        id:
+            id: true
+            type: smallint
+            nullable: false
+            generator:
+                strategy: SEQUENCE
+        estatus:
+            type: text
+            nullable: false
+    lifecycleCallbacks: {  }

@@ -1,0 +1,46 @@
+Mcti\SisproBundle\Entity\Bitacora:
+    type: entity
+    table: bitacora
+    fields:
+        id:
+            id: true
+            type: bigint
+            nullable: false
+            generator:
+                strategy: SEQUENCE
+        fecha:
+            type: datetime
+            nullable: true
+        ip:
+            type: string
+            length: 25
+            fixed: false
+            nullable: false
+        userAgent:
+            type: text
+            nullable: false
+            column: user_agent
+        entidad:
+            type: string
+            length: 50
+            fixed: false
+            nullable: false
+        accion:
+            type: string
+            length: 10
+            fixed: false
+            nullable: false
+        registro:
+            type: text
+            nullable: false
+    manyToOne:
+        usuario:
+            targetEntity: Usuario
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                usuario_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

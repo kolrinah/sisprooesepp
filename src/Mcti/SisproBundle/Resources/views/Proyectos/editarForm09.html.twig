@@ -1,0 +1,166 @@
+{# REGLAS PARA PODER EDITAR EL PROYECTO:
+     [  ( Usuario Responsable == Usuario OR Usuario.Rol == Enlace ) 
+          AND ( Estatus de Proyecto == 1)  ]  #}
+{% if ( (data.proyecto.usuario == app.user or is_granted('ROLE_ENLACE'))
+        and (data.proyecto.estatus.id == 1) ) %}
+   {% set permiso = true %}
+   {% set read = '' %}
+{% else %}
+   {% set permiso = false %} 
+   {% set read = 'disabled="disabled"' %}
+{% endif %}
+
+{% include 'SisproBundle:Proyectos:selector.html.twig' %}
+
+<div id="formulario">
+<div class="row">
+<div class="formulario span12">    
+ <form action="{{ path('editarProyecto') }}" method="post"  >
+ {# Campo oculto con el ID del proyecto #}
+ <input type="hidden" name="data[idProyecto]" value="{{ data.proyecto.id }}" />
+ <input type="hidden" name="data[form]" value="{{ data.form }}" />
+ 
+ {# CREAMOS CAMPOS OCULTOS CON LAS MONEDAS PARA AJAX #}
+ {% for m in data.monedas %}
+    <input type="hidden" id="precio{{ m.id }}" value="{{ m.precioBs }}" />
+    <input type="hidden" id="simbolo{{ m.id }}" value="{{ m.simbolo }}" />
+ {% endfor %}
+   <table>
+    <thead>
+     <tr>
+      <th width="50%">Fuentes de Financiamiento del Proyecto</th>
+      <th style="text-align:right">
+          <a href="{{ path('proyectos') }}">
+          <span class="btn btn-danger"  title="Clic para Cerrar">
+            <i class="icon-off icon-white"></i>
+          </span> </a>
+      </th>          
+     </tr>           
+    </thead>            
+    <tbody>
+     <tr>
+      <td colspan="2">       
+       {% set clase = ' opaco ' %}
+       {% set disabled = ' disabled="disabled" ' %}
+       {% set checked = '' %}  
+       {% set moneda = null %}  
+       {% set monto = '' %}         
+       {% set inversionTotal = 0 %}        
+       {% for f in data.fuentes %}
+          {% if f.proyectos is empty %}             
+             {% set checked = '' %}
+             {% set clase = ' opaco ' %}
+             {% set disabled = ' disabled="disabled" ' %}
+             {% set moneda = null %}  
+             {% set monto = '' %} 
+          {% else %}
+             {% for r in f.proyectos %}
+                {% set monto = r.monto %}
+                {% set moneda = r.moneda %} 
+                {% set inversionTotal = (monto * moneda.precioBs) %} 
+             {% endfor %}
+                {% set checked = ' checked="checked" ' %}                
+                {% set clase = '' %}
+                {% set disabled = '' %}
+          {% endif %}     
+           
+         <div class="row-fluid" >
+          <div class="span5" style="text-align:left;">  
+           <input type="checkbox" id="fuente{{ f.id }}" {{ checked|raw }}
+                        onchange="cambiaFuente($(this));" {{ read }}
+                        name="data[fuente][]" value="{{ f.id }}" />
+           <label for="fuente{{ f.id }}" ></label>   
+           <span class="" id="tag{{ f.id }}"
+                 style="font-size:1.3em; display: inline-block">
+                    {{ f.fuente }}
+           </span>
+          </div>   
+          <div class="span3" style="margin-left:0px">  
+             <label>Moneda:</label>
+             <p>
+              <select id="moneda{{ f.id }}" name="data[moneda][]" {{ disabled|raw }}
+                      onchange="cambiaMoneda($(this)); actualizaInversionTotal()" {{ read }}
+                      style="width:80%"  >
+         {% if moneda is not null %}
+            {% for m in data.monedas %}
+               <option value="{{ m.id }}" {% if m.id == moneda.id %} selected="selected" {% endif %}>{{ m.moneda }}</option>
+            {% endfor %}
+         {% else %}      
+               <option value="0"></option>
+            {% for m in data.monedas %}
+               <option value="{{ m.id }}">{{ m.moneda }}</option>
+            {% endfor %}               
+         {% endif %}               
+              </select>
+             </p>
+          </div>  
+          <div class="span1" id="simboloMoneda{{ f.id }}"
+               style="text-align:right; padding: 25px 10px 0px 0px; font-size: 1.2em">
+           {% if moneda is not null %}{{ moneda.simbolo }}{% endif %}
+          </div>       
+          <div class="span2" style="margin-left:0px"> 
+              <label>Monto:</label>
+             <p>
+              <input type="text" id="monto{{ f.id }}"                      
+                     name="data[monto][]" {{ disabled|raw }}
+                     style="text-align:right; width: 70%" 
+                     value="{{ monto|number_format(2,',','.') }}" 
+                     onchange="actualizaInversionTotal();" {{ read }}
+                     onblur="this.value=formatNumber(this.value,2,',','.');"
+                     onkeyup="formatNumber(this.value,2,',','.');"
+                     onkeypress="return onlyDigits(event, this.value,true,false,true,',','.',2);"/>
+{# onlyDigits(e, value, allowDecimal, allowNegative, allowThousand, decSep, thousandSep, decLength)#}
+             </p>
+          </div>
+         </div>
+       {% endfor %}
+         <div class="row-fluid"  style="font-size: 1.5em; text-align: right">
+          <div class="span5 offset5">
+              Inversión Total del Proyecto: Bs.
+              <span id="inversionTotal">{{ inversionTotal|number_format(2,',','.') }}</span>            
+          </div>   
+         </div>     
+      </td>
+     </tr>
+    </tbody>
+    <tfoot>
+     <tr>
+      <td colspan="2">
+       <div class="row-fluid">
+        <div class="span4" style="text-align: left">
+           <span onclick="editarProyecto({{ data.proyecto.id }}, '08');" 
+                 class="btn btn-danger" 
+                 title="Anterior">
+            <i class="icon-arrow-left icon-white"></i> Anterior</span>
+        </div>  
+        <div class="span4">
+        {% if permiso %}   
+         <div class="span6">
+           <span onclick="eliminarProyecto({{ data.proyecto.id }});" 
+                 class="btn btn-danger" 
+                 title="Eliminar Proyecto">
+            <i class="icon-trash icon-white"></i> Eliminar</span>
+         </div>
+         <div class="span6">
+           <span onclick="actualizarProyecto('09');" 
+                 class="btn btn-danger" 
+                 title="Guardar Cambios">
+            <i class="icon-hdd icon-white"></i> Guardar</span>            
+         </div>
+        {% endif %}   
+        </div>  
+        <div class="span4">  
+           <span onclick="editarProyecto({{ data.proyecto.id }}, '10');" 
+                 class="btn btn-danger" 
+                 title="Siguiente"> Siguiente <i class="icon-arrow-right icon-white"></i>
+           </span>     
+        </div>
+      </div>
+     </td>  
+    </tr>
+   </tfoot>
+  </table> 
+</form>
+</div> 
+</div>
+</div>

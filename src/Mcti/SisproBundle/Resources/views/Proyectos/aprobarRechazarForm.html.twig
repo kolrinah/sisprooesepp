@@ -1,0 +1,62 @@
+<table>
+    <thead>
+     <tr>
+      <th width="50%">Esperando por Permiso de Edición</th>
+      <th style="text-align:right">
+          <a href="{{ path('proyectos') }}">
+          <span class="btn btn-danger"  title="Clic para Cerrar">
+            <i class="icon-off icon-white"></i>
+          </span> </a>
+      </th>          
+     </tr>           
+    </thead>            
+    <tbody>
+     <tr>
+      <td colspan="2" style="padding:20px"> 
+       <div class="row-fluid" >
+         <div class="span10 offset1" style="font-size:1.2em">
+           <p >
+             Motivos de la solicitud de permisos de edición sobre este proyecto:
+           </p>
+         </div>     
+       </div>
+       <div class="row-fluid" >
+         <div class="span10 offset1" style="font-size:1.2em">
+           <p >    
+           <textarea id="observaciones" name="data[observaciones]" rows="6" class="span11"
+                     readonly="readonly"
+                     style="resize: vertical;">{{ data.proyecto.observaciones }}</textarea></p>
+         </div>     
+       </div>              
+      </td>
+     </tr>
+    </tbody>
+    <tfoot>
+     <tr>
+      <td colspan="2">
+       <div class="row-fluid">
+        <div class="span2" style="text-align: left">
+           <span onclick="editarProyecto({{ data.proyecto.id }}, '10');" 
+                 class="btn btn-danger" 
+                 title="Anterior">
+            <i class="icon-arrow-left icon-white"></i> Anterior</span>
+        </div>   
+{% if ( is_granted('ROLE_ADMIN') )%}                
+        <div class="span2 offset2">             
+            <span onclick="permisoEdicionProyecto(1);" 
+                 class="btn btn-success" 
+                 title="Otorgar permisos de edición">
+              <i class="icon-thumbs-up icon-white"></i> Aprobar</span>    
+        </div>
+        <div class="span2 offset1">            
+            <span onclick="permisoEdicionProyecto(0);" 
+                 class="btn btn-inverse" 
+                 title="Negar permisos de edición">
+              <i class="icon-thumbs-down icon-white"></i> Rechazar</span>
+        </div>               
+{% endif %}                
+      </div>
+     </td>  
+    </tr>
+   </tfoot>
+  </table> 

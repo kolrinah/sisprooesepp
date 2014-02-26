@@ -1,0 +1,28 @@
+Mcti\SisproBundle\Entity\Poblado:
+    type: entity
+    repositoryClass: Mcti\SisproBundle\Entity\PobladoRepository
+    table: poblado
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: SEQUENCE
+        poblado:
+            type: string
+            length: 250
+            fixed: false
+            nullable: false
+    manyToOne:
+        municipio:
+            targetEntity: Municipio
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                municipio_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

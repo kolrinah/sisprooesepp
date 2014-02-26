@@ -1,0 +1,154 @@
+{% extends 'SisproBundle:Plantillas:base.html.twig' %}
+{% block title %} 
+{{ parent() }}
+| Ejecución
+{% endblock %}
+{% block body %} 
+{# ANALISIS PERMISOLOGICO #}
+{% if ( ((is_granted('ROLE_ENLACE') or
+         (app.user == data.proyecto.usuario)) and 
+         (data.proyecto.estatus.id > 1) and (data.proyecto.estatus.id <5) ) ) %}
+   {% set permiso = true %}
+{% else %}
+   {% set permiso = false %}
+{% endif %}       
+
+<div class="nombreProyecto row-fluid" title="Código / Nombre del Proyecto">
+    <div class="span1">
+      <a href="{{ path('ejecucion') }}">   
+        <span class="btn" title="Regresar">
+            <i class="icon-chevron-left"></i>
+        </span>
+      </a>
+    </div>
+    <div class="span10">
+        PROYECTO: {{ data.proyecto.codigo }} / {{ data.proyecto.nombre|upper }}</div>
+    <div class="span1"></div>
+</div>
+<div class="accordion" id="accordion">
+  <div class="accordion-group">
+    <div class="accordion-heading btn" >            
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="" 
+         href="#planificacion">
+         Planificación del Proyecto 
+      </a>     
+    </div>
+       {% if data.actividades|length > 0 %}           
+          <span title="Actividades Planificadas" class="badge badge-info">
+            {{ data.actividades|length }}
+          </span>          
+       {% endif %}   
+       {% if data.analisis.estado > 0 %}
+          <span class="badge 
+          {% if data.analisis.estado == 1 %}
+             badge-info
+          {% else %}
+             badge-warning
+          {% endif %}">{{ data.analisis.mensaje }}</span>
+          {# "></span> #}
+       {% endif %}   
+    <div id="planificacion" class="accordion-body collapse">
+      <div class="accordion-inner">
+        {% set purse = permiso %}   
+        {% set permiso = false %}  
+        {% include 'SisproBundle:Proyectos:tablaGantt.html.twig' %}
+        {% set permiso = purse %}         
+        <br/>      
+      </div>
+    </div>
+  </div>
+  <div class="accordion-group">
+    <div class="accordion-heading btn">               
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="" 
+         href="#panelRecursoRecibido">
+         Recursos Recibidos
+      </a>      
+    </div>         
+    <span id="badgeRecursoRecibido" title="Registros de Recepción de Recursos" 
+          class="badge badge-info {% if data.recursoRecibido|length == 0 %} oculto {% endif %}">
+            {{ data.recursoRecibido|length }}
+    </span>
+    <div id="panelRecursoRecibido" class="accordion-body collapse">
+      <div class="accordion-inner">
+       {% include 'SisproBundle:Ejecucion:recursosRecibidos.html.twig' %}
+      </div>
+    </div>
+  </div>
+  <div class="accordion-group">
+    <div class="accordion-heading btn">               
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="" 
+          href="#panelRecursoEjecutado">
+          Recursos Ejecutados
+      </a>      
+    </div>       
+    <span id="badgeRecursoEjecutado" title="Registros de Ejecución de Recursos" 
+          class="badge badge-info {% if data.recursoEjecutado|length == 0 %} oculto {% endif %}">
+        {{ data.recursoEjecutado|length }}
+    </span>                 
+    <div id="panelRecursoEjecutado" class="accordion-body collapse">
+      <div class="accordion-inner">      
+       {% include 'SisproBundle:Ejecucion:recursosEjecutados.html.twig' %}
+      </div>
+    </div>
+  </div>    
+  <div class="accordion-group">
+    <div class="accordion-heading btn">               
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="" 
+          href="#panelMetaAlcanzada">
+          Metas Alcanzadas
+      </a>      
+    </div>                  
+    <span id="badgeMetaAlcanzada" title="Registros de cumplimiento de metas físicas" 
+          class="badge badge-info {% if data.metaAlcanzada|length == 0 %} oculto {% endif %}">
+        {{ data.metaAlcanzada|length }}
+    </span>                 
+    <div id="panelMetaAlcanzada" class="accordion-body collapse">
+      <div class="accordion-inner">
+        {% include 'SisproBundle:Ejecucion:metasAlcanzadas.html.twig' %}
+      </div>
+    </div>
+  </div>
+  <div class="accordion-group">
+    <div class="accordion-heading btn">               
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="" 
+          href="#panelRegistroProblema">
+          Registro de Novedades
+      </a>      
+    </div>       
+    <span id="badgeRegistroProblema" title="Registros de Novedades" 
+          class="badge badge-warning {% if data.registroProblema|length == 0 %}oculto{% endif %}">
+        {{ data.registroProblema|length }}
+    </span>                 
+    <div id="panelRegistroProblema" class="accordion-body collapse">
+      <div class="accordion-inner">      
+       {% include 'SisproBundle:Ejecucion:registrosProblemas.html.twig' %}
+      </div>
+    </div>
+  </div>          
+  <div class="accordion-group">
+    <div class="accordion-heading btn">               
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="" 
+          href="#panelFotografia">
+          Registros Fotográficos
+      </a>      
+    </div>          
+    <span id="badgeFotografia" title="Registros Fotográficos" 
+          class="badge badge-info {% if data.fotos|length == 0 %} oculto {% endif %}">
+            {{ data.fotos|length }}
+    </span>                 
+    <div id="panelFotografia" class="accordion-body collapse">
+      <div class="accordion-inner">
+        {% include 'SisproBundle:Ejecucion:fotografias.html.twig' %}
+      </div>
+    </div>
+  </div>      
+</div>       
+{% endblock %}
+
+{% block javascripts %}   
+    <script type="text/javascript" src="{{ asset('bundles/sispro/js/ejecucion.js') }}"></script> 
+{% endblock %}   
+{#  {{ app.user.correo }}
+    {{ app.user.apellido }}
+    {{ app.session.name }}      
+    {{ app.session.get('selector') }} #}

@@ -1,0 +1,22 @@
+Mcti\SisproBundle\Entity\TipoProyecto:
+    type: entity
+    table: tipo_proyecto
+    fields:
+        id:
+            id: true
+            type: smallint
+            nullable: false
+            generator:
+                strategy: SEQUENCE
+        tipo:
+            type: text
+            nullable: false
+    manyToMany:
+        proyecto:
+            targetEntity: Proyecto
+            cascade: {  }
+            mappedBy: tipoProyecto
+            inversedBy: null
+            joinTable: null
+            orderBy: null
+    lifecycleCallbacks: {  }

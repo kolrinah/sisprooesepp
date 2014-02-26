@@ -1,0 +1,99 @@
+{% extends 'SisproBundle:Plantillas:base.html.twig' %}
+{% block title %} 
+{{ parent() }}
+| Adjuntar Foto
+{% endblock %}
+{% block body %} 
+<div class="row">
+<div class="formulario span8 offset2">                             
+ <form action="{{ path('registrarFotografia') }}" method="post"
+       {{ form_enctype(formulario) }} >
+ {# Campo oculto con el ID del proyecto #}
+ {#  <input type="hidden" id="idProyecto" 
+          name="data[idProyecto]" value="{{ data.idProyecto }}" /> #}
+   
+   <table id="formFotografia" >
+    <thead>
+     <tr>
+      <th width="70%">Adjuntar Fotografía</th>
+      <th style="text-align:right">         
+        <a href="{{ path('revisarProyecto', {'id': data.idProyecto }) }}">     
+          <span class="btn btn-danger"  title="Clic para Cerrar" >
+            <i class="icon-off icon-white"></i>
+          </span> 
+        </a>       
+      </th>          
+     </tr>           
+    </thead>            
+    <tbody>
+     <tr>
+      <td colspan="2">         
+        <div class="row-fluid">
+          <div class="span10 offset1">
+         <strong>Nota:</strong> Puede adjuntar fotograías de los avances de la ejecución
+         en los formatos:<br/><center><strong>JPG, JPEG, PNG, TIF, o GIF</strong></center>
+          </div>
+        </div> 
+        <div class="row-fluid">           
+          <div class="span11 offset1">
+            {{ form_label(formulario.imagen) }}            
+            <p {% if form_errors(formulario.imagen) %}
+                  class="campoInvalido" title="{{ form_errors(formulario.imagen)|striptags }}"
+               {% endif %}> {{ form_widget(formulario.imagen) }}  
+            </p>
+          </div>
+        </div>            
+        <div class="row-fluid">
+          <div class="span11 offset1" >
+            {{ form_label(formulario.actividad) }}
+            <p {% if form_errors(formulario.actividad) %}
+                  class="campoInvalido" title="{{ form_errors(formulario.actividad)|striptags }}"
+               {% endif %}> {{ form_widget(formulario.actividad) }} 
+            </p>        
+          </div>                 
+        </div>                     
+        <div class="row-fluid">      
+          <div class="span11 offset1">
+            {{ form_label(formulario.comentarios) }}
+            <p {% if form_errors(formulario.comentarios) %}
+                  class="campoInvalido" title="{{ form_errors(formulario.comentarios)|striptags }}"
+               {% endif %}> {{ form_widget(formulario.comentarios) }} 
+            </p>        
+          </div> 
+        </div> 
+        <div class="row-fluid">      
+          <div class="span12" style="text-align: right; padding:0px 20px 5px 0px">           
+           {% if (data.fotos|length) < (data.actividades|length * 3) %}
+            <button class="btn btn-danger" 
+                    title="Guardar Registro">
+            <i class="icon-camera icon-white"></i> Adjuntar</button>
+           {% endif %} 
+          </div> 
+        </div>                   
+     </td>
+    </tr>
+   </tbody> 
+   <tfoot>
+    <tr>
+     <td colspan="2">
+      <div class="row-fluid">   
+         <div class="span12" style="text-align: left">                 
+    {% for foto in data.fotos %}
+        <img src="{{ url('home') }}../adjuntos/{{ data.proyecto.codigo }}/{{ foto.imagen }}"
+             title="{{ foto.actividad }}" 
+             style="max-width: 100px; border: #D3D3D3 outset 1px" />       
+    {% endfor %}
+         </div>     
+      </div>
+     </td>  
+    </tr>
+   </tfoot>
+  </table> 
+<div class="oculto">
+ {{ form_rest(formulario) }}
+</div> 
+           
+</form>
+</div> 
+</div>
+{% endblock %}

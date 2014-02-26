@@ -1,0 +1,37 @@
+Mcti\SisproBundle\Entity\RegistroProblema:
+    type: entity
+    table: registro_problema
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: SEQUENCE
+        observaciones:
+            type: text
+            nullable: false
+        fecha:
+            type: date
+            nullable: false
+    manyToOne:
+        proyecto:
+            targetEntity: Proyecto
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                proyecto_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        tipoProblema:
+            targetEntity: TipoProblema
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                tipo_problema_id:
+                    referencedColumnName: id
+            orphanRemoval: false            
+    lifecycleCallbacks: {  }
