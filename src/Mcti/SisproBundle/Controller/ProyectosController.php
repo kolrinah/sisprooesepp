@@ -1278,8 +1278,8 @@ class ProyectosController extends Controller
     {
         $proyecto = $data['proyecto'];
         $parroquia = $this->getDoctrine()
-                           ->getRepository('SisproBundle:Parroquia')
-                           ->find($data['idParroquia']);
+                          ->getRepository('SisproBundle:Parroquia')
+                          ->find($data['idParroquia']);
         if (!$parroquia) die(json_encode(array('error'=>'Parroquia no encontrada.')));
         
         $poblado = $this->getDoctrine()
@@ -1291,7 +1291,6 @@ class ProyectosController extends Controller
         $proyecto->setPoblado($poblado);
         
         $em = $this->getDoctrine()->getManager();
-        $em->persist($proyecto);
         try {
               $em->flush();
             } catch (\Exception $e) { // Atrapa Error del servidor
@@ -1326,8 +1325,6 @@ class ProyectosController extends Controller
         $proyecto->setEstructura($estructura);
         $proyecto->setUsuario($usuario);        
         $em = $this->getDoctrine()->getManager();
-        
-        $em->persist($proyecto);
         try {
               $em->flush();
             } catch (\Exception $e) { // Atrapa Error del servidor
@@ -1544,8 +1541,7 @@ class ProyectosController extends Controller
         $proyecto->setEmpleosIndirectosOperacion(
                 str_ireplace(",",".",str_ireplace(".","",$data['empleosIndirectosOperacion'])));        
         
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($proyecto);
+        $em = $this->getDoctrine()->getManager();        
         try {
               $em->flush();
             } catch (\Exception $e) { // Atrapa Error del servidor
@@ -1602,8 +1598,7 @@ class ProyectosController extends Controller
         // Guardamos el campo Nacional
         $proyecto->setNacional($nacional);
         
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($proyecto);
+        $em = $this->getDoctrine()->getManager();        
         try {
               $em->flush();
             } catch (\Exception $e) { // Atrapa Error del servidor
@@ -1659,8 +1654,7 @@ class ProyectosController extends Controller
                 $proyectoFuente->setFuenteFinanciamiento($f);
                 $proyectoFuente->setMoneda($moneda);
                 $proyectoFuente->setMonto(str_ireplace(",",".",str_ireplace(".","",$data['monto'][$i])));
-
-                $em->persist($proyectoFuente);
+                
                 try {       
                      $em->flush();
                 } catch (\Exception $e) { // Atrapa Error del servidor
@@ -1847,8 +1841,7 @@ class ProyectosController extends Controller
         $objetivo->setCodigo(str_ireplace(",","",str_ireplace(".","",trim($data['codigo']))));        
         $objetivo->setObjetivoEspecifico(trim($data['objetivoEspecifico']));
         
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($objetivo);
+        $em = $this->getDoctrine()->getManager();        
         try {
               $em->flush();
             } catch (\Exception $e) { // Atrapa Error del servidor
@@ -1884,8 +1877,7 @@ class ProyectosController extends Controller
         $actividad->setFechaIni(\DateTime::createFromFormat('d/m/Y',trim($data['fechaIni'])));
         $actividad->setFechaFin(\DateTime::createFromFormat('d/m/Y',trim($data['fechaFin'])));
         
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($actividad);
+        $em = $this->getDoctrine()->getManager();        
         try {
               $em->flush();
             } catch (\Exception $e) { // Atrapa Error del servidor

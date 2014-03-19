@@ -25,7 +25,7 @@
          <p {% if data.mensaje!='' %}
             class="campoInvalido" title="{{ data.mensaje }}"
             {% endif %}> 
-          <input type="password" name="clavevieja"/> </p>
+          <input type="password" name="clavevieja" maxlength="50"/> </p>
         <br/>
         {{ form_label(formulario.clave.first,'Nueva contraseña') }}       
         <p {% if form_errors(formulario.clave.first) %}

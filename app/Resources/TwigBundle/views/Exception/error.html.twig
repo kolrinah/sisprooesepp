@@ -1,9 +1,26 @@
-{% extends 'SisproBundle:Plantillas:base.html.twig' %}
-{% block title %}
-Ha Ocurrido un Error: {{ status_text }}
-{% endblock %}
+<!DOCTYPE HTML>
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+<!-- * SISTEMA DE SEGUIMIENTO DE PROYECTOS DEL MCTI Y ENTES ADSCRITOS              * -->
+<!-- * http://sisprooespp.mcti.gob.ve                                              * -->
+<!-- * DESARROLLADO POR: ING.REIZA GARCÍA                                          * -->
+<!-- *                   TSU.MARÍA GABRIELA MONTERO                                * -->
+<!-- *                   ING.HÉCTOR MARTÍNEZ                                       * -->
+<!-- * PARA: OFICINA ESTRATÉGICA DE SEGUIMIENTO Y EVALUACIÓN DE POLÍTICAS PÚBLICAS * -->
+<!-- *       MINISTERIO DEL PODER POPULAR PARA CIENCIA, TECNOLOGÍA E INNOVACIÓN    * -->
+<!-- * FECHA: ABRIL DE 2014                                                        * -->
+<!-- * TELEFONOS DE CONTACTO PARA SOPORTE: 0416-9052533 / 0212-5153033             * -->
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 
-{% block body %}
+<html>
+ <head>
+  <meta charset="UTF-8">
+   <title>Ha Ocurrido un Error: {{ status_code }}</title>      
+   <link rel="icon" type="image/x-icon" href="{{ asset('bundles/sispro/img/bandera.ico') }}">
+   <link rel="shortcut icon" type="image/x-icon" href="{{ asset('bundles/sispro/img/bandera.ico') }}">  
+   <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+ </head>
+ <body>   
+
 <div class="container"> 
  <h1>Ha Ocurrido un Error</h1>
  <h2>El Servidor reportó el Error "{{ status_code }} {{ status_text }}".</h2>
@@ -13,4 +30,6 @@ Ha Ocurrido un Error: {{ status_text }}
  </div>    
 
 </div>
-{% endblock %}
+
+ </body>
+</html>

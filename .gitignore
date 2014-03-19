@@ -1,5 +1,4 @@
 /nbproject/
-/vendor/
 /app/cache/
 /app/logs/
 /cfg/
@@ -9,3 +8,5 @@
 /app/config/parametersMCTI.yml
 /web/bundles/
 /src/Mcti/SisproBundle/Resources/public/img/mapas/PSD/
+/web/css/packing-slip.css
+/web/css/fonts/

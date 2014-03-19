@@ -630,6 +630,7 @@ function enviarProyecto()
 
 function solicitarPermisoEdicionProyecto()
 {
+  $('#observaciones').val($('#observaciones').val().replace(/(<([^>]+)>)/ig,""));  
   if (trim($('#observaciones').val()).length < 10)
   {
     var mensaje='Explique brevemente las razones de su solicitud.';
@@ -1225,13 +1226,15 @@ function testForm01()
       test = false;
   }*/
 
+  $('#proyecto_nombre').val($('#proyecto_nombre').val().replace(/(<([^>]+)>)/ig,""));
   if (trim($('#proyecto_nombre').val()).length<4)
   {
       $('#proyecto_nombre').parent().addClass('campoInvalido') 
                            .attr('title','Campo inválido');                   
       test = false;
-  }  
+  }    
   
+  $('#proyecto_descripcion').val($('#proyecto_descripcion').val().replace(/(<([^>]+)>)/ig,""));
   if (trim($('#proyecto_descripcion').val()).length<4)
   {
       $('#proyecto_descripcion').parent().addClass('campoInvalido') 
@@ -1239,6 +1242,7 @@ function testForm01()
       test = false;
   }  
   
+  $('#proyecto_problema').val($('#proyecto_problema').val().replace(/(<([^>]+)>)/ig,""));
   if (trim($('#proyecto_problema').val()).length<4)
   {
       $('#proyecto_problema').parent().addClass('campoInvalido') 
@@ -1246,6 +1250,7 @@ function testForm01()
       test = false;
   }  
 
+  $('#proyecto_direccion').val($('#proyecto_direccion').val().replace(/(<([^>]+)>)/ig,""));
   if (trim($('#proyecto_direccion').val()).length<4)
   {
       $('#proyecto_direccion').parent().addClass('campoInvalido') 
@@ -1379,6 +1384,7 @@ function testForm02()
   //VERIFICAMOS LOS CAMPOS DE TEXTO codigo
   $("[id*=codigo][disabled!=disabled]").each(function() {     
      
+      $(this).val($(this).val().replace(/(<([^>]+)>)/ig,""));
       if (trim($(this).val())=='')
       {
          $(this).parent().addClass('campoInvalido') 
@@ -1396,6 +1402,7 @@ function testForm07()
     var test = true;
     $('p').removeClass('campoInvalido').removeAttr('title');      
     
+    $('#objetivoGeneral').val($('#objetivoGeneral').val().replace(/(<([^>]+)>)/ig,""));
     if (trim($('#objetivoGeneral').val()).length < 4)
     {
         $('#objetivoGeneral').parent().addClass('campoInvalido') 
@@ -1403,6 +1410,7 @@ function testForm07()
         test = false;
     }    
     
+    $('#producto').val($('#producto').val().replace(/(<([^>]+)>)/ig,""));
     if (trim($('#producto').val()).length < 4)
     {
         $('#producto').parent().addClass('campoInvalido') 
@@ -1410,6 +1418,7 @@ function testForm07()
         test = false;
     }
     
+    $('#unidadMedida').val($('#unidadMedida').val().replace(/(<([^>]+)>)/ig,""));
     if (trim($('#unidadMedida').val()).length < 1)
     {
         $('#unidadMedida').parent().addClass('campoInvalido') 
@@ -1423,7 +1432,8 @@ function testForm07()
                         .attr('title','No debe superar los 50 caracteres');
         test = false;
     }    
-    
+
+    $('#indicador').val($('#indicador').val().replace(/(<([^>]+)>)/ig,""));
     /*if (trim($('#indicador').val()).length < 4)
     {
         $('#indicador').parent().addClass('campoInvalido') 
@@ -1431,6 +1441,7 @@ function testForm07()
         test = false;
     }*/
 
+    $('#alcance').val($('#alcance').val().replace(/(<([^>]+)>)/ig,""));
     if (trim($('#alcance').val()).length < 4)
     {
         $('#alcance').parent().addClass('campoInvalido') 
@@ -1438,6 +1449,7 @@ function testForm07()
         test = false;
     }
     
+    $('#puntoycirculo').val($('#puntoycirculo').val().replace(/(<([^>]+)>)/ig,""));
  /*   if (trim($('#puntoycirculo').val()).length < 4)
     {
         $('#puntoycirculo').parent().addClass('campoInvalido') 
@@ -1578,6 +1590,7 @@ function testFormObjetivoEspecifico()
    }   
    
    //VERIFICAMOS CAMPO DE TEXTO OBJETIVO ESPECIFICO
+   $('#objetivoEspecifico').val($('#objetivoEspecifico').val().replace(/(<([^>]+)>)/ig,""));
    if (trim($('#objetivoEspecifico').val()).length < 4 )
    {
          $('#objetivoEspecifico').parent().addClass('campoInvalido') 
@@ -1602,6 +1615,7 @@ function testFormActividad()
    }   
    
    //VERIFICAMOS CAMPO DE TEXTO ACTIVIDAD
+   $('#actividad').val($('#actividad').val().replace(/(<([^>]+)>)/ig,""));
    if (trim($('#actividad').val()).length < 4 )
    {
          $('#actividad').parent().addClass('campoInvalido') 
@@ -1610,6 +1624,7 @@ function testFormActividad()
    } 
    
    //VERIFICAMOS CAMPO DE TEXTO META
+   $('#metaFisica').val($('#metaFisica').val().replace(/(<([^>]+)>)/ig,""));
    if (trim($('#metaFisica').val()) === '' || parseInt(nroPuro($('#metaFisica').val())) === 0 )
    {
          $('#metaFisica').parent().addClass('campoInvalido') 
@@ -1618,6 +1633,7 @@ function testFormActividad()
    }   
    
    //VERIFICAMOS CAMPO DE TEXTO UNIDAD MEDIDA
+   $('#unidadMedida').val($('#unidadMedida').val().replace(/(<([^>]+)>)/ig,""));
    if (trim($('#unidadMedida').val()).length < 2 )
    {
          $('#unidadMedida').parent().addClass('campoInvalido') 

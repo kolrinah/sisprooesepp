@@ -16,16 +16,22 @@ class UsuarioType extends AbstractType
    {       
       $builder
               ->add('nombre', null, array('label'=>'Nombres',
-                                          'attr'=>array('title'=>'Nombres')))
+                                          'attr'=>array('title'=>'Nombres',
+                                                    'maxlength'=>50)))
               ->add('apellido', null, array('label'=>'Apellidos',
-                                            'attr'=>array('title'=>'Apellidos')))
+                                            'attr'=>array('title'=>'Apellidos',
+                                                      'maxlength'=>50)))
               ->add('correo','email', array('label'=>'Correo Electrónico',
-                                            'attr'=>array('title'=>'Correo Electrónico')))
+                                            'attr'=>array('placeholder'=>'Correo Electrónico',
+                                                          'title'=>'Correo Electrónico',
+                                                        'maxlength'=>150)))
               
               ->add('estructura',null, array('attr'=>array('style'=>'width:90%',
                                                            'class'=>'oculto')))              
-              ->add('cargo', null, array('attr'=>array('title'=>'Cargo')))           
-              ->add('telefono', null, array('attr'=>array('title'=>'Teléfono')))
+              ->add('cargo', null, array('attr'=>array('title'=>'Cargo',
+                                                        'maxlength'=>50)))           
+              ->add('telefono', null, array('attr'=>array('title'=>'Teléfono',
+                                                        'maxlength'=>50)))
               ->add('role', null, array('label'=>'Permisos Especiales',
                                       'multiple'=>true,
                                       'expanded'=>true))

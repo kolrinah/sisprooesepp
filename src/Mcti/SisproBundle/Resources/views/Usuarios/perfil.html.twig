@@ -76,9 +76,9 @@
    <tfoot>
     <tr>
      <td colspan="2">      
-       <button class="btn btn-danger" 
+       <span class="btn btn-danger" onclick="actualizarPerfil();"
              title="Guardar Usuario">
-          <i class="icon-hdd icon-white"></i> Guardar</button>  
+          <i class="icon-hdd icon-white"></i> Guardar</span>  
      </td>  
     </tr>
    </tfoot>
@@ -90,3 +90,7 @@
 </div>
 </div> 
 {%endblock %}
+
+{% block javascripts %}   
+<script type="text/javascript" src="{{ asset('bundles/sispro/js/usuarios.js') }}"></script>
+{% endblock %}  

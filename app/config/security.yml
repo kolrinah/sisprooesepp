@@ -25,9 +25,9 @@ security:
   access_control: 
     - { path: ^/login*, roles: IS_AUTHENTICATED_ANONYMOUSLY }  
     - { path: ^/principal*, roles: ROLE_USER }
-    - { path: ^/perfil, roles: ROLE_USER }    
-    - { path: ^/admin, roles: [ ROLE_ADMIN, ROLE_ENLACE ] }
-    - { path: ^/admin/bitacora, roles: ROLE_ADMIN }
+    - { path: ^/perfil, roles: ROLE_USER }
+    - { path: ^/admin/usuarios, roles: [ROLE_ADMIN, ROLE_ENLACE] }
+    - { path: ^/admin, roles: ROLE_ADMIN }    
     - { path: ^/proyectos*, roles: ROLE_USER }
     - { path: ^/ejecucion*, roles: ROLE_USER }    
           

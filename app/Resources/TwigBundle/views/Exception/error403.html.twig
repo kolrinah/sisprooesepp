@@ -1,0 +1,16 @@
+{% extends 'SisproBundle:Plantillas:base.html.twig' %}
+{% block title %}
+Ha Ocurrido un Error: {{ status_code }}
+{% endblock %}
+
+{% block body %}
+<div class="container"> 
+ <h1>Ha Ocurrido un Error</h1>
+ <h2>El recurso que ha solicitado está prohibido para su perfil de usuario.</h2>
+ <div>
+ Comuníquese con el personal de Tecnologías de la Información para solventar esta falla.
+ Lamentamos mucho las molestias causadas.
+ </div>    
+
+</div>
+{% endblock %}

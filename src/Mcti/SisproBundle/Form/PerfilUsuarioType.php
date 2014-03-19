@@ -17,17 +17,24 @@ class PerfilUsuarioType extends AbstractType
       $builder
               ->add('correo','email', array('label'=>'Correo Electrónico',
                                             'attr'=>array('readonly'=>'readonly',
-                                                          'title'=>'Correo Electrónico')))
+                                                          'title'=>'Correo Electrónico',
+                                                        'maxlength'=>150)))
               
               ->add('nombre', null, array('label'=>'Nombres',
-                                          'attr'=>array('title'=>'Nombres')))
+                                          'attr'=>array('title'=>'Nombres',
+                                                        'maxlength'=>50)))
               
               ->add('apellido', null, array('label'=>'Apellidos',
-                                            'attr'=>array('title'=>'Apellidos')))
+                                            'attr'=>array('title'=>'Apellidos',
+                                                        'maxlength'=>50)))
               
-              ->add('cargo')
+              ->add('cargo', null, array('label'=>'Cargo',
+                                            'attr'=>array('title'=>'Cargo',
+                                                        'maxlength'=>50)))
               
-              ->add('telefono') 
+              ->add('telefono', null, array('label'=>'Teléfono',
+                                            'attr'=>array('title'=>'Teléfono',
+                                                        'maxlength'=>50))) 
               
             ;
    }

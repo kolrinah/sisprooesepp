@@ -1,0 +1,75 @@
+{% extends 'SisproBundle:Plantillas:base.html.twig' %}
+{% block title %} 
+{{ parent() }}
+| Acceso
+{%endblock%}
+{% block body %}
+<form action="{{ path('chequeo') }}" method="post" {{ form_enctype(formulario) }} >
+<div class="row">
+ <div class="span8 offset2 formulario" >
+   <table>
+     <thead>
+       <tr>
+         <th colspan="2">
+            Autenticación   
+         </th>
+       </tr>
+      </thead>
+      <tbody>
+       <tr>
+         <td style="text-align: right">
+          <img src="{{ asset('bundles/sispro/img/candado.png') }}"/>          
+         </td>
+         <td>
+          <div class="control-group" style="padding-top: 25px">
+            <div class="controls">
+             <div class="input-prepend">              
+              <p {% if form_errors(formulario._username) %}
+                    class="campoInvalido" title="{{ form_errors(formulario._username)|striptags }}"
+                 {% endif %}>
+              <span class="btn btn-danger" title="Correo Eléctronico"><i class="icon-user icon-white"></i></span>    
+                 {{ form_widget(formulario._username) }} </p> 
+             </div>                        
+            </div>             
+          </div> 
+          <div class="control-group">
+            <div class="controls">                  
+             <div class="input-prepend">              
+              <p {% if form_errors(formulario._password) %}
+                    class="campoInvalido" title="{{ form_errors(formulario._password)|striptags }}"
+                 {% endif %}> 
+              <span class="btn btn-danger" title="Contraseña"><i class="icon-lock icon-white"></i></span>                     
+                {{ form_widget(formulario._password) }} </p> 
+             </div>
+            </div>                 
+          </div> 
+        </td>
+       </tr>
+       <tr>
+        <td></td>  
+        <td>
+          <p {% if form_errors(formulario.captcha) %}
+                   class="campoInvalido" title="{{ form_errors(formulario.captcha)|striptags }}"
+             {% endif %}>            
+                {{ form_widget(formulario.captcha) }} </p>                      
+          {{ form_rest(formulario) }}  
+        </td>
+       </tr>
+      </tbody>
+      <tfoot>
+       <tr>
+         <td colspan="2">         
+        {% if error %}
+          <span class="alert alert-error">
+            <strong>¡Error!</strong>&nbsp;{{ error.message|trans }}
+          </span>&nbsp;&nbsp;&nbsp;
+        {% endif %}         
+          <button type="submit" class="btn btn-danger"><i class="icon-ok icon-white"></i> Entrar</button>         
+         </td>                
+       </tr>
+      </tfoot>        
+   </table>
+ </div>            
+</div>
+</form>
+{% endblock %}

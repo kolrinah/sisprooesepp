@@ -39,6 +39,7 @@
             <label>Objetivo General del Proyecto</label> 
             <p>            
              <textarea id="objetivoGeneral" rows="1" class="span11" {{ read }}
+                       maxlength="250"
                        title="Propósito central del proyecto. Expresa qué se quiere hacer o se espera  alcanzar con el proyecto (logros definidos que se busca alcanzar)"
                        name="data[objetivoGeneral]" >{% if data.proyecto.objetivoGeneral !='00' %}{{ data.proyecto.objetivoGeneral|trim }}{% endif %} </textarea>   
             </p>        

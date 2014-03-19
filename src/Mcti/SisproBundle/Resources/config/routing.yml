@@ -211,3 +211,11 @@ analizarProyectos:
 fichaProyecto:
    pattern: proyectos/fichaProyecto
    defaults: { _controller: SisproBundle:FichaProyecto:cargarFicha } 
+   
+reportesDinamicos:
+   pattern: reportes/
+   defaults: { _controller: SisproBundle:Report:packingSlip }   
+   
+reportesGraficos:
+   pattern: reportes2/
+   defaults: { _controller: SisproBundle:Report:packingSlip2 }     

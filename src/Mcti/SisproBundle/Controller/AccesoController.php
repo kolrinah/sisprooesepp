@@ -71,7 +71,11 @@ class AccesoController extends Controller
                                'background_color'=> [255, 255, 255],
                                          'width' => 190,
                                         'height' => 40,
-                                        'length' => 6,))
+                                        'length' => 6,
+                                          'attr' => array('placeholder'=>'Inserte el código',                                                                
+                                                            'maxlength'=>'10', 
+                                                             'required'=>'required',
+                                                                'title'=>'Código Captcha')))
         ->getForm();
         
         // SI VIENE VIA POST
@@ -151,7 +155,7 @@ class AccesoController extends Controller
     /*
      * Activación de cuenta
      */
-    public function activarCuentaAction()            
+    public function activarCuentaAction()
     {
        if ($this->get('security.context')->isGranted('ROLE_USER'))
        {

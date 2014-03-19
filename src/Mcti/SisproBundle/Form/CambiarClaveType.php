@@ -19,6 +19,7 @@ class CambiarClaveType extends AbstractType
       $builder
               ->add('correo','email', array('label'=>'Correo Electrónico',
                                              'attr'=>array('readonly'=>'readonly',
+                                                          'maxlength'=>150,
                                                               'title'=>'Correo Electrónico')))     
 
               ->add('clave', 'repeated', array('type' => 'password',                                        
@@ -29,7 +30,8 @@ class CambiarClaveType extends AbstractType
                                                     'max' => 50,
                                    'minMessage' => ' La contraseña de tener al menos 6 caracteres ',
                                    'maxMessage' => ' Clave demasiado larga '))),
-                   'attr'=> array('title'=>'Introduzca su contraseña')))
+                   'attr'=> array('title'=>'Introduzca su contraseña',
+                              'maxlength'=>50)))
       ;
    }
    

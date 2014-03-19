@@ -1,0 +1,57 @@
+{% extends 'SisproBundle:Plantillas:base.html.twig' %}
+{% block title %} 
+{{ parent() }}
+| Acceso
+{%endblock%}
+{% block body %}
+<div class="row formulario">  
+<div class="span4 offset4">    
+ <form action="{{ path('activarCuenta') }}" method="post" {{ form_enctype(formulario) }} >
+   <table>
+    <thead>
+     <tr>
+      <th width="50%">Activación de Usuario</th>   
+     </tr>           
+    </thead>            
+    <tbody>
+     <tr>
+      <td style="padding-left: 60px">
+        {{ form_row(formulario.correo) }}
+        <br/>
+        {{ form_label(formulario.clave.first,'Nueva contraseña') }}       
+        <p {% if form_errors(formulario.clave.first) %}
+            class="campoInvalido" title="{{ form_errors(formulario.clave.first)|striptags }}"
+            {% endif %}> {{ form_widget(formulario.clave.first) }} </p>        
+        {{ form_label(formulario.clave.second,'Confirmar contraseña') }}       
+        <p {% if form_errors(formulario.clave.first) %}
+            class="campoInvalido" title="{{ form_errors(formulario.clave.first)|striptags }}"
+            {% endif %}> {{ form_widget(formulario.clave.second) }} </p>         
+      </td>
+    </tr>
+    <tr>
+    <td style="padding:0 30px; text-align: center"> 
+        {% if form_errors(formulario.clave.first) %}
+        <div class="alert alert-error">{{ form_errors(formulario.clave.first)|striptags }}</div> 
+        {% endif %}
+        <div class="oculto">
+           {{ form_rest(formulario) }}
+        </div>             
+     </td>     
+    </tr> 
+   </tbody>
+   <tfoot>
+    <tr>
+     <td>
+      <div id="guardar">
+       <button class="btn btn-danger" 
+             title="Activar">
+          <i class="icon-user icon-white"></i> Activar</button>
+      </div>      
+     </td>  
+    </tr>
+   </tfoot>
+  </table>         
+</form>
+</div>        
+</div> 
+{% endblock %}

@@ -357,7 +357,8 @@ function testFormRecursoRecibido()
    $('p').removeClass('campoInvalido').removeAttr('title'); 
   
    //VERIFICAMOS CAMPO DE TEXTO OBSERVACIONES
-   if ( (trim($('#observaciones').val()).length < 4 ) || (trim($('#observaciones').val()).length > 150) )
+   $('#observaciones').val($('#observaciones').val().replace(/(<([^>]+)>)/ig,""));
+   if ( (trim($('#observaciones').val()).length < 4 ) || (trim($('#observaciones').val()).length > 200) )
    {
       $('#observaciones').parent().addClass('campoInvalido') 
        .attr('title','Debe Introducir una descripción correcta (> 4 caracteres y < 150 caracteres)');
@@ -398,7 +399,8 @@ function testFormRecursoEjecutado()
    $('p').removeClass('campoInvalido').removeAttr('title'); 
   
    //VERIFICAMOS CAMPO DE TEXTO OBSERVACIONES
-   if ( (trim($('#observaciones').val()).length < 4 ) || (trim($('#observaciones').val()).length > 150) )
+   $('#observaciones').val($('#observaciones').val().replace(/(<([^>]+)>)/ig,""));
+   if ( (trim($('#observaciones').val()).length < 4 ) || (trim($('#observaciones').val()).length > 200) )
    {
        $('#observaciones').parent().addClass('campoInvalido') 
          .attr('title','Debe Introducir una descripción correcta (> 4 caracteres y < 150 caracteres)');
@@ -439,7 +441,8 @@ function testFormRegistroProblema()
    $('p').removeClass('campoInvalido').removeAttr('title'); 
   
    //VERIFICAMOS CAMPO DE TEXTO OBSERVACIONES
-   if ( (trim($('#observaciones').val()).length < 4 ) || (trim($('#observaciones').val()).length > 150) )
+   $('#observaciones').val($('#observaciones').val().replace(/(<([^>]+)>)/ig,""));
+   if ( (trim($('#observaciones').val()).length < 4 ) || (trim($('#observaciones').val()).length > 200) )
    {
       $('#observaciones').parent().addClass('campoInvalido') 
        .attr('title','Debe Introducir una descripción correcta (> 4 caracteres y < 150 caracteres)');
@@ -464,7 +467,8 @@ function testFormMetaAlcanzada()
    $('p').removeClass('campoInvalido').removeAttr('title'); 
   
    //VERIFICAMOS CAMPO DE TEXTO OBSERVACIONES
-   if ( (trim($('#observaciones').val()).length < 4 ) || (trim($('#observaciones').val()).length > 150) )
+   $('#observaciones').val($('#observaciones').val().replace(/(<([^>]+)>)/ig,""));
+   if ( (trim($('#observaciones').val()).length < 4 ) || (trim($('#observaciones').val()).length > 200) )
    {
       $('#observaciones').parent().addClass('campoInvalido') 
         .attr('title','Debe Introducir una descripción correcta (> 4 caracteres y < 150 caracteres)');

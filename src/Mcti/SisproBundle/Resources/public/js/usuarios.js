@@ -297,6 +297,17 @@ function actualizarUsuario()
   return true;
 }
 
+function actualizarPerfil()
+{
+    if (formularioInvalido())
+    {
+      var mensaje='Introduzca datos válidos.';
+      cajaDialogo("Alerta", mensaje);
+      return false;
+    }
+    $('form').submit();
+}
+
 function reiniciarClave(correo)
 {
   var mensaje='¿Está seguro que desea reiniciar la clave de: '+ correo + '?';    
@@ -357,37 +368,45 @@ function setRol()
 
 function formularioInvalido()
 {
+  var test = false;  
   $('p').removeClass('campoInvalido').removeAttr('title');
-  if (!isEmail($('#mcti_sisprobundle_usuariotype_correo').val()))
+    
+  $('[id*="correo"]').val($('[id*="correo"]').val().replace(/(<([^>]+)>)/ig,""));
+  if (!isEmail($('[id*="correo"]').val()))
   {
-      $('#mcti_sisprobundle_usuariotype_correo').parent().addClass('campoInvalido') 
+      $('[id*="correo"]').parent().addClass('campoInvalido') 
                         .attr('title','Introduzca una dirección de correo válida');
+      test = true;          
   }
-  
-  if (!isNombre($('#mcti_sisprobundle_usuariotype_nombre').val()))
+
+  $('[id*="nombre"]').val($('[id*="nombre"]').val().replace(/(<([^>]+)>)/ig,""));  
+  if (!isNombre($('[id*="nombre"]').val()))
   {
-      $('#mcti_sisprobundle_usuariotype_nombre').parent().addClass('campoInvalido')
-                        .attr('title','Nombre incorrecto');
+      $('[id*="nombre"]').parent().addClass('campoInvalido')
+                        .attr('title','Nombre incorrecto');                
+      test = true;          
   }
-  
-  if (!isNombre($('#mcti_sisprobundle_usuariotype_apellido').val()))
+
+  $('[id*="apellido"]').val($('[id*="apellido"]').val().replace(/(<([^>]+)>)/ig,""));  
+  if (!isNombre($('[id*="apellido"]').val()))
   {
-      $('#mcti_sisprobundle_usuariotype_apellido').parent().addClass('campoInvalido') 
+      $('[id*="apellido"]').parent().addClass('campoInvalido') 
                         .attr('title','Apellido incorrecto');
+      test = true;          
   }
   
-  if  (isNaN(parseInt($('#mcti_sisprobundle_usuariotype_estructura').val())))
-  {
-      $('#mcti_sisprobundle_usuariotype_estructura').parent().addClass('campoInvalido')
+  if ($('[id*="estructura"]').length)
+  {      
+    if (isNaN(parseInt($('[id*="estructura"]').val())))
+    {
+      $('[id*="estructura"]').parent().addClass('campoInvalido')
                         .attr('title','Debe seleccionar la Unidad o Ente');
+      test = true;          
+    }
   }
   
-  if (!(isEmail($('#mcti_sisprobundle_usuariotype_correo').val())) ||
-      !(isNombre($('#mcti_sisprobundle_usuariotype_nombre').val())) ||
-      !(isNombre($('#mcti_sisprobundle_usuariotype_apellido').val())) || 
-      (isNaN(parseInt($('#mcti_sisprobundle_usuariotype_estructura').val()))) ) 
-  {
-      return true;
-  }
-  return false;
+  $('[id*="cargo"]').val($('[id*="cargo"]').val().replace(/(<([^>]+)>)/ig,""));
+  $('[id*="telefono"]').val($('[id*="telefono"]').val().replace(/(<([^>]+)>)/ig,""));
+    
+  return test;
 }

@@ -105,8 +105,8 @@ class FichaPDF extends \TCPDF {
         $this->writeHTMLCell(0, 0, '', '', '<b>Nombre del Proyecto</b>', 'LRTB', 1, 1, true, 'L', true);
         
         $html = '<div style="text-align:justify">'.
-                mb_convert_case($proyecto->getNombre(), MB_CASE_UPPER, 'UTF-8').'</div>';
-        
+                 strip_tags(mb_convert_case($proyecto->getNombre(), MB_CASE_UPPER, 'UTF-8')).
+                '</div>';        
         $this->SetFillColor(255,255,255);
         $this->SetCellPadding(2);
         $this->writeHTMLCell(0, 0, '', '', $html, 'LRTB', 1, 1, true, 'L', true);
@@ -128,7 +128,7 @@ class FichaPDF extends \TCPDF {
         foreach($proyecto->getMarcos() as $p)
         {
            $html .= '<li><b>'.$p->getMarco()->getMarco().': </b>'.
-                    'Código: '.$p->getCodigo().', año: '.
+                    'Código: '.strip_tags($p->getCodigo()).', año: '.
                     $p->getYear().
                     '</li>'; 
         }        
@@ -145,7 +145,8 @@ class FichaPDF extends \TCPDF {
         $this->writeHTMLCell(0, 0, '', '', '<b>Ubicación Territorial</b>', 'LRTB', 1, 1, true, 'L', true);
         
         $html = '<div style="text-align:justify">'.
-                $proyecto->getDireccion().'.<br/>Parroquia: '.
+             strip_tags($proyecto->getDireccion()).
+                '.<br/>Parroquia: '.
              $proyecto->getParroquia()->getParroquia().', municipio: '.
              $proyecto->getParroquia()->getMunicipio()->getMunicipio().', '.
              mb_convert_case($proyecto->getPoblado()->getPoblado(),
@@ -194,7 +195,8 @@ class FichaPDF extends \TCPDF {
         $this->SetCellPadding(1);        
         $this->writeHTMLCell(0, 0, '', '', '<b>Breve Descripción</b>', 'LRTB', 1, 1, true, 'L', true);
         
-        $html = '<div style="text-align:justify">'.$proyecto->getDescripcion().'</div>';
+        $html = '<div style="text-align:justify">'.
+                strip_tags($proyecto->getDescripcion()).'</div>';
         
         $this->SetFillColor(255,255,255);
         $this->SetCellPadding(2);
@@ -209,7 +211,7 @@ class FichaPDF extends \TCPDF {
         $this->writeHTMLCell(0, 0, '', '',
             '<b>Problema o Necesidad Social que Plantea Resolver</b>', 'LRTB', 1, 1, true, 'L', true);
         
-        $html = '<div style="text-align:justify">'.$proyecto->getProblema().'</div>';
+        $html = '<div style="text-align:justify">'.strip_tags($proyecto->getProblema()).'</div>';
         
         $this->SetFillColor(255,255,255);
         $this->SetCellPadding(2);
@@ -419,7 +421,7 @@ class FichaPDF extends \TCPDF {
             '<b>Punto y Círculo</b>', 'LRTB', 1, 1, true, 'L', true);
         
         $html = '<div style="text-align:justify">'.
-                $proyecto->getPuntoycirculo().'</div>';
+                strip_tags($proyecto->getPuntoycirculo()).'</div>';
         
         $this->SetFillColor(255,255,255);
         $this->SetCellPadding(2);
@@ -450,7 +452,7 @@ class FichaPDF extends \TCPDF {
             '<b>Objetivo General del Proyecto</b>', 'LRTB', 1, 1, true, 'L', true);
         
         $html = '<div style="text-align:justify">'.
-                $proyecto->getObjetivoGeneral().'</div>';
+                strip_tags($proyecto->getObjetivoGeneral()).'</div>';
         
         $this->SetFillColor(255,255,255);
         $this->SetCellPadding(2);
@@ -468,8 +470,8 @@ class FichaPDF extends \TCPDF {
         $html = '<div style="text-align:justify">'.
                 '<b>Producto: </b>'.$proyecto->getProducto().
                 '<br/><b>Meta Física: </b>'.number_format(($proyecto->getMeta()), 2, ',', '.')
-                .' '.$proyecto->getUnidadMedida().
-                '<br/><b>Indicadores: </b>'.$proyecto->getIndicador().
+                .' '.strip_tags($proyecto->getUnidadMedida()).
+                '<br/><b>Indicadores: </b>'.strip_tags($proyecto->getIndicador()).
                 '</div>';
         
         $this->SetFillColor(255,255,255);
@@ -503,7 +505,7 @@ class FichaPDF extends \TCPDF {
             '<b>Alcance / Impacto del Proyecto</b>', 'LRTB', 1, 1, true, 'L', true);
         
         $html = '<div style="text-align:justify">'.
-                $proyecto->getAlcance().'</div>';
+                strip_tags($proyecto->getAlcance()).'</div>';
         
         $this->SetFillColor(255,255,255);
         $this->SetCellPadding(2);
@@ -528,7 +530,7 @@ class FichaPDF extends \TCPDF {
               $html .= '<tr><td width="4%" align="center"><b>'.
                        $p->getCodigo().'</b></td>'.
                        '<td colspan="2" width="96%"><b>'.
-                       $p->getObjetivoEspecifico().
+                       strip_tags($p->getObjetivoEspecifico()).
                        '</b></td></tr>'; 
               if ($p->getActividades() != null)
               {
@@ -536,10 +538,10 @@ class FichaPDF extends \TCPDF {
                  {
                     $html .= '<tr><td colspan="2" width="6%" align="right">'.
                              $p->getCodigo().'.'.$a->getCodigo().'</td><td width="94%">'.
-                             $a->getActividad().'<br/>'.
+                             strip_tags($a->getActividad()).'<br/>'.
                              'Meta Física: '.
                              \number_format($a->getMetaFisica(), 2, ',', '.').' '.
-                             $a->getUnidadMedida().'<br/>'.                             
+                             strip_tags($a->getUnidadMedida()).'<br/>'.                             
                              'Monto Presupuestado: '.
                              $a->getMoneda()->getSimbolo().' '.
                              \number_format($a->getMonto(), 2, ',', '.').' ('.
@@ -607,106 +609,6 @@ class FichaPDF extends \TCPDF {
         $this->writeHTMLCell(0, 0, '', '',
                 '<b>CRONOGRAMA DE EJECUCIÓN DEL PROYECTO</b>', 'LRTB', 1, 1, true, 'C', true);               
         $this->Ln(2);
-        
-        $this->_saltoPagina($this->getY());
-        /*
-         * SUBTITULO Cronograma de Ejecución Física
-         */
-        $this->SetFillColor(223,223,223);        
-        $this->SetCellPadding(1);        
-        $this->writeHTMLCell(0, 0, '', '',
-                '<b>Cronograma de Ejecución Física de Actividades</b>', 'LRTB', 1, 1, true, 'L', true);
-        
-        $html = '';
-        if (count($actividades) != 0)
-        {
-            $years = array();
-            foreach ($actividades as $a)
-            {               
-               if (!in_array($a->getFechaFin()->format('Y'),$years))
-                  array_push($years, $a->getFechaFin()->format('Y'));
-            }            
-            sort($years);            
-            
-            $ancho = 90; // ANCHO DEL ESPACIO PARA EL CRONOGRAMA
-            $html = '<table cellpadding="2"><tr><td width="10%" ></td>';
-            
-            // LINEA 1  |     | año 1 | año n |            
-            $cols = (count($years) >= 3)? 3:count($years);
-            $fontSize = ($cols !=3)?10:9; // TAMAÑO DE LOS NUMEROS
-            $i = 0;
-            foreach ($years as $y)
-            {
-               if ($i < $cols)               
-               $html .= '<td width="'.intval($ancho/$cols).'%" colspan="4" align="center" border="1">'.
-                        '<b>'.$y.'</b></td>';               
-               $i++;
-            }
-            $html .= '</tr>';
-            // LINEA 2 | actividades | I | II | III | IV |
-            $html .= '<tr><td align="center" border="1"><b>Actividad</b></td>';
-            $ancho = $ancho /($cols*4);
-            $i = 0;
-            foreach ($years as $y)
-            {
-               if ($i < $cols)
-               $html .= '<td width="'.$ancho.'%" align="center" border="1"><b>I</b></td>'.
-                        '<td width="'.$ancho.'%" align="center" border="1"><b>II</b></td>'.
-                        '<td width="'.$ancho.'%" align="center" border="1"><b>III</b></td>'.
-                        '<td width="'.$ancho.'%" align="center" border="1"><b>IV</b></td>';
-               $i++;
-            }            
-            $html .= '</tr>';
-            
-            // Fila Totales
-            for ($i = 0; $i < ($cols*4); $i++) $filaTotales[$i] = 0; 
-            
-            foreach ($actividades as $a)
-            {
-               // Columnas de la fila
-               for ($i = 0; $i < ($cols*4); $i++) $fila[$i] = '';
-               
-               $trim =  intval((intval($a->getFechaFin()->format('m'))-1)/3);
-               $year =  array_search($a->getFechaFin()->format('Y'), $years);
-               
-               $pos = $year*4 + $trim;
-               
-               if ($pos < ($cols*4)) 
-               {
-                   $fila[$pos] = $a->getMetaFisica();
-                   $filaTotales[$pos] += $a->getMetaFisica();
-               }
-               else $fila = 'Actividad Planificada para el año '.$a->getFechaFin()->format('Y');
-                
-               $html .= '<tr><td align="center" border="1"><b>'.
-                        $a->getObjetivoEspecifico()->getCodigo().'.'.$a->getCodigo().
-                        '</b></td>';
-               
-               if ($pos < ($cols*4))               
-                  foreach ($fila as $f) $html .='<td align="right" border="1" '.
-                        'style="font-size:'.$fontSize.'">'.
-                       ((is_numeric($f))? 
-                           (number_format($f, 0, ',', '.')):'').'</td>';
-               
-               else $html .='<td colspan="'.($cols*4).'" align="center" border="1">'.$fila.'</td>'; 
-                   
-               $html .='</tr>';  
-               
-               unset($fila);
-            }         
-            $html .= '<tr><td align="center" border="1"><b>% TOTAL</b></td>';
-            foreach ($filaTotales as $f) $html .='<td align="right" border="1" '.
-                    'style="font-size:'.$fontSize.'"><b>'.
-                    number_format(($f*100/$proyecto->getMetasPlanificadas()), 2, ',', '.').
-                    '</b></td>';
-            $html .= '</tr>';
-            $html .= '</table>';
-            
-        }else $html = 'Sin Actividades Planificadas';
-                
-        $this->SetFillColor(255,255,255);
-        $this->SetCellPadding(2);
-        $this->writeHTMLCell(0, 0, '', '', $html, 'LRTB', 1, 1, true, 'L', true); 
         
         $this->_saltoPagina($this->getY());
         /*
@@ -802,15 +704,115 @@ class FichaPDF extends \TCPDF {
             foreach ($filaTotales as $f) $html .='<td align="right" border="1" '.
                     'style="font-size:10"><b>'.
                     number_format(($f*100/($proyecto->getMontoPlanificado())), 2, ',', '.').
-                    '</b></td>';
+                    '%</b></td>';
             $html .= '</tr>';
-            $html .= '</table>';
+            $html .= '</table><br/>';
             
         }else $html = 'Sin Actividades Planificadas';
                 
         $this->SetFillColor(255,255,255);
         $this->SetCellPadding(2);
         $this->writeHTMLCell(0, 0, '', '', $html, 'LRTB', 1, 1, true, 'L', true);                 
+        
+        $this->_saltoPagina($this->getY());
+        /*
+         * SUBTITULO Cronograma de Ejecución Física
+         */
+        $this->SetFillColor(223,223,223);        
+        $this->SetCellPadding(1);        
+        $this->writeHTMLCell(0, 0, '', '',
+                '<b>Cronograma de Ejecución Física de Actividades</b>', 'LRTB', 1, 1, true, 'L', true);
+        
+        $html = '';
+        if (count($actividades) != 0)
+        {
+            $years = array();
+            foreach ($actividades as $a)
+            {               
+               if (!in_array($a->getFechaFin()->format('Y'),$years))
+                  array_push($years, $a->getFechaFin()->format('Y'));
+            }            
+            sort($years);            
+            
+            $ancho = 90; // ANCHO DEL ESPACIO PARA EL CRONOGRAMA
+            $html = '<table cellpadding="2"><tr><td width="10%" ></td>';
+            
+            // LINEA 1  |     | año 1 | año n |            
+            $cols = (count($years) >= 3)? 3:count($years);
+            $fontSize = ($cols !=3)?10:9; // TAMAÑO DE LOS NUMEROS
+            $i = 0;
+            foreach ($years as $y)
+            {
+               if ($i < $cols)               
+               $html .= '<td width="'.intval($ancho/$cols).'%" colspan="4" align="center" border="1">'.
+                        '<b>'.$y.'</b></td>';               
+               $i++;
+            }
+            $html .= '</tr>';
+            // LINEA 2 | actividades | I | II | III | IV |
+            $html .= '<tr><td align="center" border="1"><b>Actividad</b></td>';
+            $ancho = $ancho /($cols*4);
+            $i = 0;
+            foreach ($years as $y)
+            {
+               if ($i < $cols)
+               $html .= '<td width="'.$ancho.'%" align="center" border="1"><b>I</b></td>'.
+                        '<td width="'.$ancho.'%" align="center" border="1"><b>II</b></td>'.
+                        '<td width="'.$ancho.'%" align="center" border="1"><b>III</b></td>'.
+                        '<td width="'.$ancho.'%" align="center" border="1"><b>IV</b></td>';
+               $i++;
+            }            
+            $html .= '</tr>';
+            
+            // Fila Totales
+            for ($i = 0; $i < ($cols*4); $i++) $filaTotales[$i] = 0; 
+            
+            foreach ($actividades as $a)
+            {
+               // Columnas de la fila
+               for ($i = 0; $i < ($cols*4); $i++) $fila[$i] = '';
+               
+               $trim =  intval((intval($a->getFechaFin()->format('m'))-1)/3);
+               $year =  array_search($a->getFechaFin()->format('Y'), $years);
+               
+               $pos = $year*4 + $trim;
+               
+               if ($pos < ($cols*4)) 
+               {
+                   $fila[$pos] = $a->getMetaFisica();
+                   $filaTotales[$pos] += $a->getMetaFisica();
+               }
+               else $fila = 'Actividad Planificada para el año '.$a->getFechaFin()->format('Y');
+                
+               $html .= '<tr><td align="center" border="1"><b>'.
+                        $a->getObjetivoEspecifico()->getCodigo().'.'.$a->getCodigo().
+                        '</b></td>';
+               
+               if ($pos < ($cols*4))               
+                  foreach ($fila as $f) $html .='<td align="right" border="1" '.
+                        'style="font-size:'.$fontSize.'">'.
+                       ((is_numeric($f))? 
+                           (number_format($f, 0, ',', '.')):'').'</td>';
+               
+               else $html .='<td colspan="'.($cols*4).'" align="center" border="1">'.$fila.'</td>'; 
+                   
+               $html .='</tr>';  
+               
+               unset($fila);
+            }         
+            $html .= '<tr><td align="center" border="1"><b>% TOTAL</b></td>';
+            foreach ($filaTotales as $f) $html .='<td align="right" border="1" '.
+                    'style="font-size:'.$fontSize.'"><b>'.
+                    number_format(($f*100/$proyecto->getMetasPlanificadas()), 2, ',', '.').
+                    '%</b></td>';
+            $html .= '</tr>';
+            $html .= '</table><br/>';
+            
+        }else $html = 'Sin Actividades Planificadas';
+                
+        $this->SetFillColor(255,255,255);
+        $this->SetCellPadding(2);
+        $this->writeHTMLCell(0, 0, '', '', $html, 'LRTB', 1, 1, true, 'L', true); 
         
         /***********************************/
         $this->Ln(5);                    
